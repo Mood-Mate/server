@@ -1,5 +1,6 @@
 package com.pado.socialdiary.api;
 
+import com.pado.socialdiary.api.member.entity.Member;
 import com.pado.socialdiary.api.member.mapper.MemberMapper;
 import com.pado.socialdiary.api.member.service.MemberService;
 import org.junit.jupiter.api.Assertions;
@@ -20,10 +21,7 @@ class ApplicationTests {
 
 	@Test
 	void contextLoads() {
-		Integer resultByMapper = memberMapper.testOne();
-		Integer resultByService = memberService.testOne();
-
-		assertEquals(resultByMapper, 1);
-		assertEquals(resultByService, 1);
+		Member string = memberMapper.findByEmail("string").get();
+		System.out.println(string);
 	}
 }

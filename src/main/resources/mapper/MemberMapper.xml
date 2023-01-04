@@ -3,7 +3,18 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.pado.socialdiary.api.member.mapper.MemberMapper">
+    <insert id="join" parameterType="com.pado.socialdiary.api.member.entity.Member" useGeneratedKeys="true">
+        INSERT INTO TB_MEMBER(EMAIL,PASSWORD,NAME,NICKNAME,DATE_OF_BIRTH,GENDER,REG_ID,REG_DT,UPD_ID,UPD_DT)
+        VALUES (#{email}, #{password}, #{name}, #{nickname}, #{dateOfBirth}, #{gender}, #{email}, NOW(), #{email}, NOW())
+    </insert>
+
+
     <select id="testOne" resultType="java.lang.Integer">
         SELECT 1;
+    </select>
+
+    <select id="findByEmail" resultType="com.pado.socialdiary.api.member.entity.Member">
+        SELECT * FROM TB_MEMBER
+        WHERE TB_MEMBER.EMAIL = #{email};
     </select>
 </mapper>
