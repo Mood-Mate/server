@@ -8,12 +8,7 @@
         VALUES (#{email}, #{password}, #{name}, #{nickname}, #{dateOfBirth}, #{gender}, #{email}, NOW(), #{email}, NOW())
     </insert>
 
-
-    <select id="testOne" resultType="java.lang.Integer">
-        SELECT 1;
-    </select>
-
-    <select id="findByEmail" resultType="com.pado.socialdiary.api.member.entity.Member">
+    <select id="findByEmail" resultType="com.pado.socialdiary.api.member.entity.Member" >
         SELECT * FROM TB_MEMBER
         WHERE TB_MEMBER.EMAIL = #{email};
     </select>

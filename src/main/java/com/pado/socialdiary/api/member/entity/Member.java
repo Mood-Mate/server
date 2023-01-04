@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class Member {
 
-    // TODO: 2023/01/04 [ERROR] Principal Response, Member pk is null;
     private Integer memberId;
     private String email;
     private String password;
@@ -21,13 +20,14 @@ public class Member {
 
     private String role = "USER";
 
-    private Integer regId;
+    private String regId;
     private LocalDateTime regDt;
-    private Integer updId;
+    private String updId;
     private LocalDateTime updDt;
 
     @Builder
-    public Member(String email, String password, String name, String nickname, LocalDateTime dateOfBirth, GenderType gender) {
+    public Member(Integer memberId, String email, String password, String name, String nickname, LocalDateTime dateOfBirth, GenderType gender) {
+        this.memberId = memberId;
         this.email = email;
         this.password = password;
         this.name = name;
