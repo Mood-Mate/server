@@ -21,7 +21,5 @@ class ApplicationTests {
 
 	@Test
 	void contextLoads() {
-		Member string = memberMapper.findByEmail("string").get();
-		System.out.println(string);
 	}
 }
