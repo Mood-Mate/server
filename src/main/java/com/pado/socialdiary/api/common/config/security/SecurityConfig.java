@@ -18,6 +18,7 @@ public class SecurityConfig {
 
     private final JwtProvider jwtProvider;
     private final String[] BASE_PATH = {"/swagger-ui/**", "/v3/api-docs/**", "/api/member/**"};
+    private final String AUTH_CHECK_PATH = "/api/member/auth";
 
 
     @Bean
@@ -29,6 +30,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .shouldFilterAllDispatcherTypes(false)
                         .requestMatchers(BASE_PATH).permitAll()
+                        .requestMatchers(AUTH_CHECK_PATH).hasRole("USER")
                         .anyRequest().authenticated())
                 .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class);
 

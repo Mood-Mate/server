@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class Member {
 
+    // TODO: 2023/01/04 [ERROR] Principal Response, Member pk is null;
     private Integer memberId;
     private String email;
     private String password;
