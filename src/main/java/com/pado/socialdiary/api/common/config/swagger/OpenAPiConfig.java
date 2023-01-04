@@ -1,4 +1,4 @@
-package com.pado.socialdiary.api.common.config;
+package com.pado.socialdiary.api.common.config.swagger;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
