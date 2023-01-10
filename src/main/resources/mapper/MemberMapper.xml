@@ -12,4 +12,8 @@
         SELECT * FROM TB_MEMBER
         WHERE TB_MEMBER.EMAIL = #{email};
     </select>
+    <select id="findDuplicateEmailCount" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT * FROM TB_MEMBER
+        WHERE TB_MEMBER.EMAIL = #{email}
+    </select>
 </mapper>

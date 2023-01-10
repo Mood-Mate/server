@@ -27,6 +27,13 @@ public class MemberService {
 
     @Transactional
     public void join(MemberJoinRequest memberJoinRequest) {
+
+        Integer findDuplicateEmailCount = memberMapper.findDuplicateEmailCount(memberJoinRequest.getEmail());
+
+        if (findDuplicateEmailCount > 0) {
+            throw new IllegalArgumentException("Duplicate Email");
+        }
+
         Member builtMember = Member.builder()
                 .email(memberJoinRequest.getEmail())
                 .password(passwordEncoder.encode(memberJoinRequest.getPassword()))
