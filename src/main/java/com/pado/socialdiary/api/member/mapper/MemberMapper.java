@@ -8,6 +8,8 @@ import java.util.Optional;
 @Mapper
 public interface MemberMapper {
 
+    Integer findDuplicateEmailCount(String email);
+
     void join(Member member);
 
     Optional<Member> findByEmail(String email);
