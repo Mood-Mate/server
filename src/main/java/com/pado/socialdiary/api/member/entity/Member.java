@@ -18,7 +18,7 @@ public class Member {
     private LocalDateTime dateOfBirth;
     private GenderType gender;
 
-    private String role = "USER";
+    private MemberRole role = MemberRole.USER;
 
     private String regId;
     private LocalDateTime regDt;
