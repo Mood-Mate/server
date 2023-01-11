@@ -1,5 +1,6 @@
 package com.pado.socialdiary.api.common.config.security;
 
+import com.pado.socialdiary.api.member.entity.MemberRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,7 +31,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .shouldFilterAllDispatcherTypes(false)
                         .requestMatchers(AUTH_PASS_PATH).permitAll()
-                        .requestMatchers(AUTH_CHECK_PATH).hasRole("USER")
+                        .requestMatchers(AUTH_CHECK_PATH).hasRole(String.valueOf(MemberRole.USER))
                         .anyRequest().authenticated())
                 .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class);
 
