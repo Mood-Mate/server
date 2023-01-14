@@ -19,6 +19,7 @@ public class Member {
     private GenderType gender;
 
     private MemberRole role = MemberRole.USER;
+    private LoginProvider loginProvider;
 
     private String regId;
     private LocalDateTime regDt;
@@ -26,7 +27,7 @@ public class Member {
     private LocalDateTime updDt;
 
     @Builder
-    public Member(Integer memberId, String email, String password, String name, String nickname, LocalDateTime dateOfBirth, GenderType gender) {
+    public Member(Integer memberId, String email, String password, String name, String nickname, LocalDateTime dateOfBirth, GenderType gender, LoginProvider loginProvider) {
         this.memberId = memberId;
         this.email = email;
         this.password = password;
@@ -35,8 +36,9 @@ public class Member {
         this.dateOfBirth = dateOfBirth;
         this.gender = gender;
 
-        this.regDt = LocalDateTime.now();
+        this.loginProvider = loginProvider;
 
+        this.regDt = LocalDateTime.now();
         this.updDt = LocalDateTime.now();
     }
 }

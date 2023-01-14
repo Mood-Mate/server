@@ -11,8 +11,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
+import org.thymeleaf.standard.expression.Token;
 
 import java.security.Key;
 import java.util.Date;
@@ -32,6 +34,11 @@ public class JwtProvider {
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
+//    토큰 유효시간 -> 1시간
+    private static Date tokenExpireIn() {
+        return new Date(new Date().getTime() + 3600000);
+    }
+
     public TokenResponse generateToken(Authentication authentication) {
 
         String authorities = authentication.getAuthorities()
@@ -39,13 +46,35 @@ public class JwtProvider {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
 
-        // 토큰 유효시간 -> 1시간
-        Date tokenExpireIn = new Date(new Date().getTime() + 3600000);
-
         String generatedToken = Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim("auth", authorities)
-                .setExpiration(tokenExpireIn)
+                .setExpiration(tokenExpireIn())
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
+
+        return TokenResponse.builder()
+                .accessToken(generatedToken)
+                .build();
+    }
+
+    public TokenResponse generateToken(OAuth2User authentication) {
+        String email = (String) authentication.getAttributes().get("email");
+        System.out.println(authentication.getAttributes());
+
+        /**
+         * 인증 발행사 별 프로퍼티가 다르니 이메일 가져올 때 분기 체크하기.
+         */
+
+        String authorities = authentication.getAuthorities()
+                .stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
+
+        String generatedToken = Jwts.builder()
+                .setSubject(email)
+                .claim("auth", authorities)
+                .setExpiration(tokenExpireIn())
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
 
