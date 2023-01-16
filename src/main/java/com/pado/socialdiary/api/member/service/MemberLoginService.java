@@ -14,6 +14,7 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.Optional;
@@ -37,13 +38,9 @@ public class MemberLoginService implements OAuth2UserService<OAuth2UserRequest, 
         OAuthAttributes attributes = OAuthAttributes
                 .of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
 
-        Member member = saveOrUpdate(attributes);
+        attributes.toEntity();
 
-//        DefaultOAuth2User defaultOAuth2User = new DefaultOAuth2User(Collections.singleton(
-//                new SimpleGrantedAuthority(member.getRole().getRole())),
-//                attributes.getAttributes(),
-//                attributes.getNameAttributeKey()
-//        );
+        Member member = saveOrUpdate(attributes);
 
         DefaultOAuth2User defaultOAuth2User = new DefaultOAuth2User(Collections.singleton(
                 new SimpleGrantedAuthority(member.getRole().getRole())),
@@ -52,16 +49,24 @@ public class MemberLoginService implements OAuth2UserService<OAuth2UserRequest, 
         );
 
         return defaultOAuth2User;
+
+//        return null;
     }
 
     /**
      * 중복 체크 , 디비 저장(업데이트 된 회원프로필)
      */
-    // TODO: 2023/01/15
+    @Transactional
     private Member saveOrUpdate(OAuthAttributes attributes) {
-        Member member = attributes.toEntity();
-        memberMapper.join(member);
+        Integer duplicateEmailCount = memberMapper.findDuplicateEmailCount(attributes.getEmail());
+        if (duplicateEmailCount == 0) {
+            memberMapper.save(attributes.toEntity());
 
-        return memberMapper.findByEmail(attributes.getEmail()).get();
+            return memberMapper.findByEmail(attributes.getEmail())
+                    .orElseThrow(() -> new RuntimeException("NOT FOUND ENTITY"));
+        }
+
+        return memberMapper.findByEmail(attributes.getEmail())
+                .orElseThrow(() -> new RuntimeException("NOT FOUND ENTITY"));
     }
 }

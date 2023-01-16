@@ -1,73 +1,121 @@
 package com.pado.socialdiary.api.common.config.security.oauth;
 
+import com.pado.socialdiary.api.member.entity.GenderType;
+import com.pado.socialdiary.api.member.entity.LoginProvider;
 import com.pado.socialdiary.api.member.entity.Member;
 import lombok.Builder;
 import lombok.Getter;
-import org.springframework.security.oauth2.core.http.converter.OAuth2ErrorHttpMessageConverter;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.pado.socialdiary.api.member.entity.LoginProvider.*;
 
 @Getter
 public class OAuthAttributes {
 
     private Map<String, Object> attributes;
 
+    private LoginProvider loginProvider;
+
     private String email;
     private String name;
+    private String nickname;
+    private GenderType gender;
+    private LocalDateTime dateOfBirth;
+    private String picture;
+
     private String nameAttributeKey;
-//    private String picture;
 
     @Builder
-    public OAuthAttributes(Map<String, Object> attributes, String nameAttributeKey, String name, String email, String picture) {
+    public OAuthAttributes(Map<String, Object> attributes, String nameAttributeKey, String name, String email, LoginProvider loginProvider, String nickname, GenderType gender, LocalDateTime dateOfBirth, String picture) {
+        this.email = email;
+        this.name = name;
+        this.nickname = nickname;
+        this.gender = gender;
+        this.dateOfBirth = dateOfBirth;
+        this.picture = picture;
+
+        this.loginProvider = loginProvider;
         this.attributes = attributes;
         this.nameAttributeKey = nameAttributeKey;
-        this.name = name;
-        this.email = email;
     }
 
-    public static OAuthAttributes of(String registrationId, String userNameAttributeName, Map<String, Object> attributes) {
+    public static OAuthAttributes of(String oAuthProvider, String userNameAttributeName, Map<String, Object> attributes) {
 
-        if (registrationId.equals("google")) {
+        if (oAuthProvider.equals("google")) {
             return ofGoogle(userNameAttributeName, attributes);
-        } else if (registrationId.equals("kakao")) {
+        } else if (oAuthProvider.equals("kakao")) {
             return ofKakao(userNameAttributeName, attributes);
         } else {
-            return null;
+            return ofNaver(userNameAttributeName, attributes);
         }
     }
 
-    public static OAuthAttributes ofGoogle(String userNameAttributeName, Map<String, Object> attributes) {
+    private static OAuthAttributes ofNaver(String userNameAttributeName, Map<String,Object> attributes) {
+
+        Map<String, Object> response = (Map<String, Object>) attributes.get("response");
+
+        System.out.println(attributes);
+
+        int birthYear = Integer.parseInt(response.get("birthyear").toString());
+
+        int birthMonth = Integer.parseInt(response.get("birthday").toString().substring(0, 2));
+        int birthDayOfMonth = Integer.parseInt(response.get("birthday").toString().substring(3, 5));
+
         return OAuthAttributes.builder()
-                .name((String) attributes.get("name"))
-                .email((String) attributes.get("email"))
-                .picture((String) attributes.get("picture"))
+                .email((String) response.get("email"))
+                .name((String) response.get("name"))
+                .nickname((String) response.get("nickname"))
+                .gender(GenderType.toGender((String) response.get("gender")))
+                .dateOfBirth(LocalDateTime.of(birthYear, birthMonth, birthDayOfMonth, 0, 0))
+                .loginProvider(NAVER)
+                .picture((String) response.get("profile_image"))
                 .attributes(attributes)
                 .nameAttributeKey(userNameAttributeName)
                 .build();
     }
 
-    public static OAuthAttributes ofKakao(String nameAttributeKey, Map<String, Object> attributes) {
+    private static OAuthAttributes ofGoogle(String userNameAttributeName, Map<String, Object> attributes) {
 
-        Map kakao_account = (Map) attributes.get("kakao_account");
-        Map properties = (Map) attributes.get("properties");
+        System.out.println(attributes);
 
-        String email = (String) kakao_account.get("email");
-        String nickname = (String) properties.get("nickname");
+        String memberFullName = (String) attributes.get("given_name") + " " + (String) attributes.get("family_name");
 
-        System.out.println(email);
+        return OAuthAttributes.builder()
+                .email((String) attributes.get("email"))
+                .name(memberFullName)
+                .nickname((String) attributes.get("name"))
+                .picture((String) attributes.get("picture"))
+                .loginProvider(GOOGLE)
+                .attributes(attributes)
+                .nameAttributeKey(userNameAttributeName)
+                .build();
+    }
 
+    private static OAuthAttributes ofKakao(String nameAttributeKey, Map<String, Object> attributes) {
+
+        Map kakaoAccount = (Map) attributes.get("kakao_account");
+        Map kakaoProfile = (Map) kakaoAccount.get("profile");
+
+        String email = (String) kakaoAccount.get("email");
+        String nickname = (String) kakaoProfile.get("nickname");
+        String picture = (String) kakaoProfile.get("profile_image_url");
+
+        // TODO: 2023/01/16 카카오 유저 프로퍼티 제공 권한 때문에 name == nickname
         return OAuthAttributes.builder()
                 .email(email)
                 .name(nickname)
+                .nickname(nickname)
+                .picture(picture)
+                .loginProvider(KAKAO)
                 .attributes(attributes)
                 .nameAttributeKey(nameAttributeKey)
                 .build();
     }
 
     public Map<String, Object> toMap() {
-        System.out.println(attributes);
-        System.out.println(nameAttributeKey);
 
         HashMap<String, Object> result = new HashMap<>();
         result.put("email", this.email);
@@ -77,10 +125,19 @@ public class OAuthAttributes {
     }
 
     public Member toEntity() {
-        return Member.builder()
-                .email(email)
+        Member builtMember = Member.builder()
+                .email(this.email)
                 .password("")
-                .name(name)
+                .name(this.name)
+                .nickname(this.nickname)
+                .dateOfBirth(this.dateOfBirth)
+                .loginProvider(this.loginProvider)
+                .gender(this.gender)
+                .picture(this.picture)
                 .build();
+
+        System.out.println(builtMember);
+
+        return builtMember;
     }
 }
