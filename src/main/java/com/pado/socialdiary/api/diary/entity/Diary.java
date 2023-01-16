@@ -12,9 +12,9 @@ public class Diary {
     private Integer memberId;
     private String title;
     private String contents;
-    private String regId;
+    private Integer regId;
     private LocalDateTime regDt;
-    private String updId;
+    private Integer updId;
     private LocalDateTime updDt;
 
     @Builder
