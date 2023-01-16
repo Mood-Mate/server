@@ -10,7 +10,7 @@ public interface MemberMapper {
 
     Integer findDuplicateEmailCount(String email);
 
-    void join(Member member);
+    void save(Member member);
 
     Optional<Member> findByEmail(String email);
 }
