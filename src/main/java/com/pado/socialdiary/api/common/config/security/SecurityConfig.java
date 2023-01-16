@@ -2,8 +2,7 @@ package com.pado.socialdiary.api.common.config.security;
 
 import com.pado.socialdiary.api.member.entity.MemberRole;
 import com.pado.socialdiary.api.member.service.MemberLoginService;
-import com.pado.socialdiary.api.member.service.MemberService;
-import com.pado.socialdiary.api.member.service.OAuth2SuccessHandler;
+import com.pado.socialdiary.api.common.config.security.oauth.OAuth2SuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
