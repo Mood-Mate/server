@@ -3,14 +3,14 @@ package com.pado.socialdiary.api.diary.dto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @Getter
 @Setter
 @ToString
-public class DiaryRequest {
+public class DiaryUpdateRequest {
 
   private Integer memberId;
+  private Integer diaryId;
   private String title;
   private String contents;
 
