@@ -10,14 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest
 class ApplicationTests {
-
-	@Autowired
-	MemberMapper memberMapper;
-
-	@Autowired
-	MemberService memberService;
 
 	@Test
 	void contextLoads() {

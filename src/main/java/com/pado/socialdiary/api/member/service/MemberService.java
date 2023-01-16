@@ -54,7 +54,7 @@ public class MemberService {
                 .gender(memberJoinRequest.getGender())
                 .build();
 
-        memberMapper.join(builtMember);
+        memberMapper.save(builtMember);
     }
 
     private LocalDateTime dateTimeConvert(Integer year, Integer month, Integer dayOfMonth) {

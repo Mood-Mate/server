@@ -2,8 +2,6 @@ package com.pado.socialdiary.api.member.service;
 
 import com.pado.socialdiary.api.common.config.security.JwtProvider;
 import com.pado.socialdiary.api.common.dto.response.TokenResponse;
-import com.pado.socialdiary.api.member.entity.Member;
-import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -15,7 +13,6 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.util.Map;
 
 @Slf4j
 @Component
