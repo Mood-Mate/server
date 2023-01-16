@@ -1,4 +1,4 @@
-package com.pado.socialdiary.api.member.service;
+package com.pado.socialdiary.api.common.config.security.oauth;
 
 import com.pado.socialdiary.api.common.config.security.JwtProvider;
 import com.pado.socialdiary.api.common.dto.response.TokenResponse;
