@@ -17,7 +17,7 @@ import java.io.IOException;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
+public class OAuthSuccessHandler implements AuthenticationSuccessHandler {
 
     private final JwtProvider jwtProvider;
 
