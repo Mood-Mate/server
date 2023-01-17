@@ -21,9 +21,9 @@ public class Member {
     private MemberRole role = MemberRole.USER;
     private LoginProvider loginProvider = LoginProvider.LOCAL;
 
-    private String regId;
+    private Integer regId;
     private LocalDateTime regDt;
-    private String updId;
+    private Integer updId;
     private LocalDateTime updDt;
 
     @Builder
@@ -36,11 +36,16 @@ public class Member {
         this.dateOfBirth = dateOfBirth;
         this.gender = gender;
         this.picture = picture;
-
         this.loginProvider = loginProvider;
+    }
 
-        this.regDt = LocalDateTime.now();
-        this.updDt = LocalDateTime.now();
+    public Member update(String password, String name, String nickname, String picture) {
+        this.password = password;
+        this.name = name;
+        this.nickname = nickname;
+        this.picture = picture;
+
+        return this;
     }
 
     @Override

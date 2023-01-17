@@ -5,7 +5,9 @@ import com.pado.socialdiary.api.common.config.security.oauth.OAuthAttributes;
 import com.pado.socialdiary.api.common.dto.response.TokenResponse;
 import com.pado.socialdiary.api.member.dto.MemberJoinRequest;
 import com.pado.socialdiary.api.member.dto.MemberLoginRequest;
+import com.pado.socialdiary.api.member.dto.MemberUpdateRequest;
 import com.pado.socialdiary.api.member.entity.Member;
+import com.pado.socialdiary.api.member.entity.MemberHistory;
 import com.pado.socialdiary.api.member.mapper.MemberMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -55,6 +57,10 @@ public class MemberService {
                 .build();
 
         memberMapper.save(builtMember);
+        memberMapper.updateRegOrUpdColumn(builtMember.getMemberId());
+
+        Member getMember = memberMapper.getByMemberId(builtMember.getMemberId());
+        memberMapper.saveHistory(new MemberHistory(getMember));
     }
 
     private LocalDateTime dateTimeConvert(Integer year, Integer month, Integer dayOfMonth) {
@@ -72,4 +78,11 @@ public class MemberService {
         return tokenResponse;
     }
 
+    @Transactional
+    public void update(MemberUpdateRequest memberUpdateRequest) {
+        memberMapper.update(memberUpdateRequest);
+        Member getMember = memberMapper.getByMemberId(memberUpdateRequest.getMemberId());
+
+        memberMapper.saveHistory(new MemberHistory(getMember));
+    }
 }
