@@ -1,4 +1,4 @@
-package com.pado.socialdiary.api.member.service;
+package com.pado.socialdiary.api.common.config.security.oauth;
 
 import com.pado.socialdiary.api.common.config.security.JwtProvider;
 import com.pado.socialdiary.api.common.config.security.oauth.OAuthAttributes;
@@ -22,7 +22,7 @@ import java.util.Optional;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class MemberLoginService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
+public class OAuthLoginService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
     private final MemberMapper memberMapper;
 
@@ -49,8 +49,6 @@ public class MemberLoginService implements OAuth2UserService<OAuth2UserRequest, 
         );
 
         return defaultOAuth2User;
-
-//        return null;
     }
 
     /**
