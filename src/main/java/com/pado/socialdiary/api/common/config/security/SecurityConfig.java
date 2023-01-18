@@ -1,8 +1,8 @@
 package com.pado.socialdiary.api.common.config.security;
 
+import com.pado.socialdiary.api.common.config.security.oauth.OAuthLoginService;
+import com.pado.socialdiary.api.common.config.security.oauth.OAuthSuccessHandler;
 import com.pado.socialdiary.api.member.entity.MemberRole;
-import com.pado.socialdiary.api.member.service.MemberLoginService;
-import com.pado.socialdiary.api.common.config.security.oauth.OAuth2SuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,8 +20,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final JwtProvider jwtProvider;
-    private final MemberLoginService memberLoginService;
-    private final OAuth2SuccessHandler oAuth2SuccessHandler;
+    private final OAuthLoginService oAuthLoginService;
+    private final OAuthSuccessHandler oAuthSuccessHandler;
 
     private final String[] AUTH_PASS_PATH = {"/swagger-ui/**", "/v3/api-docs/**", "/api/member/**", "/**"};
     private final String[] AUTH_CHECK_PATH = {"/api/member/auth"};
@@ -39,9 +39,9 @@ public class SecurityConfig {
                     .authenticated()
                 .and()
                 .oauth2Login()
-                    .successHandler(oAuth2SuccessHandler)
+                    .successHandler(oAuthSuccessHandler)
                     .userInfoEndpoint()
-                    .userService(memberLoginService);
+                    .userService(oAuthLoginService);
 
                 httpSecurity.addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class);
 

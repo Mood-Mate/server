@@ -2,28 +2,37 @@ package com.pado.socialdiary.api.member;
 
 import com.pado.socialdiary.api.member.dto.MemberJoinRequest;
 import com.pado.socialdiary.api.member.dto.MemberLoginRequest;
+import com.pado.socialdiary.api.member.dto.MemberUpdateRequest;
 import com.pado.socialdiary.api.member.entity.Member;
 import com.pado.socialdiary.api.member.service.MemberService;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/member")
+@Slf4j
 public class MemberRestController {
 
     private final MemberService memberService;
 
     @PostMapping
-    public ResponseEntity join(MemberJoinRequest memberJoinRequest) {
+    public ResponseEntity join(@RequestBody @Parameter MemberJoinRequest memberJoinRequest) {
 
         memberService.join(memberJoinRequest);
 
+        return ResponseEntity.ok()
+                .build();
+    }
+
+    @PatchMapping
+    public ResponseEntity update(@RequestBody MemberUpdateRequest memberUpdateRequest) {
+        memberService.update(memberUpdateRequest);
         return ResponseEntity.ok()
                 .build();
     }
