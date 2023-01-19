@@ -8,9 +8,30 @@
     VALUES (#{memberId}, #{title}, #{contents}, #{memberId}, NOW(), #{memberId}, NOW())
   </insert>
 
+  <insert id="saveHistory" parameterType="com.pado.socialdiary.api.diary.entity.DiaryHistory" useGeneratedKeys="true">
+    INSERT INTO TB_DIARY_HISTORY(DIARY_ID, MEMBER_ID, TITLE, CONTENTS, REG_ID, REG_DT, UPD_ID, UPD_DT)
+    VALUES (#{diaryId}, #{memberId}, #{title}, #{contents}, #{memberId}, NOW(), #{memberId}, NOW())
+  </insert>
+
+  <select id="getByMemberId" resultType="com.pado.socialdiary.api.diary.entity.Diary">
+    SELECT * FROM TB_DIARY WHERE MEMBER_ID=#{memberId}
+  </select>
+
+  <select id="getByDiaryId" resultType="com.pado.socialdiary.api.diary.entity.Diary">
+    SELECT * FROM TB_DIARY WHERE DIARY_ID=#{diaryId}
+  </select>
+
   <update id="update" parameterType="com.pado.socialdiary.api.diary.entity.Diary">
-    UPDATE TB_DIARY SET MEMBER_ID = #{memberId}, TITLE = #{title}, CONTENTS = #{contents}, REG_ID = #{regId}, REG_DT = #{regDt}, UPD_ID = #{memberId}, UPD_DT = NOW() WHERE DIARY_ID = #{diaryId}
+    UPDATE TB_DIARY SET MEMBER_ID = #{memberId}, TITLE = #{title}, CONTENTS = #{contents}, UPD_ID = #{memberId}, UPD_DT = NOW() WHERE DIARY_ID = #{diaryId}
   </update>
+
+  <delete id="delete">
+    DELETE FROM TB_DIARY WHERE DIARY_ID = #{diaryId}
+  </delete>
+
+  <delete id="deleteHistory">
+    DELETE FROM TB_DIARY_HISTORY WHERE DIARY_ID = #{diaryId}
+  </delete>
 
   <select id="select" resultType="com.pado.socialdiary.api.diary.entity.Diary">
     SELECT * FROM TB_DIARY
