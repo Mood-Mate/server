@@ -4,10 +4,10 @@ import com.pado.socialdiary.api.diary.dto.DiaryCreateRequest;
 import com.pado.socialdiary.api.diary.dto.DiarySearchRequest;
 import com.pado.socialdiary.api.diary.dto.DiaryUpdateRequest;
 import com.pado.socialdiary.api.diary.entity.Diary;
+import com.pado.socialdiary.api.diary.entity.DiaryHistory;
 import com.pado.socialdiary.api.diary.mapper.DiaryMapper;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +27,9 @@ public class DiaryService {
             .build();
 
         diaryMapper.insert(builtDiary);
+
+        Diary getDiary = diaryMapper.getByMemberId(builtDiary.getMemberId());
+        diaryMapper.saveHistory(new DiaryHistory(getDiary));
     }
 
     public List<Diary> findOneByDiaryId(Integer diaryId){
@@ -37,28 +40,25 @@ public class DiaryService {
 
 
     @Transactional
-    public void editDiary(DiaryUpdateRequest diaryUpdateRequest){
-        Diary newDiary = Diary.builder()
+    public void updateDiary(DiaryUpdateRequest diaryUpdateRequest){
+        Diary builtDiary = Diary.builder()
             .diaryId(diaryUpdateRequest.getDiaryId())
             .memberId(diaryUpdateRequest.getMemberId())
             .title(diaryUpdateRequest.getTitle())
             .contents(diaryUpdateRequest.getContents())
             .build();
 
-        Diary oldDiary = findOneByDiaryId(diaryUpdateRequest.getDiaryId()).get(0);
+        diaryMapper.update(builtDiary);
 
-        Integer regId = oldDiary.getRegId();
-        LocalDateTime regDt = oldDiary.getRegDt();
-
-        newDiary.setRegId(regId);
-        newDiary.setRegDt(regDt);
-
-        diaryMapper.update(newDiary);
+        Diary getDiary = diaryMapper.getByDiaryId(builtDiary.getDiaryId());
+        diaryMapper.saveHistory(new DiaryHistory(getDiary));
     }
 
     @Transactional
-    public void deleteDiary(){
+    public void deleteDiary(Integer diaryId){
 
+        diaryMapper.deleteHistory(diaryId);
+        diaryMapper.delete(diaryId);
     }
 
     public List<Diary> search(DiarySearchRequest diarySearchRequest){

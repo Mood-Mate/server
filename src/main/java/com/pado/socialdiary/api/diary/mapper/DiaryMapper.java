@@ -1,7 +1,7 @@
 package com.pado.socialdiary.api.diary.mapper;
 
 import com.pado.socialdiary.api.diary.entity.Diary;
-import java.time.LocalDateTime;
+import com.pado.socialdiary.api.diary.entity.DiaryHistory;
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -12,6 +12,15 @@ public interface DiaryMapper {
 
   void update(Diary diary);
 
+  void delete(Integer diaryId);
+
+  Diary getByMemberId(Integer memberId);
+  Diary getByDiaryId(Integer diaryId);
+
+  void saveHistory(DiaryHistory diaryHistory);
+  void deleteHistory(Integer diaryId);
+
   List<Diary> select(Integer memberId);
   List<Diary> select(Integer memberId, String regDt);
+
 }

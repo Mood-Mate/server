@@ -33,6 +33,7 @@ public class DiaryRestController {
             .build();
     }
 
+    //get diary 부분은 추후에 필요한 부분 논의 후 다시 구현
     @GetMapping("")
     public ResponseEntity<List<Diary>> search(@RequestBody DiarySearchRequest diarySearchRequest){
 
@@ -42,16 +43,16 @@ public class DiaryRestController {
     @PutMapping("/edit")
     public ResponseEntity editDiary(@RequestBody DiaryUpdateRequest diaryUpdateRequest){
 
-        diaryService.editDiary(diaryUpdateRequest);
+        diaryService.updateDiary(diaryUpdateRequest);
 
         return ResponseEntity.ok()
             .build();
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity deleteDiary(){
+    public ResponseEntity deleteDiary(@RequestBody Map<String, Integer> param){
 
-        diaryService.deleteDiary();
+        diaryService.deleteDiary(param.get("diaryId"));
 
         return ResponseEntity.ok()
             .build();
