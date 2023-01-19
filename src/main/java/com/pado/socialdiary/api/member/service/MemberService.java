@@ -69,8 +69,6 @@ public class MemberService {
 
     public TokenResponse login(MemberLoginRequest request) {
 
-        System.out.println("memberService login");
-
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword());
         Authentication authenticate = authenticationManagerBuilder.getObject().authenticate(usernamePasswordAuthenticationToken);
         TokenResponse tokenResponse = jwtProvider.generateToken(authenticate);
