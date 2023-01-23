@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pado.socialdiary.api.emoji.mapper.EmojiMapper">
+    <insert id="createSympathy">
+        INSERT INTO TB_DIARY_EMOJI(MEMBER_ID, DIARY_ID, EMOJI)
+        VALUES (#{memberId}, #{diaryId}, #{emojiType})
+    </insert>
+    <delete id="deleteSympathy">
+        DELETE FROM TB_DIARY_EMOJI
+        WHERE MEMBER_ID =#{memberId} AND DIARY_ID = #{diaryId}
+    </delete>
+
+    <select id="existSympathy" resultType="java.lang.Integer">
+        SELECT
+            DIARY_EMOJI_ID
+        FROM TB_DIARY_EMOJI
+        WHERE MEMBER_ID = #{memberId}
+          AND DIARY_ID = #{diaryId}
+        LIMIT 1
+    </select>
+</mapper>
