@@ -1,11 +1,16 @@
 package com.pado.socialdiary.api.emoji.mapper;
 
-import com.pado.socialdiary.api.emoji.dto.EmojiSympathyRequest;
-import com.pado.socialdiary.api.emoji.entity.EmojiType;
+import com.pado.socialdiary.api.emoji.dto.SympathyRequest;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.Optional;
 
 @Mapper
 public interface EmojiMapper {
 
-    void createSympathy(EmojiSympathyRequest request);
+    Optional<Integer> existSympathy(Integer memberId, Integer diaryId);
+
+    void createSympathy(SympathyRequest request);
+
+    void deleteSympathy(SympathyRequest request);
 }

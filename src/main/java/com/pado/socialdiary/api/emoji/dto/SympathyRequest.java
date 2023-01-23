@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class EmojiSympathyRequest {
+public class SympathyRequest {
 
     private Integer memberId;
     private Integer diaryId;

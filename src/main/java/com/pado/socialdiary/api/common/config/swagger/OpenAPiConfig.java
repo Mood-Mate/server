@@ -13,6 +13,14 @@ import org.springframework.context.annotation.Configuration;
 public class OpenAPiConfig {
 
     @Bean
+    public GroupedOpenApi emojiApi() {
+        return GroupedOpenApi.builder()
+                .group("Emoji")
+                .pathsToMatch("/api/emoji/**")
+                .build();
+    }
+
+    @Bean
     public GroupedOpenApi memberApi() {
         return GroupedOpenApi.builder()
                 .group("Member")
