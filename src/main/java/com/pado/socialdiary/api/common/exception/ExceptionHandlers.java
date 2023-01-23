@@ -10,20 +10,16 @@ import org.springframework.web.client.HttpStatusCodeException;
 
 import static org.springframework.http.HttpStatus.*;
 
-@RestControllerAdvice(basePackages = "com.pado.socialDiary.*")
+@RestControllerAdvice
 public class ExceptionHandlers {
 
-    @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity runtimeExceptionHandler(RuntimeException runtimeException) {
-        return ResponseEntity
-                .status(BAD_REQUEST)
-                .body(runtimeException.getMessage());
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity runtimeExceptionHandler(Exception exception) {
+        return new ResponseEntity(exception.getMessage(), BAD_REQUEST);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity illegalArgumentExceptionHandler(IllegalArgumentException illegalArgumentException) {
-        return ResponseEntity
-                .status(BAD_REQUEST)
-                .body(illegalArgumentException.getMessage());
+        return new ResponseEntity(illegalArgumentException.getMessage(), BAD_REQUEST);
     }
 }
