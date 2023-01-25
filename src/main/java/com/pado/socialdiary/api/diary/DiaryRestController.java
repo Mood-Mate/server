@@ -25,19 +25,18 @@ public class DiaryRestController {
     private final DiaryService diaryService;
 
     @PostMapping("")
-    public ResponseEntity create(@RequestBody DiaryCreateRequest diaryCreateRequest){
+    public ResponseEntity createDiary(@RequestBody DiaryCreateRequest diaryCreateRequest){
 
-        diaryService.create(diaryCreateRequest);
+        diaryService.createDiary(diaryCreateRequest);
 
         return ResponseEntity.ok()
             .build();
     }
 
-    //get diary 부분은 추후에 필요한 부분 논의 후 다시 구현
     @GetMapping("")
-    public ResponseEntity<List<Diary>> search(@RequestBody DiarySearchRequest diarySearchRequest){
+    public ResponseEntity<List<Diary>> searchDiary(@RequestBody DiarySearchRequest diarySearchRequest){
 
-        return ResponseEntity.ok(diaryService.search(diarySearchRequest));
+        return ResponseEntity.ok(diaryService.findDiary(diarySearchRequest));
     }
 
     @PutMapping("/edit")

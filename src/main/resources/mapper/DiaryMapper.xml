@@ -4,6 +4,9 @@
 
 <mapper namespace="com.pado.socialdiary.api.diary.mapper.DiaryMapper">
   <insert id="insert" parameterType="com.pado.socialdiary.api.diary.entity.Diary" useGeneratedKeys="true">
+    <selectKey keyColumn="DIARY_ID" keyProperty="diaryId" resultType="Integer" order="AFTER">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     INSERT INTO TB_DIARY(MEMBER_ID, TITLE, CONTENTS, REG_ID, REG_DT, UPD_ID, UPD_DT)
     VALUES (#{memberId}, #{title}, #{contents}, #{memberId}, NOW(), #{memberId}, NOW())
   </insert>
@@ -13,12 +16,20 @@
     VALUES (#{diaryId}, #{memberId}, #{title}, #{contents}, #{memberId}, NOW(), #{memberId}, NOW())
   </insert>
 
-  <select id="getByMemberId" resultType="com.pado.socialdiary.api.diary.entity.Diary">
-    SELECT * FROM TB_DIARY WHERE MEMBER_ID=#{memberId}
-  </select>
-
   <select id="getByDiaryId" resultType="com.pado.socialdiary.api.diary.entity.Diary">
     SELECT * FROM TB_DIARY WHERE DIARY_ID=#{diaryId}
+  </select>
+
+  <select id="select" resultType="com.pado.socialdiary.api.diary.entity.Diary">
+    SELECT * FROM TB_DIARY
+    <where>
+      <if test="memberId!=null">
+        AND MEMBER_ID = #{memberId}
+      </if>
+      <if test="regDt!=null">
+        AND DATE_FORMAT(REG_DT, '%Y-%m-%d') = DATE_FORMAT(#{regDt},'%Y-%m-%d')
+      </if>
+    </where>
   </select>
 
   <update id="update" parameterType="com.pado.socialdiary.api.diary.entity.Diary">
@@ -32,20 +43,4 @@
   <delete id="deleteHistory">
     DELETE FROM TB_DIARY_HISTORY WHERE DIARY_ID = #{diaryId}
   </delete>
-
-  <select id="select" resultType="com.pado.socialdiary.api.diary.entity.Diary">
-    SELECT * FROM TB_DIARY
-    <choose>
-      <when test="diaryId!=null">
-        WHERE DIARY_ID = #{diaryId}
-      </when>
-      <when test="memberId!=null">
-        WHERE MEMBER_ID = #{memberId}
-      </when>
-      <when test="regDt!=null">
-        WHERE DATE_FORMAT(REG_DT, '%Y-%m-%d') = DATE_FORMAT(#{regDt},'%Y-%m-%d')
-      </when>
-    </choose>
-  </select>
-
 </mapper>

@@ -3,11 +3,13 @@ package com.pado.socialdiary.api.diary.entity;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import nonapi.io.github.classgraph.json.Id;
 
 @Data
 @NoArgsConstructor
 public class Diary {
 
+    @Id
     private Integer diaryId;
     private Integer memberId;
     private String title;

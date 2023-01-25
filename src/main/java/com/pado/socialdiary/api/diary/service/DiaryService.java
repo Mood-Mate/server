@@ -6,8 +6,8 @@ import com.pado.socialdiary.api.diary.dto.DiaryUpdateRequest;
 import com.pado.socialdiary.api.diary.entity.Diary;
 import com.pado.socialdiary.api.diary.entity.DiaryHistory;
 import com.pado.socialdiary.api.diary.mapper.DiaryMapper;
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +19,7 @@ public class DiaryService {
     private final DiaryMapper diaryMapper;
 
     @Transactional
-    public void create(DiaryCreateRequest diaryCreateRequest){
+    public void createDiary(DiaryCreateRequest diaryCreateRequest){
         Diary builtDiary = Diary.builder()
             .memberId(diaryCreateRequest.getMemberId())
             .title(diaryCreateRequest.getTitle())
@@ -28,16 +28,9 @@ public class DiaryService {
 
         diaryMapper.insert(builtDiary);
 
-        Diary getDiary = diaryMapper.getByMemberId(builtDiary.getMemberId());
+        Diary getDiary = diaryMapper.getByDiaryId(builtDiary.getDiaryId());
         diaryMapper.saveHistory(new DiaryHistory(getDiary));
     }
-
-    public List<Diary> findOneByDiaryId(Integer diaryId){
-        List<Diary> select = diaryMapper.select(diaryId);
-        System.out.println("select = " + select);
-        return select;
-    }
-
 
     @Transactional
     public void updateDiary(DiaryUpdateRequest diaryUpdateRequest){
@@ -61,18 +54,12 @@ public class DiaryService {
         diaryMapper.delete(diaryId);
     }
 
-    public List<Diary> search(DiarySearchRequest diarySearchRequest){
-        List<Diary> diaryList = null;
+    public List<Diary> findDiary(DiarySearchRequest diarySearchRequest){
+        Optional<List<Diary>> diaryList = Optional.ofNullable(diaryMapper.select(diarySearchRequest));
 
-        Integer memberId = diarySearchRequest.getMemberId();
-        String regDt = diarySearchRequest.getRegDt();
-
-        if(memberId==null || regDt==null){
-            System.out.println("null 예외 처리");
+        if(diaryList.isEmpty()){
         }
 
-        diaryList = diaryMapper.select(memberId, regDt);
-
-        return diaryList;
+        return diaryList.get();
     }
 }

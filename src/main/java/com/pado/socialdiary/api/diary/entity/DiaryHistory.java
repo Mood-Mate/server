@@ -4,11 +4,13 @@ import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import nonapi.io.github.classgraph.json.Id;
 
 @Getter
 @NoArgsConstructor
 public class DiaryHistory {
 
+  @Id
   private Integer diaryHistoryId;
   private Integer diaryId;
   private Integer memberId;
