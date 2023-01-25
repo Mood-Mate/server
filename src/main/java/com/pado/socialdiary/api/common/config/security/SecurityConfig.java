@@ -22,9 +22,9 @@ public class SecurityConfig {
     private final JwtProvider jwtProvider;
     private final OAuthLoginService oAuthLoginService;
     private final OAuthSuccessHandler oAuthSuccessHandler;
-
-    private final String[] AUTH_PASS_PATH = {"/swagger-ui/**", "/v3/api-docs/**", "/api/member/**", "/**"};
-    private final String[] AUTH_CHECK_PATH = {"/api/member/auth"};
+    
+    private final String[] BASE_PATH = {"/swagger-ui/**", "/v3/api-docs/**", "/api/member/**", "/api/diary/**"};
+    private final String[] AUTH_CHECK_PATH = {"/api/member/auth", "/api/diary"};
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
