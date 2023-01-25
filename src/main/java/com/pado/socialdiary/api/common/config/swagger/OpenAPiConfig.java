@@ -29,6 +29,14 @@ public class OpenAPiConfig {
     }
 
     @Bean
+    public GroupedOpenApi diaryApi() {
+        return GroupedOpenApi.builder()
+            .group("Diary")
+            .pathsToMatch("/api/diary/**")
+            .build();
+    }
+
+    @Bean
     public OpenAPI openAPI() {
         return new OpenAPI()
                 .addSecurityItem(new SecurityRequirement()
