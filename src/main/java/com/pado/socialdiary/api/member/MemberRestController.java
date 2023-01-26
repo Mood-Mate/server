@@ -39,7 +39,7 @@ public class MemberRestController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity login(MemberLoginRequest memberLoginRequest) {
+    public ResponseEntity login(@RequestBody MemberLoginRequest memberLoginRequest) {
         return ResponseEntity.ok(memberService.login(memberLoginRequest));
     }
 
