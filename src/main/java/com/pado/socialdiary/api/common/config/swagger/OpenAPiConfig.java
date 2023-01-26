@@ -37,6 +37,14 @@ public class OpenAPiConfig {
     }
 
     @Bean
+    public GroupedOpenApi followApi() {
+        return GroupedOpenApi.builder()
+            .group("Follow")
+            .pathsToMatch("/api/follow/**")
+            .build();
+    }
+
+    @Bean
     public OpenAPI openAPI() {
         return new OpenAPI()
                 .addSecurityItem(new SecurityRequirement()
