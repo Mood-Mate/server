@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pado.socialdiary.api.follow.mapper.FollowMapper">
+  <insert id="createFollowing" parameterType="com.pado.socialdiary.api.follow.entity.Follow" useGeneratedKeys="true">
+    INSERT INTO TB_FOLLOW(FOLLOWER_ID, FOLLOWEE_ID)
+    VALUES (#{followerId}, #{followeeId})
+  </insert>
+
+  <delete id="deleteFollowing">
+    DELETE FROM TB_FOLLOW
+    WHERE FOLLOWER_ID=#{followerId} AND FOLLOWEE_ID=#{followeeId}
+  </delete>
+
+  <select id="existFollowing" resultType="Integer">
+    SELECT FOLLOW_ID FROM TB_FOLLOW
+    WHERE FOLLOWER_ID=#{followerId} AND FOLLOWEE_ID=#{followeeId} LIMIT 1
+  </select>
+</mapper>
