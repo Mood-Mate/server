@@ -7,12 +7,12 @@ import lombok.Getter;
 public class Follow {
 
   private Integer followId;
-  private Integer followerId;
-  private Integer followeeId;
+  private Integer followerMemberId;
+  private Integer followeeMemberId;
 
   @Builder
-  public Follow(Integer followerId, Integer followeeId) {
-    this.followerId = followerId;
-    this.followeeId = followeeId;
+  public Follow(Integer followerMemberId, Integer followeeMemberId) {
+    this.followerMemberId = followerMemberId;
+    this.followeeMemberId = followeeMemberId;
   }
 }

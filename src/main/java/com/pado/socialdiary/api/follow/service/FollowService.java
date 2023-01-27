@@ -17,7 +17,7 @@ public class FollowService {
   @Transactional
   public void createOrDeleteFollowing(Member member, FollowRequest followRequest) {
 
-    followRequest.setFollowerId(member.getMemberId());
+    followRequest.setFollowerMemberId(member.getMemberId());
     Optional<Integer> existFollowing = followMapper.existFollowing(followRequest);
 
     if(existFollowing.isEmpty()) {

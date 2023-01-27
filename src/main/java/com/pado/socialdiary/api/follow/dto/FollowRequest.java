@@ -7,7 +7,7 @@ import lombok.Setter;
 @Setter
 public class FollowRequest {
 
-  private Integer followerId;
-  private Integer followeeId;
+  private Integer followerMemberId;
+  private Integer followeeMemberId;
 
 }
