@@ -1,6 +1,8 @@
 package com.pado.socialdiary.api.diary.mapper;
 
+import com.pado.socialdiary.api.diary.dto.DiaryCreateRequest;
 import com.pado.socialdiary.api.diary.dto.DiarySearchRequest;
+import com.pado.socialdiary.api.diary.dto.DiaryUpdateRequest;
 import com.pado.socialdiary.api.diary.entity.Diary;
 import com.pado.socialdiary.api.diary.entity.DiaryHistory;
 import java.util.List;
@@ -11,7 +13,7 @@ public interface DiaryMapper {
 
   void insert(Diary diary);
 
-  void update(Diary diary);
+  void update(DiaryUpdateRequest diaryUpdateRequest);
 
   void delete(Integer diaryId);
 
