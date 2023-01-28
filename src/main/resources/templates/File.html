@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>FileUpload</title>
+</head>
+<body>
+    <p th:text="${member.memberId}"></p>
+    <p th:text="${member.email}"></p>
+    <p th:text="${member.gender}"></p>
+    <p th:text="${member.picture}"></p>
+    <img th:src="|/resource/image/${member.picture}|">
+</body>
+</html>
