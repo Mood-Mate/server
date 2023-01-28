@@ -22,14 +22,16 @@
 
   <select id="select" resultType="com.pado.socialdiary.api.diary.entity.Diary">
     SELECT * FROM TB_DIARY
-    <where>
-      <if test="memberId!=null">
-        AND MEMBER_ID = #{memberId}
-      </if>
-      <if test="regDt!=null">
-        AND DATE_FORMAT(REG_DT, '%Y-%m-%d') = DATE_FORMAT(#{regDt},'%Y-%m-%d')
-      </if>
-    </where>
+    WHERE MEMBER_ID=#{memberId} AND DATE_FORMAT(REG_DT, '%Y-%m-%d') = DATE_FORMAT(#{regDt},'%Y-%m-%d')
+    ORDER BY REG_DT DESC
+  </select>
+
+  <select id="selectAll" parameterType="arraylist" resultType="com.pado.socialdiary.api.diary.entity.Diary">
+    SELECT * FROM TB_DIARY WHERE MEMBER_ID IN
+    <foreach collection="followeeList" item="followee" open="(" close=")" separator=",">
+      #{followee}
+    </foreach>
+    ORDER BY REG_DT DESC
   </select>
 
   <update id="update" parameterType="com.pado.socialdiary.api.diary.entity.Diary">
