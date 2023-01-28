@@ -27,5 +27,4 @@ public class FollowRestController {
     return ResponseEntity.ok()
         .build();
   }
-
 }

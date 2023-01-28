@@ -36,10 +36,16 @@ public class DiaryRestController {
             .build();
     }
 
-    @GetMapping("")
-    public ResponseEntity<List<Diary>> searchDiary(@RequestBody DiarySearchRequest diarySearchRequest){
+    @GetMapping("/someone")
+    public ResponseEntity<List<Diary>> searchSomeoneDiary(@RequestBody DiarySearchRequest diarySearchRequest){
 
-        return ResponseEntity.ok(diaryService.findDiary(diarySearchRequest));
+        return ResponseEntity.ok(diaryService.findSomeoneDiary(diarySearchRequest));
+    }
+
+    @GetMapping("/followee")
+    public ResponseEntity<List<Diary>> searchFolloweeDiary(@AuthenticationPrincipal Member member){
+
+        return ResponseEntity.ok(diaryService.findFolloweeDiary(member));
     }
 
     @PutMapping("/edit")
@@ -53,7 +59,7 @@ public class DiaryRestController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity deleteDiary(@AuthenticationPrincipal Map<String, Integer> param){
+    public ResponseEntity deleteDiary(@RequestBody Map<String, Integer> param){
 
         diaryService.deleteDiary(param.get("diaryId"));
 
