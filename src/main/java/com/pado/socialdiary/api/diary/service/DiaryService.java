@@ -6,8 +6,9 @@ import com.pado.socialdiary.api.diary.dto.DiaryUpdateRequest;
 import com.pado.socialdiary.api.diary.entity.Diary;
 import com.pado.socialdiary.api.diary.entity.DiaryHistory;
 import com.pado.socialdiary.api.diary.mapper.DiaryMapper;
+import com.pado.socialdiary.api.follow.mapper.FollowMapper;
+import com.pado.socialdiary.api.member.entity.Member;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,11 +18,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class DiaryService {
 
     private final DiaryMapper diaryMapper;
+    private final FollowMapper followMapper;
 
     @Transactional
-    public void createDiary(DiaryCreateRequest diaryCreateRequest){
+    public void createDiary(Member member, DiaryCreateRequest diaryCreateRequest){
+
         Diary builtDiary = Diary.builder()
-            .memberId(diaryCreateRequest.getMemberId())
+            .memberId(member.getMemberId())
             .title(diaryCreateRequest.getTitle())
             .contents(diaryCreateRequest.getContents())
             .build();
@@ -33,17 +36,12 @@ public class DiaryService {
     }
 
     @Transactional
-    public void updateDiary(DiaryUpdateRequest diaryUpdateRequest){
-        Diary builtDiary = Diary.builder()
-            .diaryId(diaryUpdateRequest.getDiaryId())
-            .memberId(diaryUpdateRequest.getMemberId())
-            .title(diaryUpdateRequest.getTitle())
-            .contents(diaryUpdateRequest.getContents())
-            .build();
+    public void updateDiary(Member member, DiaryUpdateRequest diaryUpdateRequest){
 
-        diaryMapper.update(builtDiary);
+        diaryUpdateRequest.setMemberId(member.getMemberId());
+        diaryMapper.update(diaryUpdateRequest);
 
-        Diary getDiary = diaryMapper.getByDiaryId(builtDiary.getDiaryId());
+        Diary getDiary = diaryMapper.getByDiaryId(diaryUpdateRequest.getDiaryId());
         diaryMapper.saveHistory(new DiaryHistory(getDiary));
     }
 
@@ -54,12 +52,15 @@ public class DiaryService {
         diaryMapper.delete(diaryId);
     }
 
-    public List<Diary> findDiary(DiarySearchRequest diarySearchRequest){
-        Optional<List<Diary>> diaryList = Optional.ofNullable(diaryMapper.select(diarySearchRequest));
+    public List<Diary> findSomeoneDiary(DiarySearchRequest diarySearchRequest){
 
-        if(diaryList.isEmpty()){
-        }
+        return diaryMapper.select(diarySearchRequest);
+    }
 
-        return diaryList.get();
+    public List<Diary> findFolloweeDiary(Member member){
+
+        List<Integer> followeeList = followMapper.findFollowee(member.getMemberId());
+        followeeList.add(member.getMemberId());
+        return diaryMapper.selectAll(followeeList);
     }
 }
