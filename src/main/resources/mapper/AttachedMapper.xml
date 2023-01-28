@@ -4,14 +4,18 @@
 
 <mapper namespace="com.pado.socialdiary.api.common.attach.mapper.AttachedMapper">
     <insert id="createAttached">
-        INSERT INTO TB_ATTACHED(REF_TABLE, REF_ID, ORIGINAL_FILENAME, ATTACHED_FILENAME, ATTACHED_PATH, FILE_SIZE)
+        INSERT INTO TB_ATTACHED(REF_TABLE, REF_ID, ORIGINAL_FILENAME, ATTACHED_FILENAME, ATTACHED_PATH, FILE_SIZE, REG_ID, REG_DT, UPD_ID, UPD_DT)
         VALUES (
                 #{refTable},
                 #{refId},
                 #{originalFilename},
                 #{attachedFilename},
                 #{attachedPath},
-                #{fileSize}
+                #{fileSize},
+                #{regId},
+                NOW(),
+                #{updId},
+                NOW()
                )
     </insert>
     <select id="findMemberPictureByMemberId" resultType="com.pado.socialdiary.api.common.attach.entity.Attached">

@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.CorsConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,6 +28,7 @@ public class SecurityConfig {
     private final OAuthLoginService oAuthLoginService;
     private final OAuthSuccessHandler oAuthSuccessHandler;
 
+    private final String[] EXAMPLE_PATH = {"/**"};
     private final String[] AUTH_PASS_PATH = {"/swagger-ui/**", "/v3/api-docs/**", "/api/member/**", "/api/diary/**", "/api/follow/**"};
     private final String[] AUTH_CHECK_PATH = {"/api/member/auth", "/api/diary", "/api/follow"};
 
@@ -40,6 +40,7 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeHttpRequests()
+                    .requestMatchers(EXAMPLE_PATH).permitAll()
                     .requestMatchers(AUTH_PASS_PATH).permitAll()
                     .requestMatchers(AUTH_CHECK_PATH).hasRole(MemberRole.USER.getRole())
                 .anyRequest()
