@@ -60,6 +60,7 @@ public class DiaryService {
     public List<Diary> findFolloweeDiary(Member member){
 
         List<Integer> followeeList = followMapper.findFollowee(member.getMemberId());
+        followeeList.add(member.getMemberId());
         return diaryMapper.selectAll(followeeList);
     }
 }
