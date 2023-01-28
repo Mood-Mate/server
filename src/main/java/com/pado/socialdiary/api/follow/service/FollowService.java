@@ -3,6 +3,7 @@ package com.pado.socialdiary.api.follow.service;
 import com.pado.socialdiary.api.follow.dto.FollowRequest;
 import com.pado.socialdiary.api.follow.mapper.FollowMapper;
 import com.pado.socialdiary.api.member.entity.Member;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,5 +26,10 @@ public class FollowService {
     } else {
       followMapper.deleteFollowing(followRequest);
     }
+  }
+
+  public List<Integer> followList(Integer memberId) {
+
+    return followMapper.findFollowee(memberId);
   }
 }

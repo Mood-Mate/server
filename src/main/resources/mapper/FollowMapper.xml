@@ -17,4 +17,9 @@
     SELECT FOLLOW_ID FROM TB_FOLLOW
     WHERE FOLLOWER_MEMBER_ID=#{followerMemberId} AND FOLLOWEE_MEMBER_ID=#{followeeMemberId} LIMIT 1
   </select>
+
+  <select id="findFollowee" resultType="Integer">
+    SELECT FOLLOWEE_MEMBER_ID FROM TB_FOLLOW
+    WHERE FOLLOWER_MEMBER_ID=#{followerMemberId}
+  </select>
 </mapper>

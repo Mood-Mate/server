@@ -6,6 +6,7 @@ import com.pado.socialdiary.api.diary.dto.DiaryUpdateRequest;
 import com.pado.socialdiary.api.diary.entity.Diary;
 import com.pado.socialdiary.api.diary.entity.DiaryHistory;
 import com.pado.socialdiary.api.diary.mapper.DiaryMapper;
+import com.pado.socialdiary.api.follow.mapper.FollowMapper;
 import com.pado.socialdiary.api.member.entity.Member;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class DiaryService {
 
     private final DiaryMapper diaryMapper;
+    private final FollowMapper followMapper;
 
     @Transactional
     public void createDiary(Member member, DiaryCreateRequest diaryCreateRequest){
@@ -50,10 +52,14 @@ public class DiaryService {
         diaryMapper.delete(diaryId);
     }
 
-    public List<Diary> findDiary(DiarySearchRequest diarySearchRequest){
+    public List<Diary> findSomeoneDiary(DiarySearchRequest diarySearchRequest){
 
-        List<Diary> diaryList = diaryMapper.select(diarySearchRequest);
+        return diaryMapper.select(diarySearchRequest);
+    }
 
-        return diaryList;
+    public List<Diary> findFolloweeDiary(Member member){
+
+        List<Integer> followeeList = followMapper.findFollowee(member.getMemberId());
+        return diaryMapper.selectAll(followeeList);
     }
 }

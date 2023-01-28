@@ -29,8 +29,8 @@ public class SecurityConfig {
     private final OAuthLoginService oAuthLoginService;
     private final OAuthSuccessHandler oAuthSuccessHandler;
 
-    private final String[] AUTH_PASS_PATH = {"/swagger-ui/**", "/v3/api-docs/**", "/api/member/**", "/api/diary/**"};
-    private final String[] AUTH_CHECK_PATH = {"/api/member/auth", "/api/diary"};
+    private final String[] AUTH_PASS_PATH = {"/swagger-ui/**", "/v3/api-docs/**", "/api/member/**", "/api/diary/**", "api/follow/**"};
+    private final String[] AUTH_CHECK_PATH = {"/api/member/auth", "/api/diary", "/api/follow"};
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
