@@ -1,7 +1,6 @@
 package com.pado.socialdiary.api.diary.service;
 
 import com.pado.socialdiary.api.diary.dto.DiaryCreateRequest;
-import com.pado.socialdiary.api.diary.dto.DiarySearchRequest;
 import com.pado.socialdiary.api.diary.dto.DiaryUpdateRequest;
 import com.pado.socialdiary.api.diary.entity.Diary;
 import com.pado.socialdiary.api.diary.entity.DiaryHistory;
@@ -52,14 +51,14 @@ public class DiaryService {
         diaryMapper.delete(diaryId);
     }
 
-    public List<Diary> findSomeoneDiary(DiarySearchRequest diarySearchRequest){
+    public List<Diary> findSomeoneDiary(Integer memberId, String regDt){
 
-        return diaryMapper.select(diarySearchRequest);
+        return diaryMapper.select(memberId, regDt);
     }
 
-    public List<String> findDateOfMonth(DiarySearchRequest diarySearchRequest){
+    public List<String> findDateOfMonth(Integer memberId, String regDt){
 
-        return diaryMapper.selectDate(diarySearchRequest);
+        return diaryMapper.selectDate(memberId, regDt);
     }
 
     public List<Diary> findFolloweeDiary(Member member){
