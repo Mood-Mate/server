@@ -42,6 +42,12 @@ public class DiaryRestController {
         return ResponseEntity.ok(diaryService.findSomeoneDiary(diarySearchRequest));
     }
 
+    @GetMapping("/someone/date")
+    public ResponseEntity<List<String>> searchSomeoneDate(@RequestBody DiarySearchRequest diarySearchRequest){
+
+        return ResponseEntity.ok(diaryService.findDateOfMonth(diarySearchRequest));
+    }
+
     @GetMapping("/followee")
     public ResponseEntity<List<Diary>> searchFolloweeDiary(@AuthenticationPrincipal Member member){
 
