@@ -17,6 +17,7 @@ public interface DiaryMapper {
   void saveHistory(DiaryHistory diaryHistory);
   void deleteHistory(Integer diaryId);
   List<Diary> select(DiarySearchRequest diarySearchRequest);
+  List<String> selectDate(DiarySearchRequest diarySearchRequest);
   List<Diary> selectAll(List<Integer> followeeList);
 
 }
