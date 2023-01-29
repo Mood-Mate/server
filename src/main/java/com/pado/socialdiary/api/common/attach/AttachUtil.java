@@ -27,7 +27,7 @@ public class AttachUtil {
     public AttachDto.UploadRequest attachedFile(String attachPath, MultipartFile multipartFile) throws IOException {
 
         if (multipartFile.isEmpty()) {
-            return null;
+            throw new RuntimeException("존재하지 않는 파일");
         }
 
         String originalFileName = multipartFile.getOriginalFilename();
