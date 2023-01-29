@@ -26,6 +26,11 @@
     ORDER BY REG_DT DESC
   </select>
 
+  <select id="selectDate" resultType="string">
+    SELECT DAY(REG_DT) AS DAY FROM TB_DIARY
+    WHERE MEMBER_ID=#{memberId} AND MONTH(REG_DT)=MONTH(#{regDt})
+  </select>
+
   <select id="selectAll" parameterType="arraylist" resultType="com.pado.socialdiary.api.diary.entity.Diary">
     SELECT * FROM TB_DIARY WHERE MEMBER_ID IN
     <foreach collection="followeeList" item="followee" open="(" close=")" separator=",">
