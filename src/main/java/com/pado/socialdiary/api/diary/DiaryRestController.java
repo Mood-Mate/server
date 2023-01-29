@@ -1,7 +1,6 @@
 package com.pado.socialdiary.api.diary;
 
 import com.pado.socialdiary.api.diary.dto.DiaryCreateRequest;
-import com.pado.socialdiary.api.diary.dto.DiarySearchRequest;
 import com.pado.socialdiary.api.diary.dto.DiaryUpdateRequest;
 import com.pado.socialdiary.api.diary.entity.Diary;
 import com.pado.socialdiary.api.diary.service.DiaryService;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -37,15 +37,17 @@ public class DiaryRestController {
     }
 
     @GetMapping("/someone")
-    public ResponseEntity<List<Diary>> searchSomeoneDiary(@RequestBody DiarySearchRequest diarySearchRequest){
+    public ResponseEntity<List<Diary>> searchSomeoneDiary(@RequestParam("memberId") Integer memberId,
+                                                        @RequestParam("regDt") String regDt){
 
-        return ResponseEntity.ok(diaryService.findSomeoneDiary(diarySearchRequest));
+        return ResponseEntity.ok(diaryService.findSomeoneDiary(memberId, regDt));
     }
 
     @GetMapping("/someone/date")
-    public ResponseEntity<List<String>> searchSomeoneDate(@RequestBody DiarySearchRequest diarySearchRequest){
+    public ResponseEntity<List<String>> searchSomeoneDate(@RequestParam("memberId") Integer memberId,
+                                                        @RequestParam("regDt") String regDt){
 
-        return ResponseEntity.ok(diaryService.findDateOfMonth(diarySearchRequest));
+        return ResponseEntity.ok(diaryService.findDateOfMonth(memberId, regDt));
     }
 
     @GetMapping("/followee")

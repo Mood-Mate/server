@@ -1,6 +1,5 @@
 package com.pado.socialdiary.api.diary.mapper;
 
-import com.pado.socialdiary.api.diary.dto.DiarySearchRequest;
 import com.pado.socialdiary.api.diary.dto.DiaryUpdateRequest;
 import com.pado.socialdiary.api.diary.entity.Diary;
 import com.pado.socialdiary.api.diary.entity.DiaryHistory;
@@ -16,8 +15,8 @@ public interface DiaryMapper {
   Diary getByDiaryId(Integer diaryId);
   void saveHistory(DiaryHistory diaryHistory);
   void deleteHistory(Integer diaryId);
-  List<Diary> select(DiarySearchRequest diarySearchRequest);
-  List<String> selectDate(DiarySearchRequest diarySearchRequest);
+  List<Diary> select(Integer memberId, String regDt);
+  List<String> selectDate(Integer memberId, String regDt);
   List<Diary> selectAll(List<Integer> followeeList);
 
 }
