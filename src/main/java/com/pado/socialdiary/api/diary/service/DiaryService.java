@@ -57,6 +57,11 @@ public class DiaryService {
         return diaryMapper.select(diarySearchRequest);
     }
 
+    public List<String> findDateOfMonth(DiarySearchRequest diarySearchRequest){
+
+        return diaryMapper.selectDate(diarySearchRequest);
+    }
+
     public List<Diary> findFolloweeDiary(Member member){
 
         List<Integer> followeeList = followMapper.findFollowee(member.getMemberId());
