@@ -8,11 +8,12 @@ import com.pado.socialdiary.api.member.service.MemberService;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
@@ -43,13 +44,11 @@ public class MemberRestController {
         return ResponseEntity.ok(memberService.login(memberLoginRequest));
     }
 
-    @PostMapping("/auth")
-    public ResponseEntity authCheck(@AuthenticationPrincipal Member member) {
-
-        if (member == null) {
-            throw new RuntimeException("Not Fount Principal");
-        }
-
-        return ResponseEntity.ok(member);
+    @PatchMapping("/picture")
+    public ResponseEntity updatePicture(@AuthenticationPrincipal Member member,
+                                        @RequestPart MultipartFile multipartFile) throws IOException {
+        memberService.updateMemberPicture(member, multipartFile);
+        return ResponseEntity.ok()
+                .build();
     }
 }
