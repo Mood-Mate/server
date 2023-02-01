@@ -50,4 +50,26 @@
   <delete id="deleteHistory">
     DELETE FROM TB_DIARY_HISTORY WHERE DIARY_ID = #{diaryId}
   </delete>
+
+  <select id="findDiaryCommentById" resultType="com.pado.socialdiary.api.diary.entity.DiaryComment">
+    SELECT
+        *
+    FROM TB_DIARY_COMMENT
+    WHERE
+        DIARY_COMMENT_ID = #{diaryCommentId}
+  </select>
+
+  <insert id="saveDiaryComment" useGeneratedKeys="true" keyProperty="diaryCommentId">
+    INSERT INTO TB_DIARY_COMMENT (DIARY_ID,MEMBER_ID,CONTENTS,DEL_AT,REG_ID,REG_DT,UPD_ID,UPD_DT)
+    VALUES (#{diaryId}, #{memberId}, #{contents}, #{delAt}, #{regId}, #{regDt}, #{updId}, #{updDt})
+  </insert>
+
+  <update id="deleteDiaryComment">
+    UPDATE TB_DIARY_COMMENT
+        SET DEL_AT = #{delAt},
+            UPD_ID = #{updId},
+            UPD_DT = #{updDt}
+    WHERE
+        DIARY_COMMENT_ID = #{diaryCommentId}
+  </update>
 </mapper>
