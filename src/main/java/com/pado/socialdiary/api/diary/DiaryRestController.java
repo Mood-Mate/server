@@ -5,19 +5,13 @@ import com.pado.socialdiary.api.diary.dto.DiaryUpdateRequest;
 import com.pado.socialdiary.api.diary.entity.Diary;
 import com.pado.socialdiary.api.diary.service.DiaryService;
 import com.pado.socialdiary.api.member.entity.Member;
-import java.util.List;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -73,5 +67,24 @@ public class DiaryRestController {
 
         return ResponseEntity.ok()
             .build();
+    }
+
+    @PostMapping("/reply/{diaryId}")
+    public ResponseEntity createDiaryComment(@PathVariable("diaryId") Integer diaryId,
+                                             @AuthenticationPrincipal Member member,
+                                             @RequestBody String comment) {
+        diaryService.createDiaryComment(diaryId, member, comment);
+
+        return ResponseEntity.ok()
+                .build();
+    }
+
+    @DeleteMapping("/reply/{diaryCommentId}")
+    public ResponseEntity deleteDiaryComment(@PathVariable("diaryCommentId") Integer diaryCommentId,
+                                             @AuthenticationPrincipal Member member) {
+        diaryService.deleteDiaryComment(diaryCommentId, member);
+
+        return ResponseEntity.ok()
+                .build();
     }
 }
