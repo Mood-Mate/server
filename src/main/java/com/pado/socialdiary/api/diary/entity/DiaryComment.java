@@ -1,14 +1,17 @@
 package com.pado.socialdiary.api.diary.entity;
 
 import com.pado.socialdiary.api.common.constants.YesNoCode;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
 
-import static com.pado.socialdiary.api.common.constants.YesNoCode.*;
+import static com.pado.socialdiary.api.common.constants.YesNoCode.N;
+import static com.pado.socialdiary.api.common.constants.YesNoCode.Y;
 
 @Getter
+@AllArgsConstructor
 public class DiaryComment {
 
     private Integer diaryCommentId;
