@@ -20,8 +20,14 @@
     SELECT * FROM TB_DIARY WHERE DIARY_ID=#{diaryId}
   </select>
 
-  <select id="select" resultType="com.pado.socialdiary.api.diary.entity.Diary">
-    SELECT * FROM TB_DIARY
+  <select id="select" resultType="com.pado.socialdiary.api.diary.dto.DiaryResponse">
+    SELECT
+      DIARY_ID,
+      MEMBER_ID,
+      TITLE,
+      CONTENTS,
+      REG_DT
+    FROM TB_DIARY
     WHERE MEMBER_ID=#{memberId} AND DATE_FORMAT(REG_DT, '%Y-%m-%d') = DATE_FORMAT(#{regDt},'%Y-%m-%d')
     ORDER BY REG_DT DESC
   </select>
@@ -50,6 +56,21 @@
   <delete id="deleteHistory">
     DELETE FROM TB_DIARY_HISTORY WHERE DIARY_ID = #{diaryId}
   </delete>
+
+  <select id="findDiaryCommentsByDiaryIds" resultType="com.pado.socialdiary.api.diary.dto.DiaryCommentResponse">
+    SELECT
+      DIARY_COMMENT_ID,
+      DIARY_ID,
+      MEMBER_ID,
+      CONTENTS,
+      DEL_AT,
+      REG_DT,
+    FROM TB_DIARY_COMMENT
+    WHERE DIARY_ID IN
+    <foreach collection="diaryIds" item="id" open="(" close=")" separator=",">
+      ${id}
+    </foreach>
+  </select>
 
   <select id="findDiaryCommentById" resultType="com.pado.socialdiary.api.diary.entity.DiaryComment">
     SELECT

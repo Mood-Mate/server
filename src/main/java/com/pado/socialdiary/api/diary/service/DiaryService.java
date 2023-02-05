@@ -1,6 +1,8 @@
 package com.pado.socialdiary.api.diary.service;
 
+import com.pado.socialdiary.api.diary.dto.DiaryCommentResponse;
 import com.pado.socialdiary.api.diary.dto.DiaryCreateRequest;
+import com.pado.socialdiary.api.diary.dto.DiaryResponse;
 import com.pado.socialdiary.api.diary.dto.DiaryUpdateRequest;
 import com.pado.socialdiary.api.diary.entity.Diary;
 import com.pado.socialdiary.api.diary.entity.DiaryComment;
@@ -12,7 +14,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -53,9 +58,28 @@ public class DiaryService {
         diaryMapper.delete(diaryId);
     }
 
-    public List<Diary> findSomeoneDiary(Integer memberId, String regDt) {
+    /**
+     * 회원 프로필 다이어리 리스트
+     * @param memberId
+     * @param regDt
+     * @return
+     */
+    public List<DiaryResponse> findSomeoneDiary(Integer memberId, String regDt) {
 
-        return diaryMapper.select(memberId, regDt);
+        List<DiaryResponse> findDiary = diaryMapper.select(memberId, regDt);
+
+        Map<Integer, List<DiaryCommentResponse>> findDiaryCommentMap = diaryMapper.findDiaryCommentsByDiaryIds(
+                        findDiary.stream()
+                                .map(diary -> diary.getDiaryId())
+                                .toList()
+                ).stream()
+                .collect(Collectors.groupingBy(diaryComment -> diaryComment.getDiaryId()));
+
+        findDiary.forEach(diary -> {
+            diary.setComments(findDiaryCommentMap.get(diary.getDiaryId()));
+        });
+
+        return findDiary;
     }
 
     public List<String> findDateOfMonth(Integer memberId, String regDt) {
