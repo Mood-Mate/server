@@ -1,6 +1,7 @@
 package com.pado.socialdiary.api.diary;
 
 import com.pado.socialdiary.api.diary.dto.DiaryCreateRequest;
+import com.pado.socialdiary.api.diary.dto.DiaryResponse;
 import com.pado.socialdiary.api.diary.dto.DiaryUpdateRequest;
 import com.pado.socialdiary.api.diary.entity.Diary;
 import com.pado.socialdiary.api.diary.service.DiaryService;
@@ -31,8 +32,8 @@ public class DiaryRestController {
     }
 
     @GetMapping("/someone")
-    public ResponseEntity<List<Diary>> searchSomeoneDiary(@RequestParam("memberId") Integer memberId,
-                                                        @RequestParam("regDt") String regDt){
+    public ResponseEntity<List<DiaryResponse>> searchSomeoneDiary(@RequestParam("memberId") Integer memberId,
+                                                                  @RequestParam("regDt") String regDt){
 
         return ResponseEntity.ok(diaryService.findSomeoneDiary(memberId, regDt));
     }
