@@ -14,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -95,10 +94,12 @@ public class DiaryService {
     }
 
     @Transactional
-    public void createDiaryComment(Integer diaryId, Member member, String comment) {
+    public List<DiaryCommentResponse> createDiaryComment(Integer diaryId, Member member, String comment) {
         diaryMapper.saveDiaryComment(
                 new DiaryComment(diaryId, member.getMemberId(), comment)
         );
+
+        return diaryMapper.findDiaryCommentsByDiaryId(diaryId);
     }
 
     @Transactional

@@ -25,6 +25,7 @@ public interface DiaryMapper {
   List<Diary> selectAll(List<Integer> followeeList);
 
   List<DiaryCommentResponse> findDiaryCommentsByDiaryIds(List<Integer> diaryIds);
+  List<DiaryCommentResponse> findDiaryCommentsByDiaryId(Integer diaryId);
   Optional<DiaryComment> findDiaryCommentById(Integer diaryCommentId);
   void saveDiaryComment(DiaryComment diaryComment);
   void deleteDiaryComment(DiaryComment diaryComment);

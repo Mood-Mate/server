@@ -57,19 +57,21 @@
     DELETE FROM TB_DIARY_HISTORY WHERE DIARY_ID = #{diaryId}
   </delete>
 
-  <select id="findDiaryCommentsByDiaryIds" resultType="com.pado.socialdiary.api.diary.dto.DiaryCommentResponse">
+  <select id="findDiaryCommentsByDiaryIds" resultType="com.pado.socialdiary.api.diary.dto.DiaryCommentResponse" parameterType="java.util.List">
     SELECT
       DIARY_COMMENT_ID,
       DIARY_ID,
       MEMBER_ID,
       CONTENTS,
       DEL_AT,
-      REG_DT,
+      REG_DT
     FROM TB_DIARY_COMMENT
-    WHERE DIARY_ID IN
-    <foreach collection="diaryIds" item="id" open="(" close=")" separator=",">
-      ${id}
-    </foreach>
+      WHERE DEL_AT = 'N'
+            AND DIARY_ID IN
+        <foreach collection="diaryIds" item="id" open="(" close=")" separator=",">
+          ${id}
+        </foreach>
+    ORDER BY REG_DT DESC
   </select>
 
   <select id="findDiaryCommentById" resultType="com.pado.socialdiary.api.diary.entity.DiaryComment">
@@ -78,6 +80,19 @@
     FROM TB_DIARY_COMMENT
     WHERE
         DIARY_COMMENT_ID = #{diaryCommentId}
+  </select>
+  <select id="findDiaryCommentsByDiaryId" resultType="com.pado.socialdiary.api.diary.dto.DiaryCommentResponse" parameterType="java.lang.Integer">
+    SELECT
+      DIARY_COMMENT_ID,
+      DIARY_ID,
+      MEMBER_ID,
+      CONTENTS,
+      DEL_AT,
+      REG_DT
+    FROM TB_DIARY_COMMENT
+      WHERE DEL_AT = 'N'
+        AND DIARY_ID = #{diaryId}
+    ORDER BY REG_DT DESC
   </select>
 
   <insert id="saveDiaryComment" useGeneratedKeys="true" keyProperty="diaryCommentId">

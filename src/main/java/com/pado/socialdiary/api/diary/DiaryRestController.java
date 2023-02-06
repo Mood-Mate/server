@@ -1,5 +1,6 @@
 package com.pado.socialdiary.api.diary;
 
+import com.pado.socialdiary.api.diary.dto.DiaryCommentResponse;
 import com.pado.socialdiary.api.diary.dto.DiaryCreateRequest;
 import com.pado.socialdiary.api.diary.dto.DiaryResponse;
 import com.pado.socialdiary.api.diary.dto.DiaryUpdateRequest;
@@ -74,10 +75,9 @@ public class DiaryRestController {
     public ResponseEntity createDiaryComment(@PathVariable("diaryId") Integer diaryId,
                                              @AuthenticationPrincipal Member member,
                                              @RequestBody String comment) {
-        diaryService.createDiaryComment(diaryId, member, comment);
+        List<DiaryCommentResponse> result = diaryService.createDiaryComment(diaryId, member, comment);
 
-        return ResponseEntity.ok()
-                .build();
+        return ResponseEntity.ok(result);
     }
 
     @DeleteMapping("/reply/{diaryCommentId}")
