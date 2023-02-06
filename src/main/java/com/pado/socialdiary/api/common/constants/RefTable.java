@@ -1,7 +1,8 @@
 package com.pado.socialdiary.api.common.constants;
 
 public enum RefTable implements CommonCode {
-    HP_MEMBER("HP_MEMBER", "회원 테이블");
+    HP_MEMBER("HP_MEMBER", "회원 테이블"),
+    TB_DIARY("TB_DIARY", "다이어리 테이블");
 
     private final String value;
     private final String desc;
@@ -13,11 +14,11 @@ public enum RefTable implements CommonCode {
 
     @Override
     public String getValue() {
-        return null;
+        return this.value;
     }
 
     @Override
     public String getDesc() {
-        return null;
+        return this.desc;
     }
 }
