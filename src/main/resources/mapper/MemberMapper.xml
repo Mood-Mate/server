@@ -36,6 +36,11 @@
                 UPD_DT = NOW()
         WHERE MEMBER_ID = #{memberId}
     </update>
+    <update id="updateIntroduce">
+        UPDATE TB_MEMBER SET
+            TB_MEMBER.INTRODUCE = #{introduce}
+        WHERE MEMBER_ID = #{memberId}
+    </update>
 
     <insert id="saveHistory" parameterType="com.pado.socialdiary.api.member.entity.Member" useGeneratedKeys="true">
         INSERT INTO TB_MEMBER_HISTORY(MEMBER_ID, EMAIL, PASSWORD, LOGIN_PROVIDER, NAME, NICKNAME, PICTURE,
