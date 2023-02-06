@@ -11,7 +11,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -24,9 +26,10 @@ public class DiaryRestController {
 
     @PostMapping("")
     public ResponseEntity createDiary(@AuthenticationPrincipal Member member,
-                                    @RequestBody DiaryCreateRequest diaryCreateRequest){
+                                      @RequestPart DiaryCreateRequest diaryCreateRequest,
+                                      @RequestPart(value = "picture", required = false) MultipartFile multipartFile) throws IOException {
 
-        diaryService.createDiary(member, diaryCreateRequest);
+        diaryService.createDiary(member, diaryCreateRequest, multipartFile);
 
         return ResponseEntity.ok()
             .build();
@@ -41,7 +44,7 @@ public class DiaryRestController {
 
     @GetMapping("/someone/date")
     public ResponseEntity<List<String>> searchSomeoneDate(@RequestParam("memberId") Integer memberId,
-                                                        @RequestParam("regDt") String regDt){
+                                                          @RequestParam("regDt") String regDt){
 
         return ResponseEntity.ok(diaryService.findDateOfMonth(memberId, regDt));
     }
@@ -54,9 +57,10 @@ public class DiaryRestController {
 
     @PutMapping("/edit")
     public ResponseEntity editDiary(@AuthenticationPrincipal Member member,
-                                    @RequestBody DiaryUpdateRequest diaryUpdateRequest){
+                                    @RequestPart DiaryUpdateRequest diaryUpdateRequest,
+                                    @RequestPart(value = "picture", required = false) MultipartFile multipartFile) throws IOException {
 
-        diaryService.updateDiary(member, diaryUpdateRequest);
+        diaryService.updateDiary(member, diaryUpdateRequest, multipartFile);
 
         return ResponseEntity.ok()
             .build();

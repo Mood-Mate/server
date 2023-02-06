@@ -1,5 +1,11 @@
 package com.pado.socialdiary.api.diary.service;
 
+import com.pado.socialdiary.api.common.attach.AttachUtil;
+import com.pado.socialdiary.api.common.attach.dto.AttachDto;
+import com.pado.socialdiary.api.common.attach.entity.Attached;
+import com.pado.socialdiary.api.common.attach.mapper.AttachedMapper;
+import com.pado.socialdiary.api.common.constants.AttachPath;
+import com.pado.socialdiary.api.common.constants.RefTable;
 import com.pado.socialdiary.api.diary.dto.DiaryCommentResponse;
 import com.pado.socialdiary.api.diary.dto.DiaryCreateRequest;
 import com.pado.socialdiary.api.diary.dto.DiaryResponse;
@@ -13,9 +19,13 @@ import com.pado.socialdiary.api.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,9 +34,12 @@ public class DiaryService {
 
     private final DiaryMapper diaryMapper;
     private final FollowMapper followMapper;
+    private final AttachUtil attachUtil;
+    private final AttachedMapper attachedMapper;
 
     @Transactional
-    public void createDiary(Member member, DiaryCreateRequest diaryCreateRequest) {
+    public void createDiary(Member member, DiaryCreateRequest diaryCreateRequest, MultipartFile multipartFile)
+        throws IOException {
 
         Diary builtDiary = Diary.builder()
                 .memberId(member.getMemberId())
@@ -36,12 +49,58 @@ public class DiaryService {
 
         diaryMapper.insert(builtDiary);
 
+        if(multipartFile != null) {
+            AttachDto.UploadRequest uploadRequest = attachUtil.attachedFile(
+                AttachPath.DIARY_PICTURE.getValue(), multipartFile);
+
+            Attached builtDiaryPicture = Attached.builder()
+                .refTable(RefTable.TB_DIARY.getValue())
+                .refId(builtDiary.getDiaryId())
+                .originalFilename(uploadRequest.getOriginalFileName())
+                .attachedFilename(uploadRequest.getAttachedFileName())
+                .attachedPath(AttachPath.DIARY_PICTURE.getValue())
+                .fileSize(uploadRequest.getFileSize())
+                .regId(member.getMemberId())
+                .regDt(LocalDateTime.now())
+                .updId(member.getMemberId())
+                .updDt(LocalDateTime.now())
+                .build();
+
+            attachedMapper.createAttached(builtDiaryPicture);
+        }
+
         Diary getDiary = diaryMapper.getByDiaryId(builtDiary.getDiaryId());
         diaryMapper.saveHistory(new DiaryHistory(getDiary));
     }
 
     @Transactional
-    public void updateDiary(Member member, DiaryUpdateRequest diaryUpdateRequest) {
+    public void updateDiary(Member member, DiaryUpdateRequest diaryUpdateRequest, MultipartFile multipartFile)
+        throws IOException {
+
+        if(multipartFile != null) {
+            Optional<Integer> oldPictureId = attachedMapper.findDiaryPictureIdByDiaryId(diaryUpdateRequest.getDiaryId());
+            if(oldPictureId.isPresent()) {
+                attachedMapper.deleteAttached(oldPictureId.get());
+            }
+
+            AttachDto.UploadRequest uploadRequest = attachUtil.attachedFile(
+                AttachPath.DIARY_PICTURE.getValue(), multipartFile);
+
+            Attached builtDiaryPicture = Attached.builder()
+                .refTable(RefTable.TB_DIARY.getValue())
+                .refId(diaryUpdateRequest.getDiaryId())
+                .originalFilename(uploadRequest.getOriginalFileName())
+                .attachedFilename(uploadRequest.getAttachedFileName())
+                .attachedPath(AttachPath.DIARY_PICTURE.getValue())
+                .fileSize(uploadRequest.getFileSize())
+                .regId(member.getMemberId())
+                .regDt(LocalDateTime.now())
+                .updId(member.getMemberId())
+                .updDt(LocalDateTime.now())
+                .build();
+
+            attachedMapper.createAttached(builtDiaryPicture);
+        }
 
         diaryUpdateRequest.setMemberId(member.getMemberId());
         diaryMapper.update(diaryUpdateRequest);
