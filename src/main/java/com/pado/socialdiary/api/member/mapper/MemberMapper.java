@@ -4,7 +4,6 @@ import com.pado.socialdiary.api.member.dto.MemberUpdateRequest;
 import com.pado.socialdiary.api.member.entity.Member;
 import com.pado.socialdiary.api.member.entity.MemberHistory;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.Optional;
 
@@ -24,4 +23,6 @@ public interface MemberMapper {
     void updateRegOrUpdColumn(Integer memberId);
 
     void update(MemberUpdateRequest memberUpdateRequest);
+
+    void updateIntroduce(Integer memberId, String introduce);
 }

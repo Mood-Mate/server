@@ -16,6 +16,7 @@ public class Member {
     private String nickname;
     private LocalDateTime dateOfBirth;
     private GenderType gender;
+    private String introduce;
     private String picture;
 
     private MemberRole role = MemberRole.USER;
@@ -39,13 +40,8 @@ public class Member {
         this.loginProvider = loginProvider;
     }
 
-    public Member update(String password, String name, String nickname, String picture) {
-        this.password = password;
-        this.name = name;
-        this.nickname = nickname;
-        this.picture = picture;
-
-        return this;
+    public void changeIntroduce(String introduce) {
+        this.introduce = introduce;
     }
 
     @Override
