@@ -18,6 +18,7 @@
                 NOW()
                )
     </insert>
+
     <select id="findMemberPictureByMemberId" resultType="com.pado.socialdiary.api.common.attach.entity.Attached">
         SELECT *
         FROM TB_ATTACHED
@@ -25,5 +26,15 @@
           AND REF_ID = #{memberId}
     </select>
 
+    <select id="findDiaryPictureIdByDiaryId" parameterType="integer" resultType="integer">
+      SELECT ATTACHED_ID
+      FROM TB_ATTACHED
+      WHERE REF_TABLE = 'TB_DIARY'
+        AND REF_ID = #{diaryId}
+    </select>
 
+    <delete id="deleteAttached" parameterType="integer">
+      DELETE FROM TB_ATTACHED
+      WHERE ATTACHED_ID = #{attachedId}
+    </delete>
 </mapper>
