@@ -1,15 +1,17 @@
 package com.pado.socialdiary.api.member.service;
 
-import com.pado.socialdiary.api.common.config.security.JwtProvider;
-import com.pado.socialdiary.api.common.constants.AttachPath;
-import com.pado.socialdiary.api.common.constants.RefTable;
-import com.pado.socialdiary.api.common.dto.response.TokenResponse;
 import com.pado.socialdiary.api.common.attach.AttachUtil;
 import com.pado.socialdiary.api.common.attach.dto.AttachDto;
 import com.pado.socialdiary.api.common.attach.entity.Attached;
 import com.pado.socialdiary.api.common.attach.mapper.AttachedMapper;
+import com.pado.socialdiary.api.common.config.security.JwtProvider;
+import com.pado.socialdiary.api.common.constants.AttachPath;
+import com.pado.socialdiary.api.common.constants.RefTable;
+import com.pado.socialdiary.api.common.dto.response.TokenResponse;
+import com.pado.socialdiary.api.follow.entity.Follow;
 import com.pado.socialdiary.api.member.dto.MemberJoinRequest;
 import com.pado.socialdiary.api.member.dto.MemberLoginRequest;
+import com.pado.socialdiary.api.member.dto.MemberSearchResponse;
 import com.pado.socialdiary.api.member.dto.MemberUpdateRequest;
 import com.pado.socialdiary.api.member.entity.Member;
 import com.pado.socialdiary.api.member.entity.MemberHistory;
@@ -26,6 +28,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.List;
+
+import static com.pado.socialdiary.api.common.constants.YesNoCode.Y;
 
 @Slf4j
 @Service
@@ -116,5 +121,23 @@ public class MemberService {
     public void updateMemberIntroduce(Member member, String introduce) {
         member.changeIntroduce(introduce);
         memberMapper.updateIntroduce(member.getMemberId(), introduce);
+    }
+
+    public List<MemberSearchResponse> searchMember(Member member, String keyword) {
+
+        List<MemberSearchResponse> findMembers = memberMapper.findMemberByKeyword(keyword);
+        List<Follow> findFollowMembers = memberMapper.findFollowMember(member.getMemberId());
+
+        findMembers.forEach(mber -> {
+            findFollowMembers.forEach(follow -> {
+
+                if (mber.getMemberId().equals(follow.getFolloweeMemberId())) {
+                    mber.setFollowAt(Y);
+                }
+
+            });
+        });
+
+        return findMembers;
     }
 }
