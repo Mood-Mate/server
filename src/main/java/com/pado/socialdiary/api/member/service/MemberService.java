@@ -111,4 +111,10 @@ public class MemberService {
         memberMapper.update(memberUpdateRequest);
         memberMapper.saveHistory(new MemberHistory(memberMapper.getByMemberId(memberUpdateRequest.getMemberId())));
     }
+
+    @Transactional
+    public void updateMemberIntroduce(Member member, String introduce) {
+        member.changeIntroduce(introduce);
+        memberMapper.updateIntroduce(member.getMemberId(), introduce);
+    }
 }

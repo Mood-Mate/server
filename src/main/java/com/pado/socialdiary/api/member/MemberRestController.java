@@ -51,4 +51,14 @@ public class MemberRestController {
         return ResponseEntity.ok()
                 .build();
     }
+
+    @PatchMapping("/introduce")
+    public ResponseEntity updateIntroduce(@AuthenticationPrincipal Member member,
+                                          @RequestBody String introduce) {
+
+        memberService.updateMemberIntroduce(member, introduce);
+
+        return ResponseEntity.ok()
+                .build();
+    }
 }
