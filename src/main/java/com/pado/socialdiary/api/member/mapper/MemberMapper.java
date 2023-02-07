@@ -1,10 +1,13 @@
 package com.pado.socialdiary.api.member.mapper;
 
+import com.pado.socialdiary.api.follow.entity.Follow;
+import com.pado.socialdiary.api.member.dto.MemberSearchResponse;
 import com.pado.socialdiary.api.member.dto.MemberUpdateRequest;
 import com.pado.socialdiary.api.member.entity.Member;
 import com.pado.socialdiary.api.member.entity.MemberHistory;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
 import java.util.Optional;
 
 @Mapper
@@ -25,4 +28,8 @@ public interface MemberMapper {
     void update(MemberUpdateRequest memberUpdateRequest);
 
     void updateIntroduce(Integer memberId, String introduce);
+
+    List<MemberSearchResponse> findMemberByKeyword(String keyword);
+
+    List<Follow> findFollowMember(Integer mmemberId);
 }
