@@ -4,8 +4,8 @@
 
 <mapper namespace="com.pado.socialdiary.api.follow.mapper.FollowMapper">
   <insert id="createFollowing" parameterType="com.pado.socialdiary.api.follow.entity.Follow" useGeneratedKeys="true">
-    INSERT INTO TB_FOLLOW(FOLLOWER_MEMBER_ID, FOLLOWEE_MEMBER_ID)
-    VALUES (#{followerMemberId}, #{followeeMemberId})
+    INSERT INTO TB_FOLLOW(FOLLOWER_MEMBER_ID, FOLLOWEE_MEMBER_ID, REG_ID, REG_DT, UPD_ID, UPD_DT)
+    VALUES (#{followerMemberId}, #{followeeMemberId}, #{followerMemberId}, NOW(), #{followerMemberId}, NOW())
   </insert>
 
   <delete id="deleteFollowing">
