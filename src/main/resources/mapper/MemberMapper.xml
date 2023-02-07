@@ -66,4 +66,26 @@
         FROM TB_MEMBER
         WHERE TB_MEMBER.MEMBER_ID = #{memberId}
     </select>
+
+    <select id="findMemberByKeyword" resultType="com.pado.socialdiary.api.member.dto.MemberSearchResponse">
+        SELECT
+            MEMBER_ID,
+            EMAIL,
+            PICTURE,
+            NAME,
+            NICKNAME
+        FROM TB_MEMBER
+        WHERE
+            EMAIL = #{keyword}
+        OR  NAME = #{keyword}
+        OR  NICKNAME = #{keyword}
+    </select>
+    <select id="findFollowMember" resultType="com.pado.socialdiary.api.follow.entity.Follow">
+        SELECT
+            FOLLOW_ID,
+            FOLLOWER_MEMBER_ID,
+            FOLLOWEE_MEMBER_ID
+        FROM TB_FOLLOW
+        WHERE FOLLOWER_MEMBER_ID = #{memberId}
+    </select>
 </mapper>

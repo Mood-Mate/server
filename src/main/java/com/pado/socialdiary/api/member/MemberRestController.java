@@ -2,6 +2,7 @@ package com.pado.socialdiary.api.member;
 
 import com.pado.socialdiary.api.member.dto.MemberJoinRequest;
 import com.pado.socialdiary.api.member.dto.MemberLoginRequest;
+import com.pado.socialdiary.api.member.dto.MemberSearchResponse;
 import com.pado.socialdiary.api.member.dto.MemberUpdateRequest;
 import com.pado.socialdiary.api.member.entity.Member;
 import com.pado.socialdiary.api.member.service.MemberService;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -60,5 +62,14 @@ public class MemberRestController {
 
         return ResponseEntity.ok()
                 .build();
+    }
+
+    @GetMapping
+    public ResponseEntity searchMember(@AuthenticationPrincipal Member member,
+                                       @RequestParam("keyword") String keyword) {
+
+        List<MemberSearchResponse> result = memberService.searchMember(member, keyword);
+
+        return ResponseEntity.ok(result);
     }
 }
