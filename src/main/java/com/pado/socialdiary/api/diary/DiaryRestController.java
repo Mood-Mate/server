@@ -66,10 +66,19 @@ public class DiaryRestController {
             .build();
     }
 
-    @DeleteMapping("/delete")
-    public ResponseEntity deleteDiary(@RequestBody Map<String, Integer> param){
+    @DeleteMapping("/delete/{diaryPictureId")
+    public ResponseEntity deleteDiaryPicture(@PathVariable("diaryPictureId") Integer diaryPictureId){
 
-        diaryService.deleteDiary(param.get("diaryId"));
+        diaryService.deleteDiaryPicture(diaryPictureId);
+
+        return ResponseEntity.ok()
+            .build();
+    }
+
+    @DeleteMapping("/delete/{diaryId}")
+    public ResponseEntity deleteDiary(@PathVariable("diaryId") Integer diaryId){
+
+        diaryService.deleteDiary(diaryId);
 
         return ResponseEntity.ok()
             .build();

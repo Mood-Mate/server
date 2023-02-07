@@ -42,10 +42,10 @@ public class DiaryService {
         throws IOException {
 
         Diary builtDiary = Diary.builder()
-                .memberId(member.getMemberId())
-                .title(diaryCreateRequest.getTitle())
-                .contents(diaryCreateRequest.getContents())
-                .build();
+            .memberId(member.getMemberId())
+            .title(diaryCreateRequest.getTitle())
+            .contents(diaryCreateRequest.getContents())
+            .build();
 
         diaryMapper.insert(builtDiary);
 
@@ -110,7 +110,18 @@ public class DiaryService {
     }
 
     @Transactional
+    public void deleteDiaryPicture(Integer diaryPictureId) {
+
+        attachedMapper.deleteAttached(diaryPictureId);
+    }
+
+    @Transactional
     public void deleteDiary(Integer diaryId) {
+
+        Optional<Integer> diaryPictureId = attachedMapper.findDiaryPictureIdByDiaryId(diaryId);
+        if(diaryPictureId.isPresent()){
+            attachedMapper.deleteAttached(diaryPictureId.get());
+        }
 
         diaryMapper.deleteHistory(diaryId);
         diaryMapper.delete(diaryId);
