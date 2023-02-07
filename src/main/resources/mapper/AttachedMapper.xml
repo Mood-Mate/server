@@ -25,5 +25,15 @@
           AND REF_ID = #{memberId}
     </select>
 
+  <select id="findDiaryPictureIdByDiaryId" parameterType="integer" resultType="integer">
+        SELECT ATTACHED_ID
+        FROM TB_ATTACHED
+        WHERE REF_TABLE = 'TB_DIARY'
+          AND REF_ID = #{diaryId}
+  </select>
 
+  <delete id="deleteAttached" parameterType="integer">
+        DELETE FROM TB_ATTACHED
+        WHERE ATTACHED_ID = #{attachedId}
+  </delete>
 </mapper>

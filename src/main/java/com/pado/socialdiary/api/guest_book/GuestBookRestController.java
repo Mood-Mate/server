@@ -20,8 +20,8 @@ public class GuestBookRestController {
 
     @PostMapping("/{hostMemberId}")
     public ResponseEntity createGuestBook(@PathVariable("hostMemberId") Integer hostMemberId,
-                                        @AuthenticationPrincipal Member member,
-                                        @RequestBody String contents) {
+                                          @AuthenticationPrincipal Member member,
+                                          @RequestBody String contents) {
 
         guestBookService.createGuestBook(hostMemberId, member, contents);
 
