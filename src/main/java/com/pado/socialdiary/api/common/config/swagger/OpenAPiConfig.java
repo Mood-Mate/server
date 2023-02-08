@@ -31,17 +31,17 @@ public class OpenAPiConfig {
     @Bean
     public GroupedOpenApi diaryApi() {
         return GroupedOpenApi.builder()
-            .group("Diary")
-            .pathsToMatch("/api/diary/**")
-            .build();
+                .group("Diary")
+                .pathsToMatch("/api/diary/**")
+                .build();
     }
 
     @Bean
     public GroupedOpenApi followApi() {
         return GroupedOpenApi.builder()
-            .group("Follow")
-            .pathsToMatch("/api/follow/**")
-            .build();
+                .group("Follow")
+                .pathsToMatch("/api/follow/**")
+                .build();
     }
 
     @Bean
