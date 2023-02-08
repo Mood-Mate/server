@@ -1,6 +1,5 @@
 package com.pado.socialdiary.api.diary.dto;
 
-import com.pado.socialdiary.api.diary.entity.Diary;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,11 +19,11 @@ public class DiaryResponse {
 
     private List<DiaryCommentResponse> comments = new ArrayList<>();
 
-    public DiaryResponse(Diary diary) {
-        this.diaryId = diary.getDiaryId();
-        this.memberId = diary.getMemberId();
-        this.title = diary.getTitle();
-        this.contents = diary.getContents();
-        this.regDt = diary.getRegDt();
+    public DiaryResponse(Integer diaryId, Integer memberId, String title, String contents, LocalDateTime regDt) {
+        this.diaryId = diaryId;
+        this.memberId = memberId;
+        this.title = title;
+        this.contents = contents;
+        this.regDt = regDt;
     }
 }
