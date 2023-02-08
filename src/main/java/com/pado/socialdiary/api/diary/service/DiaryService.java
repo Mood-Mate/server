@@ -39,32 +39,32 @@ public class DiaryService {
 
     @Transactional
     public void createDiary(Member member, DiaryCreateRequest diaryCreateRequest, MultipartFile multipartFile)
-        throws IOException {
+            throws IOException {
 
         Diary builtDiary = Diary.builder()
-            .memberId(member.getMemberId())
-            .title(diaryCreateRequest.getTitle())
-            .contents(diaryCreateRequest.getContents())
-            .build();
+                .memberId(member.getMemberId())
+                .title(diaryCreateRequest.getTitle())
+                .contents(diaryCreateRequest.getContents())
+                .build();
 
         diaryMapper.insert(builtDiary);
 
-        if(multipartFile != null) {
+        if (multipartFile != null) {
             AttachDto.UploadRequest uploadRequest = attachUtil.attachedFile(
-                AttachPath.DIARY_PICTURE.getValue(), multipartFile);
+                    AttachPath.DIARY_PICTURE.getValue(), multipartFile);
 
             Attached builtDiaryPicture = Attached.builder()
-                .refTable(RefTable.TB_DIARY.getValue())
-                .refId(builtDiary.getDiaryId())
-                .originalFilename(uploadRequest.getOriginalFileName())
-                .attachedFilename(uploadRequest.getAttachedFileName())
-                .attachedPath(AttachPath.DIARY_PICTURE.getValue())
-                .fileSize(uploadRequest.getFileSize())
-                .regId(member.getMemberId())
-                .regDt(LocalDateTime.now())
-                .updId(member.getMemberId())
-                .updDt(LocalDateTime.now())
-                .build();
+                    .refTable(RefTable.TB_DIARY.getValue())
+                    .refId(builtDiary.getDiaryId())
+                    .originalFilename(uploadRequest.getOriginalFileName())
+                    .attachedFilename(uploadRequest.getAttachedFileName())
+                    .attachedPath(AttachPath.DIARY_PICTURE.getValue())
+                    .fileSize(uploadRequest.getFileSize())
+                    .regId(member.getMemberId())
+                    .regDt(LocalDateTime.now())
+                    .updId(member.getMemberId())
+                    .updDt(LocalDateTime.now())
+                    .build();
 
             attachedMapper.createAttached(builtDiaryPicture);
         }
@@ -75,29 +75,29 @@ public class DiaryService {
 
     @Transactional
     public void updateDiary(Member member, DiaryUpdateRequest diaryUpdateRequest, MultipartFile multipartFile)
-        throws IOException {
+            throws IOException {
 
-        if(multipartFile != null) {
+        if (multipartFile != null) {
             Optional<Integer> oldPictureId = attachedMapper.findDiaryPictureIdByDiaryId(diaryUpdateRequest.getDiaryId());
-            if(oldPictureId.isPresent()) {
+            if (oldPictureId.isPresent()) {
                 attachedMapper.deleteAttached(oldPictureId.get());
             }
 
             AttachDto.UploadRequest uploadRequest = attachUtil.attachedFile(
-                AttachPath.DIARY_PICTURE.getValue(), multipartFile);
+                    AttachPath.DIARY_PICTURE.getValue(), multipartFile);
 
             Attached builtDiaryPicture = Attached.builder()
-                .refTable(RefTable.TB_DIARY.getValue())
-                .refId(diaryUpdateRequest.getDiaryId())
-                .originalFilename(uploadRequest.getOriginalFileName())
-                .attachedFilename(uploadRequest.getAttachedFileName())
-                .attachedPath(AttachPath.DIARY_PICTURE.getValue())
-                .fileSize(uploadRequest.getFileSize())
-                .regId(member.getMemberId())
-                .regDt(LocalDateTime.now())
-                .updId(member.getMemberId())
-                .updDt(LocalDateTime.now())
-                .build();
+                    .refTable(RefTable.TB_DIARY.getValue())
+                    .refId(diaryUpdateRequest.getDiaryId())
+                    .originalFilename(uploadRequest.getOriginalFileName())
+                    .attachedFilename(uploadRequest.getAttachedFileName())
+                    .attachedPath(AttachPath.DIARY_PICTURE.getValue())
+                    .fileSize(uploadRequest.getFileSize())
+                    .regId(member.getMemberId())
+                    .regDt(LocalDateTime.now())
+                    .updId(member.getMemberId())
+                    .updDt(LocalDateTime.now())
+                    .build();
 
             attachedMapper.createAttached(builtDiaryPicture);
         }
@@ -119,7 +119,7 @@ public class DiaryService {
     public void deleteDiary(Integer diaryId) {
 
         Optional<Integer> diaryPictureId = attachedMapper.findDiaryPictureIdByDiaryId(diaryId);
-        if(diaryPictureId.isPresent()){
+        if (diaryPictureId.isPresent()) {
             attachedMapper.deleteAttached(diaryPictureId.get());
         }
 
@@ -129,6 +129,7 @@ public class DiaryService {
 
     /**
      * 회원 프로필 다이어리 리스트
+     *
      * @param memberId
      * @param regDt
      * @return
@@ -137,16 +138,19 @@ public class DiaryService {
 
         List<DiaryResponse> findDiary = diaryMapper.select(memberId, regDt);
 
-        Map<Integer, List<DiaryCommentResponse>> findDiaryCommentMap = diaryMapper.findDiaryCommentsByDiaryIds(
-                        findDiary.stream()
-                                .map(diary -> diary.getDiaryId())
-                                .toList()
-                ).stream()
-                .collect(Collectors.groupingBy(diaryComment -> diaryComment.getDiaryId()));
 
-        findDiary.forEach(diary -> {
-            diary.setComments(findDiaryCommentMap.get(diary.getDiaryId()));
-        });
+        if (findDiary.size() != 0) {
+            Map<Integer, List<DiaryCommentResponse>> findDiaryCommentMap = diaryMapper.findDiaryCommentsByDiaryIds(
+                            findDiary.stream()
+                                    .map(diary -> diary.getDiaryId())
+                                    .toList()
+                    ).stream()
+                    .collect(Collectors.groupingBy(diaryComment -> diaryComment.getDiaryId()));
+
+            findDiary.forEach(diary -> {
+                diary.setComments(findDiaryCommentMap.get(diary.getDiaryId()));
+            });
+        }
 
         return findDiary;
     }
