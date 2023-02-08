@@ -15,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -66,7 +65,7 @@ public class DiaryRestController {
             .build();
     }
 
-    @DeleteMapping("/delete/{diaryPictureId")
+    @DeleteMapping("/delete/{diaryPictureId}")
     public ResponseEntity deleteDiaryPicture(@PathVariable("diaryPictureId") Integer diaryPictureId){
 
         diaryService.deleteDiaryPicture(diaryPictureId);
