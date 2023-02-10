@@ -1,5 +1,7 @@
 package com.pado.socialdiary.api.diary;
 
+import com.pado.socialdiary.api.common.pageable.entity.CursorPageable;
+import com.pado.socialdiary.api.common.pageable.dto.CursorPageResponse;
 import com.pado.socialdiary.api.diary.dto.DiaryCommentResponse;
 import com.pado.socialdiary.api.diary.dto.DiaryCreateRequest;
 import com.pado.socialdiary.api.diary.dto.DiaryResponse;
@@ -49,9 +51,12 @@ public class DiaryRestController {
     }
 
     @GetMapping("/followee")
-    public ResponseEntity<List<Diary>> searchFolloweeDiary(@AuthenticationPrincipal Member member){
+    public ResponseEntity<CursorPageResponse<Diary>> searchFolloweeDiary(@AuthenticationPrincipal Member member,
+                                                                         @RequestParam(required = false, value = "next") Integer next,
+                                                                         CursorPageable cursorPageable){
 
-        return ResponseEntity.ok(diaryService.findFolloweeDiary(member));
+        cursorPageable.setCursor(next);
+        return ResponseEntity.ok(diaryService.findFolloweeDiary(member, cursorPageable));
     }
 
     @PutMapping("/edit")

@@ -6,6 +6,8 @@ import com.pado.socialdiary.api.common.attach.entity.Attached;
 import com.pado.socialdiary.api.common.attach.mapper.AttachedMapper;
 import com.pado.socialdiary.api.common.constants.AttachPath;
 import com.pado.socialdiary.api.common.constants.RefTable;
+import com.pado.socialdiary.api.common.pageable.entity.CursorPageable;
+import com.pado.socialdiary.api.common.pageable.dto.CursorPageResponse;
 import com.pado.socialdiary.api.diary.dto.DiaryCommentResponse;
 import com.pado.socialdiary.api.diary.dto.DiaryCreateRequest;
 import com.pado.socialdiary.api.diary.dto.DiaryResponse;
@@ -16,6 +18,7 @@ import com.pado.socialdiary.api.diary.entity.DiaryHistory;
 import com.pado.socialdiary.api.diary.mapper.DiaryMapper;
 import com.pado.socialdiary.api.follow.mapper.FollowMapper;
 import com.pado.socialdiary.api.member.entity.Member;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -160,11 +164,23 @@ public class DiaryService {
         return diaryMapper.selectDate(memberId, regDt);
     }
 
-    public List<Diary> findFolloweeDiary(Member member) {
+    public CursorPageResponse<Diary> findFolloweeDiary(Member member, CursorPageable cursorPageable) {
 
         List<Integer> followeeList = followMapper.findFollowee(member.getMemberId());
         followeeList.add(member.getMemberId());
-        return diaryMapper.selectAll(followeeList);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("followeeList", followeeList);
+        map.put("cursorPageable", cursorPageable);
+
+        List<Diary> diaryList = diaryMapper.selectAll(map);
+        final Integer pageSize = cursorPageable.getPageSize();
+        final Integer next = diaryList.size() >= pageSize ? diaryList.get(pageSize - 1).getDiaryId() : null;
+
+        return CursorPageResponse.<Diary>builder()
+            .data(diaryList)
+            .next(next)
+            .build();
     }
 
     @Transactional
