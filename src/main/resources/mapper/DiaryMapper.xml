@@ -59,13 +59,15 @@
 
   <select id="findDiaryCommentsByDiaryIds" resultType="com.pado.socialdiary.api.diary.dto.DiaryCommentResponse" parameterType="java.util.List">
     SELECT
-      DIARY_COMMENT_ID,
-      DIARY_ID,
-      MEMBER_ID,
-      CONTENTS,
-      DEL_AT,
-      REG_DT
+      TB_DIARY_COMMENT.DIARY_COMMENT_ID,
+      TB_DIARY_COMMENT.DIARY_ID,
+      TB_DIARY_COMMENT.MEMBER_ID,
+      TB_MEMBER.NICKNAME,
+      TB_DIARY_COMMENT.CONTENTS,
+      TB_DIARY_COMMENT.DEL_AT,
+      TB_DIARY_COMMENT.REG_DT
     FROM TB_DIARY_COMMENT
+    INNER JOIN TB_MEMBER ON TB_DIARY_COMMENT.MEMBER_ID = TB_MEMBER.MEMBER_ID
       WHERE DEL_AT = 'N'
             AND DIARY_ID IN
         <foreach collection="diaryIds" item="id" open="(" close=")" separator=",">
