@@ -13,6 +13,7 @@ public class DiaryCommentResponse {
     private Integer diaryCommentId;
     private Integer diaryId;
     private Integer memberId;
+    private String nickname;
     private String contents;
     private YesNoCode delAt;
     private LocalDateTime regDt;
