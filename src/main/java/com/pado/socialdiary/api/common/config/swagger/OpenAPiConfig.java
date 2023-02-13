@@ -40,7 +40,7 @@ public class OpenAPiConfig {
     public GroupedOpenApi guestBookApi() {
         return GroupedOpenApi.builder()
                 .group("GuestBook")
-                .pathsToMatch("/api/guest_book/**")
+                .pathsToMatch("/api/guestBook/**")
                 .build();
     }
 
