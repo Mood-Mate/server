@@ -29,7 +29,7 @@
       REG_DT
     FROM TB_DIARY
     WHERE MEMBER_ID=#{memberId} AND DATE_FORMAT(REG_DT, '%Y-%m-%d') = DATE_FORMAT(#{regDt},'%Y-%m-%d')
-    ORDER BY REG_DT DESC
+    ORDER BY DIARY_ID DESC
   </select>
 
   <select id="selectDate" resultType="string">
@@ -37,12 +37,17 @@
     WHERE MEMBER_ID=#{memberId} AND MONTH(REG_DT)=MONTH(#{regDt})
   </select>
 
-  <select id="selectAll" parameterType="arraylist" resultType="com.pado.socialdiary.api.diary.entity.Diary">
-    SELECT * FROM TB_DIARY WHERE MEMBER_ID IN
+  <select id="selectAll" parameterType="hashmap" resultType="com.pado.socialdiary.api.diary.entity.Diary">
+    SELECT * FROM TB_DIARY
+    WHERE MEMBER_ID IN
     <foreach collection="followeeList" item="followee" open="(" close=")" separator=",">
       #{followee}
     </foreach>
-    ORDER BY REG_DT DESC
+    <if test="cursorPageable.cursor != null">
+    AND DIARY_ID &lt; #{cursorPageable.cursor}
+    </if>
+    ORDER BY DIARY_ID DESC
+    LIMIT #{cursorPageable.pageSize}
   </select>
 
   <update id="update" parameterType="com.pado.socialdiary.api.diary.entity.Diary">
