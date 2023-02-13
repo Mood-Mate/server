@@ -29,7 +29,7 @@ public class SecurityConfig {
     private final OAuthSuccessHandler oAuthSuccessHandler;
 
     private final String[] EXAMPLE_PATH = {"/**"};
-    private final String[] AUTH_PASS_PATH = {"/swagger-ui/**", "/v3/api-docs/**", "/api/member/**", "/api/diary/**", "/api/follow/**"};
+    private final String[] AUTH_PASS_PATH = {"/swagger-ui/**", "/v3/api-docs/**", "/api/member/**", "/api/diary/**", "/api/follow/**", "/api/guestBook/**"};
     private final String[] AUTH_CHECK_PATH = {"/api/member/auth", "/api/diary", "/api/follow"};
 
     @Bean
