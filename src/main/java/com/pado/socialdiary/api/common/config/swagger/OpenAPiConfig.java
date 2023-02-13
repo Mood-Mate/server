@@ -37,6 +37,14 @@ public class OpenAPiConfig {
     }
 
     @Bean
+    public GroupedOpenApi guestBookApi() {
+        return GroupedOpenApi.builder()
+                .group("GuestBook")
+                .pathsToMatch("/api/guest_book/**")
+                .build();
+    }
+
+    @Bean
     public GroupedOpenApi followApi() {
         return GroupedOpenApi.builder()
                 .group("Follow")
