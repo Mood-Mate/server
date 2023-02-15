@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.pado.socialdiary.api.emoji.mapper.EmojiMapper">
+<mapper namespace="com.pado.socialdiary.api.moduel.emoji.mapper.EmojiMapper">
     <insert id="createSympathy">
         INSERT INTO TB_DIARY_EMOJI(MEMBER_ID, DIARY_ID, EMOJI)
         VALUES (#{memberId}, #{diaryId}, #{emojiType})

@@ -1,7 +1,7 @@
 package com.pado.socialdiary.api.common;
 
-import com.pado.socialdiary.api.common.constants.AttachPath;
-import com.pado.socialdiary.api.common.attach.AttachUtil;
+import com.pado.socialdiary.api.constants.AttachPath;
+import com.pado.socialdiary.api.utils.attach.AttachUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
