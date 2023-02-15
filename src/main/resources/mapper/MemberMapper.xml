@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.pado.socialdiary.api.member.mapper.MemberMapper">
-    <insert id="save" parameterType="com.pado.socialdiary.api.member.entity.Member" useGeneratedKeys="true"
+<mapper namespace="com.pado.socialdiary.api.moduel.member.mapper.MemberMapper">
+    <insert id="save" parameterType="com.pado.socialdiary.api.moduel.member.entity.Member" useGeneratedKeys="true"
             keyProperty="memberId">
         INSERT INTO TB_MEMBER(EMAIL, PASSWORD, LOGIN_PROVIDER, NAME, NICKNAME, PICTURE, DATE_OF_BIRTH, GENDER)
         VALUES (#{email}, #{password}, #{loginProvider}, #{name}, #{nickname}, #{picture}, #{dateOfBirth}, #{gender})
@@ -18,7 +18,7 @@
         WHERE TB_MEMBER.MEMBER_ID = #{memberId}
     </update>
 
-    <update id="update" parameterType="com.pado.socialdiary.api.member.dto.MemberUpdateRequest">
+    <update id="update" parameterType="com.pado.socialdiary.api.moduel.member.dto.MemberUpdateRequest">
         UPDATE TB_MEMBER SET
             <if test='password != null and password != ""'>
                 PASSWORD = #{password},
@@ -42,7 +42,7 @@
         WHERE MEMBER_ID = #{memberId}
     </update>
 
-    <insert id="saveHistory" parameterType="com.pado.socialdiary.api.member.entity.Member" useGeneratedKeys="true">
+    <insert id="saveHistory" parameterType="com.pado.socialdiary.api.moduel.member.entity.Member" useGeneratedKeys="true">
         INSERT INTO TB_MEMBER_HISTORY(MEMBER_ID, EMAIL, PASSWORD, LOGIN_PROVIDER, NAME, NICKNAME, PICTURE,
                                       DATE_OF_BIRTH, GENDER, REG_ID, REG_DT, UPD_ID, UPD_DT)
         VALUES (#{memberId}, #{email}, #{password}, #{loginProvider}, #{name}, #{nickname}, #{picture}, #{dateOfBirth},
@@ -50,7 +50,7 @@
     </insert>
 
 
-    <select id="findByEmail" resultType="com.pado.socialdiary.api.member.entity.Member">
+    <select id="findByEmail" resultType="com.pado.socialdiary.api.moduel.member.entity.Member">
         SELECT *
         FROM TB_MEMBER
         WHERE TB_MEMBER.EMAIL = #{email};
@@ -61,13 +61,13 @@
         FROM TB_MEMBER
         WHERE TB_MEMBER.EMAIL = #{email}
     </select>
-    <select id="getByMemberId" resultType="com.pado.socialdiary.api.member.entity.Member">
+    <select id="getByMemberId" resultType="com.pado.socialdiary.api.moduel.member.entity.Member">
         SELECT *
         FROM TB_MEMBER
         WHERE TB_MEMBER.MEMBER_ID = #{memberId}
     </select>
 
-    <select id="findMemberByKeyword" resultType="com.pado.socialdiary.api.member.dto.MemberSearchResponse">
+    <select id="findMemberByKeyword" resultType="com.pado.socialdiary.api.moduel.member.dto.MemberSearchResponse">
         SELECT
             MEMBER_ID,
             EMAIL,
@@ -80,7 +80,7 @@
         OR  NAME = #{keyword}
         OR  NICKNAME = #{keyword}
     </select>
-    <select id="findFollowMember" resultType="com.pado.socialdiary.api.follow.entity.Follow">
+    <select id="findFollowMember" resultType="com.pado.socialdiary.api.moduel.follow.entity.Follow">
         SELECT
             FOLLOW_ID,
             FOLLOWER_MEMBER_ID,

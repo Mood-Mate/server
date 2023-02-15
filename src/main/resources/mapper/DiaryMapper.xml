@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.pado.socialdiary.api.diary.mapper.DiaryMapper">
-  <insert id="insert" parameterType="com.pado.socialdiary.api.diary.entity.Diary" useGeneratedKeys="true">
+<mapper namespace="com.pado.socialdiary.api.moduel.diary.mapper.DiaryMapper">
+  <insert id="insert" parameterType="com.pado.socialdiary.api.moduel.diary.entity.Diary" useGeneratedKeys="true">
     <selectKey keyColumn="DIARY_ID" keyProperty="diaryId" resultType="Integer" order="AFTER">
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -11,16 +11,16 @@
     VALUES (#{memberId}, #{title}, #{contents}, #{memberId}, NOW(), #{memberId}, NOW())
   </insert>
 
-  <insert id="saveHistory" parameterType="com.pado.socialdiary.api.diary.entity.DiaryHistory" useGeneratedKeys="true">
+  <insert id="saveHistory" parameterType="com.pado.socialdiary.api.moduel.diary.entity.DiaryHistory" useGeneratedKeys="true">
     INSERT INTO TB_DIARY_HISTORY(DIARY_ID, MEMBER_ID, TITLE, CONTENTS, REG_ID, REG_DT, UPD_ID, UPD_DT)
     VALUES (#{diaryId}, #{memberId}, #{title}, #{contents}, #{memberId}, NOW(), #{memberId}, NOW())
   </insert>
 
-  <select id="getByDiaryId" resultType="com.pado.socialdiary.api.diary.entity.Diary">
+  <select id="getByDiaryId" resultType="com.pado.socialdiary.api.moduel.diary.entity.Diary">
     SELECT * FROM TB_DIARY WHERE DIARY_ID=#{diaryId}
   </select>
 
-  <select id="select" resultType="com.pado.socialdiary.api.diary.dto.DiaryResponse">
+  <select id="select" resultType="com.pado.socialdiary.api.moduel.diary.dto.DiaryResponse">
     SELECT
       DIARY_ID,
       MEMBER_ID,
@@ -37,7 +37,7 @@
     WHERE MEMBER_ID=#{memberId} AND MONTH(REG_DT)=MONTH(#{regDt})
   </select>
 
-  <select id="selectAll" parameterType="hashmap" resultType="com.pado.socialdiary.api.diary.entity.Diary">
+  <select id="selectAll" parameterType="hashmap" resultType="com.pado.socialdiary.api.moduel.diary.entity.Diary">
     SELECT * FROM TB_DIARY
     WHERE MEMBER_ID IN
     <foreach collection="followeeList" item="followee" open="(" close=")" separator=",">
@@ -50,7 +50,7 @@
     LIMIT #{cursorPageable.pageSize}
   </select>
 
-  <update id="update" parameterType="com.pado.socialdiary.api.diary.entity.Diary">
+  <update id="update" parameterType="com.pado.socialdiary.api.moduel.diary.entity.Diary">
     UPDATE TB_DIARY SET MEMBER_ID = #{memberId}, TITLE = #{title}, CONTENTS = #{contents}, UPD_ID = #{memberId}, UPD_DT = NOW() WHERE DIARY_ID = #{diaryId}
   </update>
 
@@ -62,7 +62,7 @@
     DELETE FROM TB_DIARY_HISTORY WHERE DIARY_ID = #{diaryId}
   </delete>
 
-  <select id="findDiaryCommentsByDiaryIds" resultType="com.pado.socialdiary.api.diary.dto.DiaryCommentResponse" parameterType="java.util.List">
+  <select id="findDiaryCommentsByDiaryIds" resultType="com.pado.socialdiary.api.moduel.diary.dto.DiaryCommentResponse" parameterType="java.util.List">
     SELECT
       TB_DIARY_COMMENT.DIARY_COMMENT_ID,
       TB_DIARY_COMMENT.DIARY_ID,
@@ -81,14 +81,14 @@
     ORDER BY REG_DT DESC
   </select>
 
-  <select id="findDiaryCommentById" resultType="com.pado.socialdiary.api.diary.entity.DiaryComment">
+  <select id="findDiaryCommentById" resultType="com.pado.socialdiary.api.moduel.diary.entity.DiaryComment">
     SELECT
         *
     FROM TB_DIARY_COMMENT
     WHERE
         DIARY_COMMENT_ID = #{diaryCommentId}
   </select>
-  <select id="findDiaryCommentsByDiaryId" resultType="com.pado.socialdiary.api.diary.dto.DiaryCommentResponse" parameterType="java.lang.Integer">
+  <select id="findDiaryCommentsByDiaryId" resultType="com.pado.socialdiary.api.moduel.diary.dto.DiaryCommentResponse" parameterType="java.lang.Integer">
     SELECT
       DIARY_COMMENT_ID,
       DIARY_ID,
