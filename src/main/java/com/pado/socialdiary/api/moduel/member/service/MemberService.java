@@ -1,10 +1,6 @@
 package com.pado.socialdiary.api.moduel.member.service;
 
 import com.pado.socialdiary.api.common.dto.AuthorizationDto;
-import com.pado.socialdiary.api.utils.attach.AttachUtil;
-import com.pado.socialdiary.api.utils.attach.dto.AttachDto;
-import com.pado.socialdiary.api.utils.attach.entity.Attached;
-import com.pado.socialdiary.api.utils.attach.mapper.AttachedMapper;
 import com.pado.socialdiary.api.config.security.JwtProvider;
 import com.pado.socialdiary.api.constants.AttachPath;
 import com.pado.socialdiary.api.constants.RefTable;
@@ -15,7 +11,11 @@ import com.pado.socialdiary.api.moduel.member.dto.MemberSearchResponse;
 import com.pado.socialdiary.api.moduel.member.dto.MemberUpdateRequest;
 import com.pado.socialdiary.api.moduel.member.entity.Member;
 import com.pado.socialdiary.api.moduel.member.entity.MemberHistory;
-import com.pado.socialdiary.api.moduel.member.mapper.MemberMapper;
+import com.pado.socialdiary.api.moduel.member.mapper.MemberRepository;
+import com.pado.socialdiary.api.utils.attach.AttachUtil;
+import com.pado.socialdiary.api.utils.attach.dto.AttachDto;
+import com.pado.socialdiary.api.utils.attach.entity.Attached;
+import com.pado.socialdiary.api.utils.attach.mapper.AttachedMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -37,7 +37,7 @@ import static com.pado.socialdiary.api.constants.YesNoCode.Y;
 @RequiredArgsConstructor
 public class MemberService {
 
-    private final MemberMapper memberMapper;
+    private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final JwtProvider jwtProvider;
@@ -47,7 +47,7 @@ public class MemberService {
     @Transactional
     public void join(MemberJoinRequest memberJoinRequest) {
 
-        Integer findDuplicateEmailCount = memberMapper.findDuplicateEmailCount(memberJoinRequest.getEmail());
+        Integer findDuplicateEmailCount = memberRepository.findDuplicateEmailCount(memberJoinRequest.getEmail());
 
         if (findDuplicateEmailCount > 0) {
             throw new IllegalArgumentException("Duplicate Email");
@@ -62,11 +62,11 @@ public class MemberService {
                 .gender(memberJoinRequest.getGender())
                 .build();
 
-        memberMapper.save(builtMember);
-        memberMapper.updateRegOrUpdColumn(builtMember.getMemberId());
+        memberRepository.save(builtMember);
+        memberRepository.updateRegOrUpdColumn(builtMember.getMemberId());
 
-        Member getMember = memberMapper.getByMemberId(builtMember.getMemberId());
-        memberMapper.saveHistory(new MemberHistory(getMember));
+        Member getMember = memberRepository.getByMemberId(builtMember.getMemberId());
+        memberRepository.saveHistory(new MemberHistory(getMember));
     }
 
     private LocalDateTime dateTimeConvert(Integer year, Integer month, Integer dayOfMonth) {
@@ -84,10 +84,10 @@ public class MemberService {
 
     @Transactional
     public void update(MemberUpdateRequest memberUpdateRequest) {
-        memberMapper.update(memberUpdateRequest);
-        Member getMember = memberMapper.getByMemberId(memberUpdateRequest.getMemberId());
+        memberRepository.update(memberUpdateRequest);
+        Member getMember = memberRepository.getByMemberId(memberUpdateRequest.getMemberId());
 
-        memberMapper.saveHistory(new MemberHistory(getMember));
+        memberRepository.saveHistory(new MemberHistory(getMember));
     }
 
     @Transactional
@@ -113,20 +113,20 @@ public class MemberService {
         memberUpdateRequest.setMemberId(member.getMemberId());
         memberUpdateRequest.setPicture(builtMemberPicture.getOriginalFilename());
 
-        memberMapper.update(memberUpdateRequest);
-        memberMapper.saveHistory(new MemberHistory(memberMapper.getByMemberId(memberUpdateRequest.getMemberId())));
+        memberRepository.update(memberUpdateRequest);
+        memberRepository.saveHistory(new MemberHistory(memberRepository.getByMemberId(memberUpdateRequest.getMemberId())));
     }
 
     @Transactional
     public void updateMemberIntroduce(Member member, String introduce) {
         member.changeIntroduce(introduce);
-        memberMapper.updateIntroduce(member.getMemberId(), introduce);
+        memberRepository.updateIntroduce(member.getMemberId(), introduce);
     }
 
     public List<MemberSearchResponse> searchMember(Member member, String keyword) {
 
-        List<MemberSearchResponse> findMembers = memberMapper.findMemberByKeyword(keyword);
-        List<Follow> findFollowMembers = memberMapper.findFollowMember(member.getMemberId());
+        List<MemberSearchResponse> findMembers = memberRepository.findMemberByKeyword(keyword);
+        List<Follow> findFollowMembers = memberRepository.findFollowMember(member.getMemberId());
 
         findMembers.forEach(mber -> {
             findFollowMembers.forEach(follow -> {
