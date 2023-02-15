@@ -5,13 +5,11 @@ import com.pado.socialdiary.api.moduel.member.dto.MemberSearchResponse;
 import com.pado.socialdiary.api.moduel.member.dto.MemberUpdateRequest;
 import com.pado.socialdiary.api.moduel.member.entity.Member;
 import com.pado.socialdiary.api.moduel.member.entity.MemberHistory;
-import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 import java.util.Optional;
 
-@Mapper
-public interface MemberMapper {
+public interface MemberRepository {
 
     Integer findDuplicateEmailCount(String email);
 
@@ -31,5 +29,5 @@ public interface MemberMapper {
 
     List<MemberSearchResponse> findMemberByKeyword(String keyword);
 
-    List<Follow> findFollowMember(Integer memberId);
+    List<Follow> findFollowMember(Integer mmemberId);
 }
