@@ -1,7 +1,7 @@
 package com.pado.socialdiary.api.constants;
 
 public enum RefTable implements CommonCode {
-    HP_MEMBER("HP_MEMBER", "회원 테이블"),
+    TB_MEMBER("TB_MEMBER", "회원 테이블"),
     TB_DIARY("TB_DIARY", "다이어리 테이블");
 
     private final String value;

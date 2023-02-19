@@ -17,6 +17,7 @@ import com.pado.socialdiary.api.utils.attach.AttachUtil;
 import com.pado.socialdiary.api.utils.attach.dto.AttachDto;
 import com.pado.socialdiary.api.utils.attach.entity.Attached;
 import com.pado.socialdiary.api.utils.attach.repository.AttachedMapper;
+import com.pado.socialdiary.api.utils.attach.repository.AttachedRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -41,7 +42,7 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final JwtProvider jwtProvider;
-    private final AttachedMapper attachedMapper;
+    private final AttachedRepository attachedRepository;
 
     @Transactional
     public void join(MemberJoinRequest memberJoinRequest) {
@@ -92,7 +93,7 @@ public class MemberService {
     @Transactional
     public void updateMemberPicture(Member member, AttachDto.UploadRequest uploadRequest) {
         Attached builtMemberPicture = Attached.builder()
-                .refTable(RefTable.HP_MEMBER.getValue())
+                .refTable(RefTable.TB_MEMBER.getValue())
                 .refId(member.getMemberId())
                 .originalFilename(uploadRequest.getOriginalFileName())
                 .attachedFilename(uploadRequest.getAttachedFileName())
@@ -104,7 +105,7 @@ public class MemberService {
                 .regDt(LocalDateTime.now())
                 .build();
 
-        attachedMapper.createAttached(builtMemberPicture);
+        attachedRepository.createAttached(builtMemberPicture);
 
         MemberUpdateRequest memberUpdateRequest = new MemberUpdateRequest();
         memberUpdateRequest.setMemberId(member.getMemberId());
