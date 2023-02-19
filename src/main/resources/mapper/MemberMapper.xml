@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.pado.socialdiary.api.moduel.member.mapper.MemberMapper">
+<mapper namespace="com.pado.socialdiary.api.moduel.member.repository.MemberMapper">
     <insert id="save" parameterType="com.pado.socialdiary.api.moduel.member.entity.Member" useGeneratedKeys="true"
             keyProperty="memberId">
         INSERT INTO TB_MEMBER(EMAIL, PASSWORD, LOGIN_PROVIDER, NAME, NICKNAME, PICTURE, DATE_OF_BIRTH, GENDER)
