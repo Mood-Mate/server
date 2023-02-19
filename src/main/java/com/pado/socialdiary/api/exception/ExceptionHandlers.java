@@ -1,25 +1,24 @@
 package com.pado.socialdiary.api.exception;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
+import com.pado.socialdiary.api.common.dto.ExceptionDto;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.client.HttpStatusCodeException;
 
-import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 @RestControllerAdvice
 public class ExceptionHandlers {
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity runtimeExceptionHandler(Exception exception) {
-        return new ResponseEntity(exception.getMessage(), BAD_REQUEST);
-    }
+    @ResponseStatus(INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity runtimeExceptionHandler(HttpServletRequest request, RuntimeException runtimeException) {
+        ExceptionDto exceptionDto = new ExceptionDto(runtimeException.getMessage(), request.getRequestURI());
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity illegalArgumentExceptionHandler(IllegalArgumentException illegalArgumentException) {
-        return new ResponseEntity(illegalArgumentException.getMessage(), BAD_REQUEST);
+        return ResponseEntity
+                .internalServerError()
+                .body(exceptionDto);
     }
 }
