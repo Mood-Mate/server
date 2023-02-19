@@ -1,9 +1,9 @@
-package com.pado.socialdiary.api.utils.attach.mapper;
-
-import java.util.Optional;
+package com.pado.socialdiary.api.utils.attach.repository;
 
 import com.pado.socialdiary.api.utils.attach.entity.Attached;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.Optional;
 
 @Mapper
 public interface AttachedMapper {

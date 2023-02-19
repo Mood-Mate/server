@@ -1,7 +1,7 @@
 package com.pado.socialdiary.api.common;
 
 import com.pado.socialdiary.api.moduel.member.entity.Member;
-import com.pado.socialdiary.api.moduel.member.mapper.MemberMapper;
+import com.pado.socialdiary.api.moduel.member.repository.MemberMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
