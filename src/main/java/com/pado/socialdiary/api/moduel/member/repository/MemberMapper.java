@@ -1,4 +1,4 @@
-package com.pado.socialdiary.api.moduel.member.mapper;
+package com.pado.socialdiary.api.moduel.member.repository;
 
 import com.pado.socialdiary.api.moduel.follow.entity.Follow;
 import com.pado.socialdiary.api.moduel.member.dto.MemberSearchResponse;
@@ -32,4 +32,8 @@ public interface MemberMapper {
     List<MemberSearchResponse> findMemberByKeyword(String keyword);
 
     List<Follow> findFollowMember(Integer memberId);
+
+    void deleteMember(Integer memberId);
+
+    void deleteMemberHistory(Integer memberId);
 }

@@ -3,7 +3,7 @@ package com.pado.socialdiary.api.moduel.diary.service;
 import com.pado.socialdiary.api.utils.attach.AttachUtil;
 import com.pado.socialdiary.api.utils.attach.dto.AttachDto;
 import com.pado.socialdiary.api.utils.attach.entity.Attached;
-import com.pado.socialdiary.api.utils.attach.mapper.AttachedMapper;
+import com.pado.socialdiary.api.utils.attach.repository.AttachedMapper;
 import com.pado.socialdiary.api.constants.AttachPath;
 import com.pado.socialdiary.api.constants.RefTable;
 import com.pado.socialdiary.api.utils.pageable.entity.CursorPageable;

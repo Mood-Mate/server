@@ -2,7 +2,7 @@ package com.pado.socialdiary.api.config.security;
 
 import com.pado.socialdiary.api.common.dto.AuthorizationDto;
 import com.pado.socialdiary.api.moduel.member.entity.Member;
-import com.pado.socialdiary.api.moduel.member.mapper.MemberMapper;
+import com.pado.socialdiary.api.moduel.member.repository.MemberMapper;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;

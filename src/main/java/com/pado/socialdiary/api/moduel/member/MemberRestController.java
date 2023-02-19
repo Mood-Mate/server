@@ -1,11 +1,14 @@
 package com.pado.socialdiary.api.moduel.member;
 
+import com.pado.socialdiary.api.constants.AttachPath;
 import com.pado.socialdiary.api.moduel.member.dto.MemberJoinRequest;
 import com.pado.socialdiary.api.moduel.member.dto.MemberLoginRequest;
 import com.pado.socialdiary.api.moduel.member.dto.MemberSearchResponse;
 import com.pado.socialdiary.api.moduel.member.dto.MemberUpdateRequest;
 import com.pado.socialdiary.api.moduel.member.entity.Member;
 import com.pado.socialdiary.api.moduel.member.service.MemberService;
+import com.pado.socialdiary.api.utils.attach.AttachUtil;
+import com.pado.socialdiary.api.utils.attach.dto.AttachDto;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +27,7 @@ import java.util.List;
 public class MemberRestController {
 
     private final MemberService memberService;
+    private final AttachUtil attachUtil;
 
     @PostMapping
     public ResponseEntity join(@RequestBody @Parameter MemberJoinRequest memberJoinRequest) {
@@ -49,7 +53,10 @@ public class MemberRestController {
     @PatchMapping("/picture")
     public ResponseEntity updatePicture(@AuthenticationPrincipal Member member,
                                         @RequestPart MultipartFile multipartFile) throws IOException {
-        memberService.updateMemberPicture(member, multipartFile);
+
+        AttachDto.UploadRequest uploadRequest = attachUtil.attachedFile(AttachPath.MEMBER_PICTURE.getValue(), multipartFile);
+        memberService.updateMemberPicture(member, uploadRequest);
+
         return ResponseEntity.ok()
                 .build();
     }

@@ -1,4 +1,4 @@
-package com.pado.socialdiary.api.moduel.member.mapper;
+package com.pado.socialdiary.api.moduel.member.repository;
 
 import com.pado.socialdiary.api.moduel.follow.entity.Follow;
 import com.pado.socialdiary.api.moduel.member.dto.MemberSearchResponse;
@@ -65,5 +65,15 @@ public class MemberMybatisRepository implements MemberRepository {
     @Override
     public List<Follow> findFollowMember(Integer memberId) {
         return memberMapper.findFollowMember(memberId);
+    }
+
+    @Override
+    public void deleteMember(Integer memberId) {
+        memberMapper.deleteMember(memberId);
+    }
+
+    @Override
+    public void deleteMemberHistory(Integer memberId) {
+        memberMapper.deleteMemberHistory(memberId);
     }
 }

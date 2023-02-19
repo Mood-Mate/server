@@ -2,6 +2,7 @@ package com.pado.socialdiary.api.utils.attach;
 
 import com.pado.socialdiary.api.utils.attach.dto.AttachDto;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -10,7 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
-@Service
+@Component
 public class AttachUtil {
 
     @Value("${file.dir}")
