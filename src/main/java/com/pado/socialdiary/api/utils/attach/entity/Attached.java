@@ -1,5 +1,6 @@
 package com.pado.socialdiary.api.utils.attach.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,6 +9,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@AllArgsConstructor
 public class Attached {
 
     private Integer attachedId;

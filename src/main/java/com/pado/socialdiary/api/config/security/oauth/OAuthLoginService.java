@@ -1,7 +1,7 @@
 package com.pado.socialdiary.api.config.security.oauth;
 
 import com.pado.socialdiary.api.moduel.member.entity.Member;
-import com.pado.socialdiary.api.moduel.member.mapper.MemberMapper;
+import com.pado.socialdiary.api.moduel.member.repository.MemberMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
