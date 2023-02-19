@@ -41,7 +41,6 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final JwtProvider jwtProvider;
-    private final AttachUtil attachUtil;
     private final AttachedMapper attachedMapper;
 
     @Transactional
@@ -91,7 +90,7 @@ public class MemberService {
     }
 
     @Transactional
-    public void updateMemberPicture(Member member, AttachDto.UploadRequest uploadRequest) throws IOException {
+    public void updateMemberPicture(Member member, AttachDto.UploadRequest uploadRequest) {
         Attached builtMemberPicture = Attached.builder()
                 .refTable(RefTable.HP_MEMBER.getValue())
                 .refId(member.getMemberId())
