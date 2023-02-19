@@ -12,11 +12,11 @@ import com.pado.socialdiary.api.moduel.member.dto.MemberSearchResponse;
 import com.pado.socialdiary.api.moduel.member.dto.MemberUpdateRequest;
 import com.pado.socialdiary.api.moduel.member.entity.Member;
 import com.pado.socialdiary.api.moduel.member.entity.MemberHistory;
-import com.pado.socialdiary.api.moduel.member.mapper.MemberRepository;
+import com.pado.socialdiary.api.moduel.member.repository.MemberRepository;
 import com.pado.socialdiary.api.utils.attach.AttachUtil;
 import com.pado.socialdiary.api.utils.attach.dto.AttachDto;
 import com.pado.socialdiary.api.utils.attach.entity.Attached;
-import com.pado.socialdiary.api.utils.attach.mapper.AttachedMapper;
+import com.pado.socialdiary.api.utils.attach.repository.AttachedMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,7 +25,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -92,9 +91,7 @@ public class MemberService {
     }
 
     @Transactional
-    public void updateMemberPicture(Member member, MultipartFile file) throws IOException {
-        AttachDto.UploadRequest uploadRequest = attachUtil.attachedFile(AttachPath.MEMBER_PICTURE.getValue(), file);
-
+    public void updateMemberPicture(Member member, AttachDto.UploadRequest uploadRequest) throws IOException {
         Attached builtMemberPicture = Attached.builder()
                 .refTable(RefTable.HP_MEMBER.getValue())
                 .refId(member.getMemberId())
@@ -140,5 +137,11 @@ public class MemberService {
         });
 
         return findMembers;
+    }
+
+    @Transactional
+    public void deleteMember(Integer memberId) {
+        memberRepository.deleteMemberHistory(memberId);
+        memberRepository.deleteMember(memberId);
     }
 }

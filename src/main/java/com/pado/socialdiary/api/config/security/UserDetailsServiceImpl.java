@@ -1,7 +1,7 @@
 package com.pado.socialdiary.api.config.security;
 
 import com.pado.socialdiary.api.moduel.member.entity.Member;
-import com.pado.socialdiary.api.moduel.member.mapper.MemberMapper;
+import com.pado.socialdiary.api.moduel.member.repository.MemberMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
