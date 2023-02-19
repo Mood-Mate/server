@@ -4,6 +4,7 @@ import com.pado.socialdiary.api.common.dto.AuthorizationDto;
 import com.pado.socialdiary.api.config.security.JwtProvider;
 import com.pado.socialdiary.api.constants.AttachPath;
 import com.pado.socialdiary.api.constants.RefTable;
+import com.pado.socialdiary.api.exception.member.DuplicateEmailException;
 import com.pado.socialdiary.api.moduel.follow.entity.Follow;
 import com.pado.socialdiary.api.moduel.member.dto.MemberJoinRequest;
 import com.pado.socialdiary.api.moduel.member.dto.MemberLoginRequest;
@@ -50,7 +51,7 @@ public class MemberService {
         Integer findDuplicateEmailCount = memberRepository.findDuplicateEmailCount(memberJoinRequest.getEmail());
 
         if (findDuplicateEmailCount > 0) {
-            throw new IllegalArgumentException("Duplicate Email");
+            throw new DuplicateEmailException();
         }
 
         Member builtMember = Member.builder()
