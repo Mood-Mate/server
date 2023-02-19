@@ -88,4 +88,11 @@
         FROM TB_FOLLOW
         WHERE FOLLOWER_MEMBER_ID = #{memberId}
     </select>
+
+    <delete id="deleteMember">
+        DELETE FROM TB_MEMBER WHERE TB_MEMBER.MEMBER_ID = #{memberId}
+    </delete>
+    <delete id="deleteMemberHistory">
+        DELETE FROM TB_MEMBER_HISTORY WHERE TB_MEMBER_HISTORY.MEMBER_ID = #{memberId}
+    </delete>
 </mapper>

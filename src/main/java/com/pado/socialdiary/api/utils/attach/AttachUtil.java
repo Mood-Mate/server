@@ -44,14 +44,14 @@ public class AttachUtil {
         return new AttachDto.UploadRequest(originalFileName, attachedFileName, attachPath, filesize);
     }
 
-    private String createAttachedFilename(String originalFileName) {
+    public String createAttachedFilename(String originalFileName) {
         String ext = subStringExt(originalFileName);
         String uuid = UUID.randomUUID().toString();
 
         return uuid + "." + ext;
     }
 
-    private String subStringExt(String originalFileName) {
+    public String subStringExt(String originalFileName) {
         int pos = originalFileName.lastIndexOf(".");
         return originalFileName.substring(pos + 1);
     }
