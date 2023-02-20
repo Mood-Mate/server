@@ -6,7 +6,6 @@ import com.pado.socialdiary.api.moduel.diary.dto.DiaryCommentResponse;
 import com.pado.socialdiary.api.moduel.diary.dto.DiaryCreateRequest;
 import com.pado.socialdiary.api.moduel.diary.dto.DiaryResponse;
 import com.pado.socialdiary.api.moduel.diary.dto.DiaryUpdateRequest;
-import com.pado.socialdiary.api.moduel.diary.entity.Diary;
 import com.pado.socialdiary.api.moduel.diary.service.DiaryService;
 import com.pado.socialdiary.api.moduel.member.entity.Member;
 import lombok.RequiredArgsConstructor;
@@ -51,9 +50,9 @@ public class DiaryRestController {
     }
 
     @GetMapping("/followee")
-    public ResponseEntity<CursorPageResponse<Diary>> searchFolloweeDiary(@AuthenticationPrincipal Member member,
-                                                                         @RequestParam(required = false, value = "next") Integer next,
-                                                                         CursorPageable cursorPageable){
+    public ResponseEntity<CursorPageResponse<DiaryResponse>> searchFolloweeDiary(@AuthenticationPrincipal Member member,
+                                                                                 @RequestParam(required = false, value = "next") Integer next,
+                                                                                 CursorPageable cursorPageable){
 
         cursorPageable.setCursor(next);
         return ResponseEntity.ok(diaryService.findFolloweeDiary(member, cursorPageable));

@@ -37,16 +37,26 @@
     WHERE MEMBER_ID=#{memberId} AND MONTH(REG_DT)=MONTH(#{regDt})
   </select>
 
-  <select id="selectAll" parameterType="hashmap" resultType="com.pado.socialdiary.api.moduel.diary.entity.Diary">
-    SELECT * FROM TB_DIARY
-    WHERE MEMBER_ID IN
+  <select id="selectAll" parameterType="hashmap" resultType="com.pado.socialdiary.api.moduel.diary.dto.DiaryResponse">
+    SELECT
+      TB_DIARY.DIARY_ID,
+      TB_DIARY.MEMBER_ID,
+      TB_DIARY.TITLE,
+      TB_DIARY.CONTENTS,
+      TB_DIARY.REG_DT,
+      TB_MEMBER.NICKNAME,
+      TB_MEMBER.PICTURE
+    FROM TB_DIARY
+    JOIN TB_MEMBER
+    ON TB_DIARY.MEMBER_ID = TB_MEMBER.MEMBER_ID
+    WHERE TB_DIARY.MEMBER_ID IN
     <foreach collection="followeeList" item="followee" open="(" close=")" separator=",">
       #{followee}
     </foreach>
     <if test="cursorPageable.cursor != null">
-    AND DIARY_ID &lt; #{cursorPageable.cursor}
+    AND TB_DIARY.DIARY_ID &lt; #{cursorPageable.cursor}
     </if>
-    ORDER BY DIARY_ID DESC
+    ORDER BY TB_DIARY.DIARY_ID DESC
     LIMIT #{cursorPageable.pageSize}
   </select>
 

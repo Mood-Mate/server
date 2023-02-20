@@ -1,5 +1,6 @@
 package com.pado.socialdiary.api.moduel.guestbook.service;
 
+import com.pado.socialdiary.api.moduel.guestbook.dto.GuestBookResponse;
 import com.pado.socialdiary.api.moduel.guestbook.entity.GuestBook;
 import com.pado.socialdiary.api.moduel.guestbook.mapper.GuestBookMapper;
 import com.pado.socialdiary.api.moduel.member.entity.Member;
@@ -28,7 +29,7 @@ public class GuestBookService {
         guestBookMapper.saveGuestBook(builtGuestBook);
     }
 
-    public List<GuestBook> findGuestBook(Integer memberId) {
+    public List<GuestBookResponse> findGuestBook(Integer memberId) {
 
         return guestBookMapper.findGuestBook(memberId);
     }

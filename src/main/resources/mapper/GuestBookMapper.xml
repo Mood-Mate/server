@@ -2,16 +2,25 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.pado.socialdiary.api.moduel.guest_book.mapper.GuestBookMapper">
+<mapper namespace="com.pado.socialdiary.api.moduel.guestbook.mapper.GuestBookMapper">
     <insert id="saveGuestBook" parameterType="com.pado.socialdiary.api.moduel.guestbook.entity.GuestBook" useGeneratedKeys="true">
         INSERT INTO TB_GUEST_BOOK(HOST_MEMBER_ID, GUEST_MEMBER_ID, CONTENTS, REG_ID, REG_DT, UPD_ID, UPD_DT)
         VALUES (#{hostMemberId}, #{guestMemberId}, #{contents}, #{guestMemberId}, #{regDt}, #{guestMemberId}, #{updDt})
     </insert>
 
-    <select id="findGuestBook" resultType="com.pado.socialdiary.api.moduel.guestbook.entity.GuestBook">
-        SELECT * FROM TB_GUEST_BOOK
-        WHERE HOST_MEMBER_ID=#{memberId}
-        ORDER BY REG_DT DESC
+    <select id="findGuestBook" resultType="com.pado.socialdiary.api.moduel.guestbook.dto.GuestBookResponse">
+        SELECT
+            TB_GUEST_BOOK.GUEST_BOOK_ID,
+            TB_GUEST_BOOK.HOST_MEMBER_ID,
+            TB_GUEST_BOOK.GUEST_MEMBER_ID,
+            TB_GUEST_BOOK.CONTENTS,
+            TB_GUEST_BOOK.REG_DT,
+            TB_MEMBER.NICKNAME
+        FROM TB_GUEST_BOOK
+        JOIN TB_MEMBER
+        ON TB_GUEST_BOOK.GUEST_MEMBER_ID = TB_MEMBER.MEMBER_ID
+        WHERE TB_GUEST_BOOK.HOST_MEMBER_ID = #{memberId}
+        ORDER BY TB_GUEST_BOOK.GUEST_BOOK_ID DESC
     </select>
 
     <delete id="deleteGuestBook">

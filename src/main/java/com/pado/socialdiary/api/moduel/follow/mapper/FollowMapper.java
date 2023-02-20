@@ -1,6 +1,8 @@
 package com.pado.socialdiary.api.moduel.follow.mapper;
 
 import com.pado.socialdiary.api.moduel.follow.dto.FollowRequest;
+import com.pado.socialdiary.api.moduel.follow.dto.FollowResponse;
+
 import java.util.List;
 import java.util.Optional;
 import org.apache.ibatis.annotations.Mapper;
@@ -11,5 +13,6 @@ public interface FollowMapper {
   Optional<Integer> existFollowing(FollowRequest followRequest);
   void createFollowing(FollowRequest followRequest);
   void deleteFollowing(FollowRequest followRequest);
-  List<Integer> findFollowee(Integer memberId);
+  List<Integer> findFolloweeId(Integer memberId);
+  List<FollowResponse> findFollowee(Integer memberId);
 }
