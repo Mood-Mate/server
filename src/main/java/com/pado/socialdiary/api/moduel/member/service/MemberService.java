@@ -105,11 +105,12 @@ public class MemberService {
                 .regDt(LocalDateTime.now())
                 .build();
 
+        attachedRepository.deleteMemberPicture(member.getMemberId(), RefTable.TB_MEMBER.getValue(), AttachPath.MEMBER_PICTURE.getValue());
         attachedRepository.createAttached(builtMemberPicture);
 
         MemberUpdateRequest memberUpdateRequest = new MemberUpdateRequest();
         memberUpdateRequest.setMemberId(member.getMemberId());
-        memberUpdateRequest.setPicture(builtMemberPicture.getOriginalFilename());
+        memberUpdateRequest.setPicture(builtMemberPicture.getAttachedFilename());
 
         memberRepository.update(memberUpdateRequest);
         memberRepository.saveHistory(new MemberHistory(memberRepository.getByMemberId(memberUpdateRequest.getMemberId())));

@@ -25,7 +25,7 @@ public class CommonController {
      * @throws MalformedURLException
      */
     @ResponseBody
-    @GetMapping("/resource/image/{filename}")
+    @GetMapping("/resource/image/member/picture/{filename}")
     public Resource getMemberPicture(@PathVariable String filename) throws MalformedURLException {
         return new UrlResource("file:" + attachUtil.getFullPath(AttachPath.MEMBER_PICTURE.getValue(), filename));
     }

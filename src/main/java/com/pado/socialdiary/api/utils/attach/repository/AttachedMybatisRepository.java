@@ -31,4 +31,9 @@ public class AttachedMybatisRepository implements AttachedRepository{
     public void deleteAttached(Integer attachedId) {
         attachedMapper.deleteAttached(attachedId);
     }
+
+    @Override
+    public void deleteMemberPicture(Integer memberId, String refTable, String attachedPath) {
+        attachedMapper.deleteMemberPicture(memberId, refTable, attachedPath);
+    }
 }

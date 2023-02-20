@@ -4,9 +4,9 @@
 
 <mapper namespace="com.pado.socialdiary.api.utils.attach.repository.AttachedMapper">
     <insert id="createAttached">
-        INSERT INTO TB_ATTACHED(REF_TABLE, REF_ID, ORIGINAL_FILENAME, ATTACHED_FILENAME, ATTACHED_PATH, FILE_SIZE, REG_ID, REG_DT, UPD_ID, UPD_DT)
-        VALUES (
-                #{refTable},
+        INSERT INTO TB_ATTACHED(REF_TABLE, REF_ID, ORIGINAL_FILENAME, ATTACHED_FILENAME, ATTACHED_PATH, FILE_SIZE,
+                                REG_ID, REG_DT, UPD_ID, UPD_DT)
+        VALUES (#{refTable},
                 #{refId},
                 #{originalFilename},
                 #{attachedFilename},
@@ -15,8 +15,7 @@
                 #{regId},
                 NOW(),
                 #{updId},
-                NOW()
-               )
+                NOW())
     </insert>
     <select id="findMemberPictureByMemberId" resultType="com.pado.socialdiary.api.utils.attach.entity.Attached">
         SELECT *
@@ -25,15 +24,22 @@
           AND REF_ID = #{memberId}
     </select>
 
-  <select id="findDiaryPictureIdByDiaryId" parameterType="integer" resultType="integer">
+    <select id="findDiaryPictureIdByDiaryId" parameterType="integer" resultType="integer">
         SELECT ATTACHED_ID
         FROM TB_ATTACHED
         WHERE REF_TABLE = 'TB_DIARY'
           AND REF_ID = #{diaryId}
-  </select>
+    </select>
 
-  <delete id="deleteAttached" parameterType="integer">
-        DELETE FROM TB_ATTACHED
+    <delete id="deleteAttached" parameterType="integer">
+        DELETE
+        FROM TB_ATTACHED
         WHERE ATTACHED_ID = #{attachedId}
-  </delete>
+    </delete>
+    <delete id="deleteMemberPicture">
+        DELETE FROM TB_ATTACHED
+        WHERE REF_TABLE = #{refTable}
+          AND REF_ID = ${memberId}
+          AND ATTACHED_PATH = #{attachedPath}
+    </delete>
 </mapper>
