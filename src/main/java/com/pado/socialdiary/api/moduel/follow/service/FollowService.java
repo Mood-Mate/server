@@ -1,6 +1,7 @@
 package com.pado.socialdiary.api.moduel.follow.service;
 
 import com.pado.socialdiary.api.moduel.follow.dto.FollowRequest;
+import com.pado.socialdiary.api.moduel.follow.dto.FollowResponse;
 import com.pado.socialdiary.api.moduel.follow.mapper.FollowMapper;
 import com.pado.socialdiary.api.moduel.member.entity.Member;
 import java.util.List;
@@ -16,6 +17,11 @@ public class FollowService {
 
   private final FollowMapper followMapper;
 
+  public List<FollowResponse> findFolloweeList(Integer memberId) {
+
+    return followMapper.findFollowee(memberId);
+  }
+
   @Transactional
   public void createOrDeleteFollowing(Member member, FollowRequest followRequest) {
 
@@ -27,10 +33,5 @@ public class FollowService {
     } else {
       followMapper.deleteFollowing(followRequest);
     }
-  }
-
-  public List<Integer> followList(Integer memberId) {
-
-    return followMapper.findFollowee(memberId);
   }
 }

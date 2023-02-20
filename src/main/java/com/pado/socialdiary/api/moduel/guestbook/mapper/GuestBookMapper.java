@@ -2,6 +2,7 @@ package com.pado.socialdiary.api.moduel.guestbook.mapper;
 
 import java.util.List;
 
+import com.pado.socialdiary.api.moduel.guestbook.dto.GuestBookResponse;
 import com.pado.socialdiary.api.moduel.guestbook.entity.GuestBook;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -9,6 +10,6 @@ import org.apache.ibatis.annotations.Mapper;
 public interface GuestBookMapper {
 
     void saveGuestBook(GuestBook guestBook);
-    List<GuestBook> findGuestBook(Integer memberId);
+    List<GuestBookResponse> findGuestBook(Integer memberId);
     void deleteGuestBook(Integer guestBookId);
 }

@@ -1,5 +1,6 @@
 package com.pado.socialdiary.api.moduel.guestbook;
 
+import com.pado.socialdiary.api.moduel.guestbook.dto.GuestBookResponse;
 import com.pado.socialdiary.api.moduel.guestbook.entity.GuestBook;
 import com.pado.socialdiary.api.moduel.guestbook.service.GuestBookService;
 import com.pado.socialdiary.api.moduel.member.entity.Member;
@@ -28,7 +29,7 @@ public class GuestBookRestController {
     }
 
     @GetMapping("/{memberId}")
-    public ResponseEntity<List<GuestBook>> findGuestBook(@PathVariable("memberId") Integer memberId) {
+    public ResponseEntity<List<GuestBookResponse>> findGuestBook(@PathVariable("memberId") Integer memberId) {
 
         return ResponseEntity.ok(guestBookService.findGuestBook(memberId));
     }

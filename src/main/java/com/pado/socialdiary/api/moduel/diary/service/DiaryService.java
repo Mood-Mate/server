@@ -164,20 +164,19 @@ public class DiaryService {
         return diaryMapper.selectDate(memberId, regDt);
     }
 
-    public CursorPageResponse<Diary> findFolloweeDiary(Member member, CursorPageable cursorPageable) {
+    public CursorPageResponse<DiaryResponse> findFolloweeDiary(Member member, CursorPageable cursorPageable) {
 
-        List<Integer> followeeList = followMapper.findFollowee(member.getMemberId());
-        followeeList.add(member.getMemberId());
+        List<Integer> followeeList = followMapper.findFolloweeId(member.getMemberId());
 
         Map<String, Object> map = new HashMap<>();
         map.put("followeeList", followeeList);
         map.put("cursorPageable", cursorPageable);
 
-        List<Diary> diaryList = diaryMapper.selectAll(map);
+        List<DiaryResponse> diaryList = diaryMapper.selectAll(map);
         final Integer pageSize = cursorPageable.getPageSize();
         final Integer next = diaryList.size() >= pageSize ? diaryList.get(pageSize - 1).getDiaryId() : null;
 
-        return CursorPageResponse.<Diary>builder()
+        return CursorPageResponse.<DiaryResponse>builder()
             .data(diaryList)
             .next(next)
             .build();

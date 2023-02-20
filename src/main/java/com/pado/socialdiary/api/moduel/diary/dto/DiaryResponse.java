@@ -16,14 +16,18 @@ public class DiaryResponse {
     private String title;
     private String contents;
     private LocalDateTime regDt;
+    private String nickname;
+    private String picture;
 
     private List<DiaryCommentResponse> comments = new ArrayList<>();
 
-    public DiaryResponse(Integer diaryId, Integer memberId, String title, String contents, LocalDateTime regDt) {
+    public DiaryResponse(Integer diaryId, Integer memberId, String title, String contents, LocalDateTime regDt, String nickname, String picture) {
         this.diaryId = diaryId;
         this.memberId = memberId;
         this.title = title;
         this.contents = contents;
         this.regDt = regDt;
+        this.nickname = nickname;
+        this.picture = picture;
     }
 }
