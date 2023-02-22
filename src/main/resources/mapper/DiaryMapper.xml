@@ -22,14 +22,18 @@
 
   <select id="select" resultType="com.pado.socialdiary.api.moduel.diary.dto.DiaryResponse">
     SELECT
-      DIARY_ID,
-      MEMBER_ID,
-      TITLE,
-      CONTENTS,
-      REG_DT
+      TB_DIARY.DIARY_ID,
+      TB_DIARY.MEMBER_ID,
+      TB_DIARY.TITLE,
+      TB_DIARY.CONTENTS,
+      TB_DIARY.REG_DT,
+      TB_MEMBER.NICKNAME,
+      TB_MEMBER.PICTURE
     FROM TB_DIARY
-    WHERE MEMBER_ID=#{memberId} AND DATE_FORMAT(REG_DT, '%Y-%m-%d') = DATE_FORMAT(#{regDt},'%Y-%m-%d')
-    ORDER BY DIARY_ID DESC
+    JOIN TB_MEMBER
+    ON TB_DIARY.MEMBER_ID = TB_MEMBER.MEMBER_ID
+    WHERE TB_DIARY.MEMBER_ID=#{memberId} AND DATE_FORMAT(TB_DIARY.REG_DT, '%Y-%m-%d') = DATE_FORMAT(#{regDt},'%Y-%m-%d')
+    ORDER BY TB_DIARY.DIARY_ID DESC
   </select>
 
   <select id="selectDate" resultType="string">
