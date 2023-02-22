@@ -50,9 +50,9 @@ public class MemberRestController {
         return ResponseEntity.ok(memberService.login(memberLoginRequest));
     }
 
-    @GetMapping("/profile")
-    public ResponseEntity profile(@AuthenticationPrincipal Member member) {
-        return ResponseEntity.ok(memberService.getProfile(member));
+    @GetMapping("/{memberId}/profile")
+    public ResponseEntity profile(@PathVariable("memberId") Integer memberId) {
+        return ResponseEntity.ok(memberService.getProfile(memberId));
     }
 
     @PatchMapping("/picture")
