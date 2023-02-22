@@ -88,6 +88,17 @@
         FROM TB_FOLLOW
         WHERE FOLLOWER_MEMBER_ID = #{memberId}
     </select>
+    <select id="findMemberProfile" resultType="com.pado.socialdiary.api.moduel.member.dto.MemberProfileResponse">
+        SELECT
+            TB_MEMBER.MEMBER_ID,
+            TB_MEMBER.LOGIN_PROVIDER,
+            TB_MEMBER.NAME,
+            TB_MEMBER.NICKNAME,
+            TB_MEMBER.PICTURE,
+            TB_MEMBER.INTRODUCE
+        FROM TB_MEMBER
+        WHERE TB_MEMBER.MEMBER_ID = #{memberId}
+    </select>
 
     <delete id="deleteMember">
         DELETE FROM TB_MEMBER WHERE TB_MEMBER.MEMBER_ID = #{memberId}
@@ -95,4 +106,11 @@
     <delete id="deleteMemberHistory">
         DELETE FROM TB_MEMBER_HISTORY WHERE TB_MEMBER_HISTORY.MEMBER_ID = #{memberId}
     </delete>
+
+    <select id="getFollowerCount" resultType="integer">
+        SELECT COUNT(FOLLOW_ID) FROM TB_FOLLOW WHERE FOLLOWER_MEMBER_ID = #{memberId}
+    </select>
+    <select id="getFolloweeCount" resultType="integer">
+        SELECT COUNT(FOLLOW_ID) FROM TB_FOLLOW WHERE FOLLOWEE_MEMBER_ID = #{memberId}
+    </select>
 </mapper>

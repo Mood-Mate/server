@@ -1,6 +1,7 @@
 package com.pado.socialdiary.api.moduel.member.repository;
 
 import com.pado.socialdiary.api.moduel.follow.entity.Follow;
+import com.pado.socialdiary.api.moduel.member.dto.MemberProfileResponse;
 import com.pado.socialdiary.api.moduel.member.dto.MemberSearchResponse;
 import com.pado.socialdiary.api.moduel.member.dto.MemberUpdateRequest;
 import com.pado.socialdiary.api.moduel.member.entity.Member;
@@ -63,6 +64,11 @@ public class MemberMybatisRepository implements MemberRepository {
     }
 
     @Override
+    public MemberProfileResponse findMemberProfile(Integer memberId) {
+        return memberMapper.findMemberProfile(memberId);
+    }
+
+    @Override
     public List<Follow> findFollowMember(Integer memberId) {
         return memberMapper.findFollowMember(memberId);
     }
@@ -75,5 +81,15 @@ public class MemberMybatisRepository implements MemberRepository {
     @Override
     public void deleteMemberHistory(Integer memberId) {
         memberMapper.deleteMemberHistory(memberId);
+    }
+
+    @Override
+    public Integer getFollowerCount(Integer memberId) {
+        return memberMapper.getFollowerCount(memberId);
+    }
+
+    @Override
+    public Integer getFolloweeCount(Integer memberId) {
+        return memberMapper.getFolloweeCount(memberId);
     }
 }

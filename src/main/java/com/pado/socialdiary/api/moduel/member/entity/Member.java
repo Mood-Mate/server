@@ -28,8 +28,9 @@ public class Member {
     private LocalDateTime updDt;
 
     @Builder
-    public Member(Integer memberId, String email, String password, String name, String nickname, LocalDateTime dateOfBirth, GenderType gender, LoginProvider loginProvider, String picture) {
+    public Member(Integer memberId, LoginProvider loginProvider, String email, String password, String name, String nickname, LocalDateTime dateOfBirth, GenderType gender, String picture) {
         this.memberId = memberId;
+        this.loginProvider = loginProvider;
         this.email = email;
         this.password = password;
         this.name = name;
@@ -37,7 +38,6 @@ public class Member {
         this.dateOfBirth = dateOfBirth;
         this.gender = gender;
         this.picture = picture;
-        this.loginProvider = loginProvider;
     }
 
     public void changeIntroduce(String introduce) {

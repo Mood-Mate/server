@@ -4,12 +4,11 @@ import com.pado.socialdiary.api.common.dto.AuthorizationDto;
 import com.pado.socialdiary.api.config.security.JwtProvider;
 import com.pado.socialdiary.api.constants.AttachPath;
 import com.pado.socialdiary.api.constants.RefTable;
+import com.pado.socialdiary.api.constants.ResourcePath;
 import com.pado.socialdiary.api.exception.member.DuplicateEmailException;
 import com.pado.socialdiary.api.moduel.follow.entity.Follow;
-import com.pado.socialdiary.api.moduel.member.dto.MemberJoinRequest;
-import com.pado.socialdiary.api.moduel.member.dto.MemberLoginRequest;
-import com.pado.socialdiary.api.moduel.member.dto.MemberSearchResponse;
-import com.pado.socialdiary.api.moduel.member.dto.MemberUpdateRequest;
+import com.pado.socialdiary.api.moduel.member.dto.*;
+import com.pado.socialdiary.api.moduel.member.entity.LoginProvider;
 import com.pado.socialdiary.api.moduel.member.entity.Member;
 import com.pado.socialdiary.api.moduel.member.entity.MemberHistory;
 import com.pado.socialdiary.api.moduel.member.repository.MemberRepository;
@@ -30,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.pado.socialdiary.api.constants.YesNoCode.Y;
 
@@ -54,6 +54,7 @@ public class MemberService {
         }
 
         Member builtMember = Member.builder()
+                .loginProvider(LoginProvider.LOCAL)
                 .email(memberJoinRequest.getEmail())
                 .password(passwordEncoder.encode(memberJoinRequest.getPassword()))
                 .name(memberJoinRequest.getName())
@@ -144,5 +145,17 @@ public class MemberService {
     public void deleteMember(Integer memberId) {
         memberRepository.deleteMemberHistory(memberId);
         memberRepository.deleteMember(memberId);
+    }
+
+    public MemberProfileResponse getProfile(Member member) {
+        MemberProfileResponse memberProfile = memberRepository.findMemberProfile(member.getMemberId());
+        memberProfile.setFollowerCount(memberRepository.getFollowerCount(member.getMemberId()));
+        memberProfile.setFolloweeCount(memberRepository.getFolloweeCount(member.getMemberId()));
+
+        if (memberProfile.getLoginProvider() == LoginProvider.LOCAL) {
+            memberProfile.setPicture(ResourcePath.MEMBER_PICTURE.getResource(memberProfile.getPicture()));
+        }
+
+        return memberProfile;
     }
 }
