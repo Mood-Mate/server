@@ -147,10 +147,10 @@ public class MemberService {
         memberRepository.deleteMember(memberId);
     }
 
-    public MemberProfileResponse getProfile(Member member) {
-        MemberProfileResponse memberProfile = memberRepository.findMemberProfile(member.getMemberId());
-        memberProfile.setFollowerCount(memberRepository.getFollowerCount(member.getMemberId()));
-        memberProfile.setFolloweeCount(memberRepository.getFolloweeCount(member.getMemberId()));
+    public MemberProfileResponse getProfile(Integer memberId) {
+        MemberProfileResponse memberProfile = memberRepository.findMemberProfile(memberId);
+        memberProfile.setFollowerCount(memberRepository.getFollowerCount(memberId));
+        memberProfile.setFolloweeCount(memberRepository.getFolloweeCount(memberId));
 
         if (memberProfile.getLoginProvider() == LoginProvider.LOCAL) {
             memberProfile.setPicture(ResourcePath.MEMBER_PICTURE.getResource(memberProfile.getPicture()));
