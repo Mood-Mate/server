@@ -50,6 +50,11 @@ public class MemberRestController {
         return ResponseEntity.ok(memberService.login(memberLoginRequest));
     }
 
+    @GetMapping("/profile")
+    public ResponseEntity profile(@AuthenticationPrincipal Member member) {
+        return ResponseEntity.ok(memberService.getProfile(member));
+    }
+
     @PatchMapping("/picture")
     public ResponseEntity updatePicture(@AuthenticationPrincipal Member member,
                                         @RequestPart MultipartFile multipartFile) throws IOException {

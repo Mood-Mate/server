@@ -1,6 +1,7 @@
 package com.pado.socialdiary.api.moduel.member.repository;
 
 import com.pado.socialdiary.api.moduel.follow.entity.Follow;
+import com.pado.socialdiary.api.moduel.member.dto.MemberProfileResponse;
 import com.pado.socialdiary.api.moduel.member.dto.MemberSearchResponse;
 import com.pado.socialdiary.api.moduel.member.dto.MemberUpdateRequest;
 import com.pado.socialdiary.api.moduel.member.entity.Member;
@@ -36,4 +37,10 @@ public interface MemberMapper {
     void deleteMember(Integer memberId);
 
     void deleteMemberHistory(Integer memberId);
+
+    MemberProfileResponse findMemberProfile(Integer memberId);
+
+    Integer getFollowerCount(Integer memberId);
+
+    Integer getFolloweeCount(Integer memberId);
 }
