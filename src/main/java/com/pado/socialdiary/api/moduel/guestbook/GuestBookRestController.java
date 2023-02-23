@@ -1,7 +1,6 @@
 package com.pado.socialdiary.api.moduel.guestbook;
 
 import com.pado.socialdiary.api.moduel.guestbook.dto.GuestBookResponse;
-import com.pado.socialdiary.api.moduel.guestbook.entity.GuestBook;
 import com.pado.socialdiary.api.moduel.guestbook.service.GuestBookService;
 import com.pado.socialdiary.api.moduel.member.entity.Member;
 import lombok.RequiredArgsConstructor;
@@ -18,14 +17,11 @@ public class GuestBookRestController {
     private final GuestBookService guestBookService;
 
     @PostMapping("/{hostMemberId}")
-    public ResponseEntity createGuestBook(@PathVariable("hostMemberId") Integer hostMemberId,
+    public ResponseEntity<GuestBookResponse> createGuestBook(@PathVariable("hostMemberId") Integer hostMemberId,
                                           @AuthenticationPrincipal Member member,
                                           @RequestBody String contents) {
 
-        guestBookService.createGuestBook(hostMemberId, member, contents);
-
-        return ResponseEntity.ok()
-            .build();
+        return ResponseEntity.ok(guestBookService.createGuestBook(hostMemberId, member, contents));
     }
 
     @GetMapping("/{memberId}")
