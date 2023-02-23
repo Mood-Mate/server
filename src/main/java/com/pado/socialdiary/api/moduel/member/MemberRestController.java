@@ -76,7 +76,7 @@ public class MemberRestController {
                 .build();
     }
 
-    @GetMapping
+    @GetMapping("search")
     public ResponseEntity searchMember(@AuthenticationPrincipal Member member,
                                        @RequestParam("keyword") String keyword) {
 
