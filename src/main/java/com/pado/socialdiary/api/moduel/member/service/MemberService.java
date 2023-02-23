@@ -131,7 +131,7 @@ public class MemberService {
         findMembers.forEach(mber -> {
             findFollowMembers.forEach(follow -> {
 
-                if (mber.getMemberId().equals(follow.getFolloweeMemberId())) {
+                if (mber.getMemberId().equals(follow.getFollowerMemberId())) {
                     mber.setFollowAt(Y);
                 }
 
@@ -149,8 +149,8 @@ public class MemberService {
 
     public MemberProfileResponse getProfile(Integer memberId) {
         MemberProfileResponse memberProfile = memberRepository.findMemberProfile(memberId);
-        memberProfile.setFollowerCount(memberRepository.getFollowerCount(memberId));
-        memberProfile.setFolloweeCount(memberRepository.getFolloweeCount(memberId));
+        memberProfile.setFollowerCount(memberRepository.getFolloweeCount(memberId));
+        memberProfile.setFolloweeCount(memberRepository.getFollowerCount(memberId));
 
         if (memberProfile.getLoginProvider() == LoginProvider.LOCAL) {
             memberProfile.setPicture(ResourcePath.MEMBER_PICTURE.getResource(memberProfile.getPicture()));
