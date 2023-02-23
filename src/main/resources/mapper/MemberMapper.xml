@@ -76,9 +76,9 @@
             NICKNAME
         FROM TB_MEMBER
         WHERE
-            EMAIL = #{keyword}
-        OR  NAME = #{keyword}
-        OR  NICKNAME = #{keyword}
+            EMAIL LIKE '%${keyword}%'
+        OR  NAME LIKE '%${keyword}%'
+        OR  NICKNAME LIKE '%${keyword}%'
     </select>
     <select id="findFollowMember" resultType="com.pado.socialdiary.api.moduel.follow.entity.Follow">
         SELECT
