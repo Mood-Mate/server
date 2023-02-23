@@ -10,6 +10,6 @@ import org.apache.ibatis.annotations.Mapper;
 public interface GuestBookMapper {
 
     void saveGuestBook(GuestBook guestBook);
-    List<GuestBookResponse> findGuestBook(Integer memberId);
+    List<GuestBookResponse> findGuestBook(Integer guestBookId, Integer memberId);
     void deleteGuestBook(Integer guestBookId);
 }

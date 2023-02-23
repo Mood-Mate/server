@@ -18,7 +18,7 @@ public class GuestBookService {
     private final GuestBookMapper guestBookMapper;
 
     @Transactional
-    public void createGuestBook(Integer hostMemberId, Member member, String contents) {
+    public GuestBookResponse createGuestBook(Integer hostMemberId, Member member, String contents) {
 
         GuestBook builtGuestBook = GuestBook.builder()
                 .hostMemberId(hostMemberId)
@@ -27,11 +27,12 @@ public class GuestBookService {
                 .build();
 
         guestBookMapper.saveGuestBook(builtGuestBook);
+        return guestBookMapper.findGuestBook(builtGuestBook.getGuestBookId(), null).get(0);
     }
 
     public List<GuestBookResponse> findGuestBook(Integer memberId) {
 
-        return guestBookMapper.findGuestBook(memberId);
+        return guestBookMapper.findGuestBook(null, memberId);
     }
 
     @Transactional
