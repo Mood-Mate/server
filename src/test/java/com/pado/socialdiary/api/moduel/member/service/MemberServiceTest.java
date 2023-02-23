@@ -141,7 +141,7 @@ class MemberServiceTest {
         Attached findAttached = attachedRepository.findMemberPictureByMemberId(updatedPictureMember.getMemberId());
 
         //then
-        assertEquals(ATTACH_FILENAME, updatedPictureMember.getPicture());
+        assertEquals(attachedFilename, updatedPictureMember.getPicture());
 
         assertEquals(ATTACH_FILENAME, findAttached.getOriginalFilename());
         assertEquals(attachedFilename, findAttached.getAttachedFilename());
