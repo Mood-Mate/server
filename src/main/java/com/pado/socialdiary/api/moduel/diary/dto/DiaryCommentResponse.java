@@ -12,8 +12,11 @@ public class DiaryCommentResponse {
 
     private Integer diaryCommentId;
     private Integer diaryId;
+
     private Integer memberId;
     private String nickname;
+    private String memberPicture;
+
     private String contents;
     private LocalDateTime regDt;
 }

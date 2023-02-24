@@ -142,7 +142,6 @@ public class DiaryService {
 
         List<DiaryResponse> findDiary = diaryMapper.select(memberId, regDt);
 
-
         if (findDiary.size() != 0) {
             Map<Integer, List<DiaryCommentResponse>> findDiaryCommentMap = diaryMapper.findDiaryCommentsByDiaryIds(
                             findDiary.stream()
