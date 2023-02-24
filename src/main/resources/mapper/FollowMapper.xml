@@ -23,7 +23,7 @@
     WHERE FOLLOWER_MEMBER_ID=#{followerMemberId}
   </select>
 
-  <select id="findFollowee" resultType="com.pado.socialdiary.api.moduel.follow.dto.FollowResponse">
+  <select id="findFollow" resultType="com.pado.socialdiary.api.moduel.follow.dto.FollowResponse">
     SELECT
       TB_FOLLOW.FOLLOW_ID,
       TB_FOLLOW.FOLLOWER_MEMBER_ID,
@@ -34,6 +34,14 @@
     FROM TB_FOLLOW
     JOIN TB_MEMBER
     ON TB_FOLLOW.FOLLOWEE_MEMBER_ID = TB_MEMBER.MEMBER_ID
-    WHERE TB_FOLLOW.FOLLOWER_MEMBER_ID = #{followerMemberId}
+    WHERE
+    <choose>
+      <when test="followerMemberId != null">
+        TB_FOLLOW.FOLLOWEE_MEMBER_ID = #{followerMemberId}
+      </when>
+      <when test="followeeMemberId != null">
+        TB_FOLLOW.FOLLOWER_MEMBER_ID = #{followeeMemberId}
+      </when>
+    </choose>
   </select>
 </mapper>

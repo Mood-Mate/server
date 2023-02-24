@@ -14,5 +14,5 @@ public interface FollowMapper {
   void createFollowing(FollowRequest followRequest);
   void deleteFollowing(FollowRequest followRequest);
   List<Integer> findFolloweeId(Integer memberId);
-  List<FollowResponse> findFollowee(Integer memberId);
+  List<FollowResponse> findFollow(Integer followerMemberId,  Integer followeeMemberId);
 }

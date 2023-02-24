@@ -17,9 +17,14 @@ public class FollowService {
 
   private final FollowMapper followMapper;
 
+  public List<FollowResponse> findFollowerList(Integer memberId) {
+
+    return followMapper.findFollow(memberId, null);
+  }
+
   public List<FollowResponse> findFolloweeList(Integer memberId) {
 
-    return followMapper.findFollowee(memberId);
+    return followMapper.findFollow(null, memberId);
   }
 
   @Transactional

@@ -24,8 +24,14 @@ public class FollowRestController {
 
   private final FollowService followService;
 
-  @GetMapping("")
-  public ResponseEntity<List<FollowResponse>> followList(@RequestParam("memberId") Integer memberId) {
+  @GetMapping("/follower")
+  public ResponseEntity<List<FollowResponse>> followerList(@RequestParam("memberId") Integer memberId) {
+
+    return ResponseEntity.ok(followService.findFollowerList(memberId));
+  }
+
+  @GetMapping("/followee")
+  public ResponseEntity<List<FollowResponse>> followeeList(@RequestParam("memberId") Integer memberId) {
 
     return ResponseEntity.ok(followService.findFolloweeList(memberId));
   }
