@@ -106,15 +106,17 @@
   </select>
   <select id="findDiaryCommentsByDiaryId" resultType="com.pado.socialdiary.api.moduel.diary.dto.DiaryCommentResponse" parameterType="java.lang.Integer">
     SELECT
-      DIARY_COMMENT_ID,
-      DIARY_ID,
-      MEMBER_ID,
-      CONTENTS,
-      DEL_AT,
-      REG_DT
+      TB_DIARY_COMMENT.DIARY_COMMENT_ID,
+      TB_DIARY_COMMENT.DIARY_ID,
+      TB_DIARY_COMMENT.MEMBER_ID,
+      TB_MEMBER.NICKNAME,
+      TB_MEMBER.PICTURE,
+      TB_DIARY_COMMENT.CONTENTS,
+      TB_DIARY_COMMENT.REG_DT
     FROM TB_DIARY_COMMENT
-      WHERE DEL_AT = 'N'
-        AND DIARY_ID = #{diaryId}
+    INNER JOIN TB_MEMBER ON TB_DIARY_COMMENT.MEMBER_ID = TB_MEMBER.MEMBER_ID
+    WHERE DEL_AT = 'N'
+      AND DIARY_ID = #{diaryId}
     ORDER BY REG_DT DESC
   </select>
 
