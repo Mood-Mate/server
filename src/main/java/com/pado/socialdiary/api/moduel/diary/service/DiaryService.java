@@ -81,12 +81,12 @@ public class DiaryService {
     public void updateDiary(Member member, DiaryUpdateRequest diaryUpdateRequest, MultipartFile multipartFile)
             throws IOException {
 
-        if (multipartFile != null) {
-            Optional<Integer> oldPictureId = attachedMapper.findDiaryPictureIdByDiaryId(diaryUpdateRequest.getDiaryId());
-            if (oldPictureId.isPresent()) {
-                attachedMapper.deleteAttached(oldPictureId.get());
-            }
+        Optional<Integer> oldPictureId = attachedMapper.findDiaryPictureIdByDiaryId(diaryUpdateRequest.getDiaryId());
+        if (oldPictureId.isPresent()) {
+            attachedMapper.deleteAttached(oldPictureId.get());
+        }
 
+        if (multipartFile != null) {
             AttachDto.UploadRequest uploadRequest = attachUtil.attachedFile(
                     AttachPath.DIARY_PICTURE.getValue(), multipartFile);
 
