@@ -7,6 +7,7 @@ import com.pado.socialdiary.api.moduel.member.dto.MemberUpdateRequest;
 import com.pado.socialdiary.api.moduel.member.entity.Member;
 import com.pado.socialdiary.api.moduel.member.entity.MemberHistory;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,7 +29,7 @@ public interface MemberMapper {
 
     void update(MemberUpdateRequest memberUpdateRequest);
 
-    void updateIntroduce(Integer memberId, String introduce);
+    void updateIntroduce(@Param("memberId") Integer memberId, @Param("introduce") String introduce);
 
     List<MemberSearchResponse> findMemberByKeyword(String keyword);
 

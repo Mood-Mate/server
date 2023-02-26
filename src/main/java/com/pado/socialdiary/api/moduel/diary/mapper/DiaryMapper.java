@@ -7,6 +7,7 @@ import com.pado.socialdiary.api.moduel.diary.entity.Diary;
 import com.pado.socialdiary.api.moduel.diary.entity.DiaryComment;
 import com.pado.socialdiary.api.moduel.diary.entity.DiaryHistory;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -21,8 +22,8 @@ public interface DiaryMapper {
   Diary getByDiaryId(Integer diaryId);
   void saveHistory(DiaryHistory diaryHistory);
   void deleteHistory(Integer diaryId);
-  List<DiaryResponse> select(Integer memberId, String regDt);
-  List<String> selectDate(Integer memberId, String regDt);
+  List<DiaryResponse> select(@Param("memberId") Integer memberId, @Param("regDt") String regDt);
+  List<String> selectDate(@Param("memberId") Integer memberId, @Param("regDt") String regDt);
   List<DiaryResponse> selectAll(Map<String, Object> map);
 
   List<DiaryCommentResponse> findDiaryCommentsByDiaryIds(List<Integer> diaryIds);
