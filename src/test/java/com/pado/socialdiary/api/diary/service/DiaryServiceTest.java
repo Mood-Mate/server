@@ -44,16 +44,16 @@ public class DiaryServiceTest {
 	@Autowired
 	AttachedRepository attachedRepository;
 
-	private final String expectedValue = "test";
-	private final String expectedEmailValue = "email@email.com";
+	private final String expectedValue01 = "test01";
+	private final String expectedEmailValue01 = "email01@email.com";
 
 	@BeforeEach
 	void createMember() {
 
 		MemberJoinRequest memberJoinRequest = new MemberJoinRequest();
-		memberJoinRequest.setEmail(expectedEmailValue);
-		memberJoinRequest.setPassword(expectedValue);
-		memberJoinRequest.setName(expectedValue);
+		memberJoinRequest.setEmail(expectedEmailValue01);
+		memberJoinRequest.setPassword(expectedValue01);
+		memberJoinRequest.setName(expectedValue01);
 		memberJoinRequest.setGender(GenderType.ETC);
 		memberJoinRequest.setYear(2000);
 		memberJoinRequest.setMonth(1);
@@ -68,20 +68,20 @@ public class DiaryServiceTest {
 	void createDiaryWithoutPicture() throws IOException {
 		//given
 		DiaryCreateRequest diaryCreateRequest = new DiaryCreateRequest();
-		diaryCreateRequest.setTitle(expectedValue);
-		diaryCreateRequest.setContents(expectedValue);
+		diaryCreateRequest.setTitle(expectedValue01);
+		diaryCreateRequest.setContents(expectedValue01);
 
 		MultipartFile multipartFile = null;
 
-		Member findMember = memberRepository.findByEmail(expectedEmailValue).get();
+		Member member01 = memberRepository.findByEmail(expectedEmailValue01).get();
 
 		//when
-		diaryService.createDiary(findMember, diaryCreateRequest, multipartFile);
+		diaryService.createDiary(member01, diaryCreateRequest, multipartFile);
 
 		//then
-		DiaryResponse diary = diaryMapper.select(findMember.getMemberId(), LocalDateTime.now().toString()).get(0);
-		assertThat(diary.getTitle()).isEqualTo(expectedValue);
-		assertThat(diary.getContents()).isEqualTo(expectedValue);
+		DiaryResponse diary = diaryMapper.select(member01.getMemberId(), LocalDateTime.now().toString()).get(0);
+		assertThat(diary.getTitle()).isEqualTo(expectedValue01);
+		assertThat(diary.getContents()).isEqualTo(expectedValue01);
 		assertThat(diary.getPicture()).isNull();
 	}
 
@@ -95,24 +95,24 @@ public class DiaryServiceTest {
 		final String ATTACH_PATH = "src/test/resources/test-image/" + ATTACH_FILENAME + "." + ATTACH_TYPE;
 		FileInputStream fileInputStream = new FileInputStream(ATTACH_PATH);
 		MockMultipartFile picture = new MockMultipartFile(
-			expectedValue,
+			expectedValue01,
 			ATTACH_FILENAME + "." + ATTACH_TYPE,
 			ATTACH_TYPE,
 			fileInputStream
 		);
 		DiaryCreateRequest diaryCreateRequest = new DiaryCreateRequest();
-		diaryCreateRequest.setTitle(expectedValue);
-		diaryCreateRequest.setContents(expectedValue);
+		diaryCreateRequest.setTitle(expectedValue01);
+		diaryCreateRequest.setContents(expectedValue01);
 
-		Member findMember = memberRepository.findByEmail(expectedEmailValue).get();
+		Member member01 = memberRepository.findByEmail(expectedEmailValue01).get();
 
 		//when
-		diaryService.createDiary(findMember, diaryCreateRequest, picture);
+		diaryService.createDiary(member01, diaryCreateRequest, picture);
 
 		//then
-		DiaryResponse diary = diaryMapper.select(findMember.getMemberId(), LocalDateTime.now().toString()).get(0);
-		assertThat(diary.getTitle()).isEqualTo(expectedValue);
-		assertThat(diary.getContents()).isEqualTo(expectedValue);
+		DiaryResponse diary = diaryMapper.select(member01.getMemberId(), LocalDateTime.now().toString()).get(0);
+		assertThat(diary.getTitle()).isEqualTo(expectedValue01);
+		assertThat(diary.getContents()).isEqualTo(expectedValue01);
 		assertThat(attachedRepository.findDiaryPictureIdByDiaryId(diary.getDiaryId())).isNotNull();
 	}
 
@@ -126,32 +126,32 @@ public class DiaryServiceTest {
 		final String ATTACH_PATH = "src/test/resources/test-image/" + ATTACH_FILENAME + "." + ATTACH_TYPE;
 		FileInputStream fileInputStream = new FileInputStream(ATTACH_PATH);
 		MockMultipartFile picture = new MockMultipartFile(
-											expectedValue,
-							  ATTACH_FILENAME + "." + ATTACH_TYPE,
+											expectedValue01,
+							  				ATTACH_FILENAME + "." + ATTACH_TYPE,
 										    ATTACH_TYPE,
 											fileInputStream
 										);
 		DiaryCreateRequest diaryCreateRequest = new DiaryCreateRequest();
-		diaryCreateRequest.setTitle(expectedValue);
-		diaryCreateRequest.setContents(expectedValue);
+		diaryCreateRequest.setTitle(expectedValue01);
+		diaryCreateRequest.setContents(expectedValue01);
 
-		Member findMember = memberRepository.findByEmail(expectedEmailValue).get();
+		Member member01 = memberRepository.findByEmail(expectedEmailValue01).get();
 
 		//when
-		diaryService.createDiary(findMember, diaryCreateRequest, picture);
-		DiaryResponse diary = diaryMapper.select(findMember.getMemberId(), LocalDateTime.now().toString()).get(0);
+		diaryService.createDiary(member01, diaryCreateRequest, picture);
+		DiaryResponse diary = diaryMapper.select(member01.getMemberId(), LocalDateTime.now().toString()).get(0);
 
 		DiaryUpdateRequest diaryUpdateRequest = new DiaryUpdateRequest();
 		diaryUpdateRequest.setDiaryId(diary.getDiaryId());
-		diaryUpdateRequest.setTitle(expectedValue);
-		diaryUpdateRequest.setContents(expectedValue+1);
+		diaryUpdateRequest.setTitle(expectedValue01);
+		diaryUpdateRequest.setContents(expectedValue01 +1);
 
-		diaryService.updateDiary(findMember, diaryUpdateRequest, null);
+		diaryService.updateDiary(member01, diaryUpdateRequest, null);
 
 		//then
-		DiaryResponse updatedDiary = diaryMapper.select(findMember.getMemberId(), LocalDateTime.now().toString()).get(0);
-		assertThat(updatedDiary.getTitle()).isEqualTo(expectedValue);
-		assertThat(updatedDiary.getContents()).isEqualTo(expectedValue+1);
+		DiaryResponse updatedDiary = diaryMapper.select(member01.getMemberId(), LocalDateTime.now().toString()).get(0);
+		assertThat(updatedDiary.getTitle()).isEqualTo(expectedValue01);
+		assertThat(updatedDiary.getContents()).isEqualTo(expectedValue01 +1);
 		assertThat(attachedRepository.findDiaryPictureIdByDiaryId(updatedDiary.getDiaryId())).isEmpty();
 	}
 
@@ -165,24 +165,24 @@ public class DiaryServiceTest {
 		final String ATTACH_PATH = "src/test/resources/test-image/" + ATTACH_FILENAME + "." + ATTACH_TYPE;
 		FileInputStream fileInputStream = new FileInputStream(ATTACH_PATH);
 		MockMultipartFile picture = new MockMultipartFile(
-			expectedValue,
+			expectedValue01,
 			ATTACH_FILENAME + "." + ATTACH_TYPE,
 			ATTACH_TYPE,
 			fileInputStream
 		);
 		DiaryCreateRequest diaryCreateRequest = new DiaryCreateRequest();
-		diaryCreateRequest.setTitle(expectedValue);
-		diaryCreateRequest.setContents(expectedValue);
+		diaryCreateRequest.setTitle(expectedValue01);
+		diaryCreateRequest.setContents(expectedValue01);
 
-		String comment = expectedValue;
+		String comment = expectedValue01;
 
-		Member findMember = memberRepository.findByEmail(expectedEmailValue).get();
+		Member member01 = memberRepository.findByEmail(expectedEmailValue01).get();
 
 		//when
-		diaryService.createDiary(findMember, diaryCreateRequest, picture);
-		DiaryResponse diary = diaryMapper.select(findMember.getMemberId(), LocalDateTime.now().toString()).get(0);
+		diaryService.createDiary(member01, diaryCreateRequest, picture);
+		DiaryResponse diary = diaryMapper.select(member01.getMemberId(), LocalDateTime.now().toString()).get(0);
 
-		diaryService.createDiaryComment(diary.getDiaryId(), findMember, comment);
+		diaryService.createDiaryComment(diary.getDiaryId(), member01, comment);
 		DiaryCommentResponse findComment = diaryMapper.findDiaryCommentsByDiaryId(diary.getDiaryId()).get(0);
 
 		diaryService.deleteDiary(diary.getDiaryId());
@@ -200,24 +200,24 @@ public class DiaryServiceTest {
 	void createComment() throws IOException {
 		//given
 		DiaryCreateRequest diaryCreateRequest = new DiaryCreateRequest();
-		diaryCreateRequest.setTitle(expectedValue);
-		diaryCreateRequest.setContents(expectedValue);
+		diaryCreateRequest.setTitle(expectedValue01);
+		diaryCreateRequest.setContents(expectedValue01);
 
 		MultipartFile multipartFile = null;
 
-		Member findMember = memberRepository.findByEmail(expectedEmailValue).get();
+		Member member01 = memberRepository.findByEmail(expectedEmailValue01).get();
 
-		String comment = expectedValue;
+		String comment = expectedValue01;
 
 		//when
-		diaryService.createDiary(findMember, diaryCreateRequest, multipartFile);
-		DiaryResponse diary = diaryMapper.select(findMember.getMemberId(), LocalDateTime.now().toString()).get(0);
+		diaryService.createDiary(member01, diaryCreateRequest, multipartFile);
+		DiaryResponse diary = diaryMapper.select(member01.getMemberId(), LocalDateTime.now().toString()).get(0);
 
-		diaryService.createDiaryComment(diary.getDiaryId(), findMember, comment);
+		diaryService.createDiaryComment(diary.getDiaryId(), member01, comment);
 
 		//then
 		DiaryCommentResponse findComment = diaryMapper.findDiaryCommentsByDiaryId(diary.getDiaryId()).get(0);
-		assertThat(findComment.getContents()).isEqualTo(expectedValue);
+		assertThat(findComment.getContents()).isEqualTo(expectedValue01);
 	}
 
 	@Test
@@ -226,23 +226,23 @@ public class DiaryServiceTest {
 	void deleteComment() throws IOException {
 		//given
 		DiaryCreateRequest diaryCreateRequest = new DiaryCreateRequest();
-		diaryCreateRequest.setTitle(expectedValue);
-		diaryCreateRequest.setContents(expectedValue);
+		diaryCreateRequest.setTitle(expectedValue01);
+		diaryCreateRequest.setContents(expectedValue01);
 
 		MultipartFile multipartFile = null;
 
-		Member findMember = memberRepository.findByEmail(expectedEmailValue).get();
+		Member member01 = memberRepository.findByEmail(expectedEmailValue01).get();
 
-		String comment = expectedValue;
+		String comment = expectedValue01;
 
 		//when
-		diaryService.createDiary(findMember, diaryCreateRequest, multipartFile);
-		DiaryResponse diary = diaryMapper.select(findMember.getMemberId(), LocalDateTime.now().toString()).get(0);
+		diaryService.createDiary(member01, diaryCreateRequest, multipartFile);
+		DiaryResponse diary = diaryMapper.select(member01.getMemberId(), LocalDateTime.now().toString()).get(0);
 
-		diaryService.createDiaryComment(diary.getDiaryId(), findMember, comment);
+		diaryService.createDiaryComment(diary.getDiaryId(), member01, comment);
 		DiaryCommentResponse findComment = diaryMapper.findDiaryCommentsByDiaryId(diary.getDiaryId()).get(0);
 
-		diaryService.deleteDiaryComment(findComment.getDiaryCommentId(), findMember);
+		diaryService.deleteDiaryComment(findComment.getDiaryCommentId(), member01);
 
 		//then
 		DiaryComment deletedComment = diaryMapper.findDiaryCommentById(findComment.getDiaryCommentId()).get();
