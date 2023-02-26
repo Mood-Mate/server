@@ -82,9 +82,7 @@ public class DiaryService {
             throws IOException {
 
         Optional<Integer> oldPictureId = attachedMapper.findDiaryPictureIdByDiaryId(diaryUpdateRequest.getDiaryId());
-        if (oldPictureId.isPresent()) {
-            attachedMapper.deleteAttached(oldPictureId.get());
-        }
+        oldPictureId.ifPresent(attachedMapper::deleteAttached);
 
         if (multipartFile != null) {
             AttachDto.UploadRequest uploadRequest = attachUtil.attachedFile(
@@ -123,9 +121,15 @@ public class DiaryService {
     public void deleteDiary(Integer diaryId) {
 
         Optional<Integer> diaryPictureId = attachedMapper.findDiaryPictureIdByDiaryId(diaryId);
-        if (diaryPictureId.isPresent()) {
-            attachedMapper.deleteAttached(diaryPictureId.get());
-        }
+        diaryPictureId.ifPresent(attachedMapper::deleteAttached);
+
+        diaryMapper.findDiaryCommentsByDiaryId(diaryId)
+                   .forEach(comment -> {
+                        DiaryComment findDiaryComment = diaryMapper.findDiaryCommentById(comment.getDiaryCommentId()).get();
+                        findDiaryComment.delete();
+                        findDiaryComment.updateBy(diaryMapper.getByDiaryId(diaryId).getMemberId());
+                        diaryMapper.deleteDiaryComment(findDiaryComment);
+                    });
 
         diaryMapper.deleteHistory(diaryId);
         diaryMapper.delete(diaryId);
