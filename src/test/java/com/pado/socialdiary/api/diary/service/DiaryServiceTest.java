@@ -4,10 +4,12 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
+import com.pado.socialdiary.api.constants.YesNoCode;
 import com.pado.socialdiary.api.moduel.diary.dto.DiaryCommentResponse;
 import com.pado.socialdiary.api.moduel.diary.dto.DiaryCreateRequest;
 import com.pado.socialdiary.api.moduel.diary.dto.DiaryResponse;
 import com.pado.socialdiary.api.moduel.diary.dto.DiaryUpdateRequest;
+import com.pado.socialdiary.api.moduel.diary.entity.DiaryComment;
 import com.pado.socialdiary.api.moduel.diary.mapper.DiaryMapper;
 import com.pado.socialdiary.api.moduel.diary.service.DiaryService;
 import com.pado.socialdiary.api.moduel.member.dto.MemberJoinRequest;
@@ -138,10 +140,12 @@ public class DiaryServiceTest {
 		//when
 		diaryService.createDiary(findMember, diaryCreateRequest, picture);
 		DiaryResponse diary = diaryMapper.select(findMember.getMemberId(), LocalDateTime.now().toString()).get(0);
+
 		DiaryUpdateRequest diaryUpdateRequest = new DiaryUpdateRequest();
 		diaryUpdateRequest.setDiaryId(diary.getDiaryId());
 		diaryUpdateRequest.setTitle(expectedValue);
 		diaryUpdateRequest.setContents(expectedValue+1);
+
 		diaryService.updateDiary(findMember, diaryUpdateRequest, null);
 
 		//then
@@ -153,7 +157,7 @@ public class DiaryServiceTest {
 
 	@Test
 	@Transactional
-	@DisplayName("다이어리 삭제")
+	@DisplayName("다이어리 삭제 - 사진 및 댓글 삭제")
 	void deleteDiary() throws IOException {
 		//given
 		final String ATTACH_FILENAME = "test";
@@ -170,16 +174,24 @@ public class DiaryServiceTest {
 		diaryCreateRequest.setTitle(expectedValue);
 		diaryCreateRequest.setContents(expectedValue);
 
+		String comment = expectedValue;
+
 		Member findMember = memberRepository.findByEmail(expectedEmailValue).get();
 
 		//when
 		diaryService.createDiary(findMember, diaryCreateRequest, picture);
 		DiaryResponse diary = diaryMapper.select(findMember.getMemberId(), LocalDateTime.now().toString()).get(0);
+
+		diaryService.createDiaryComment(diary.getDiaryId(), findMember, comment);
+		DiaryCommentResponse findComment = diaryMapper.findDiaryCommentsByDiaryId(diary.getDiaryId()).get(0);
+
 		diaryService.deleteDiary(diary.getDiaryId());
 
 		//then
+		DiaryComment deletedComment = diaryMapper.findDiaryCommentById(findComment.getDiaryCommentId()).get();
 		assertThat(diaryMapper.getByDiaryId(diary.getDiaryId())).isNull();
 		assertThat(attachedRepository.findDiaryPictureIdByDiaryId(diary.getDiaryId())).isEmpty();
+		assertThat(deletedComment.getDelAt()).isEqualTo(YesNoCode.Y);
 	}
 
 	@Test
@@ -206,5 +218,34 @@ public class DiaryServiceTest {
 		//then
 		DiaryCommentResponse findComment = diaryMapper.findDiaryCommentsByDiaryId(diary.getDiaryId()).get(0);
 		assertThat(findComment.getContents()).isEqualTo(expectedValue);
+	}
+
+	@Test
+	@Transactional
+	@DisplayName("다이어리 댓글 삭제")
+	void deleteComment() throws IOException {
+		//given
+		DiaryCreateRequest diaryCreateRequest = new DiaryCreateRequest();
+		diaryCreateRequest.setTitle(expectedValue);
+		diaryCreateRequest.setContents(expectedValue);
+
+		MultipartFile multipartFile = null;
+
+		Member findMember = memberRepository.findByEmail(expectedEmailValue).get();
+
+		String comment = expectedValue;
+
+		//when
+		diaryService.createDiary(findMember, diaryCreateRequest, multipartFile);
+		DiaryResponse diary = diaryMapper.select(findMember.getMemberId(), LocalDateTime.now().toString()).get(0);
+
+		diaryService.createDiaryComment(diary.getDiaryId(), findMember, comment);
+		DiaryCommentResponse findComment = diaryMapper.findDiaryCommentsByDiaryId(diary.getDiaryId()).get(0);
+
+		diaryService.deleteDiaryComment(findComment.getDiaryCommentId(), findMember);
+
+		//then
+		DiaryComment deletedComment = diaryMapper.findDiaryCommentById(findComment.getDiaryCommentId()).get();
+		assertThat(deletedComment.getDelAt()).isEqualTo(YesNoCode.Y);
 	}
 }
