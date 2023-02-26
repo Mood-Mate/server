@@ -33,13 +33,16 @@
       TB_MEMBER.PICTURE
     FROM TB_FOLLOW
     JOIN TB_MEMBER
-    ON TB_FOLLOW.FOLLOWEE_MEMBER_ID = TB_MEMBER.MEMBER_ID
-    WHERE
+    ON
     <choose>
       <when test="followerMemberId != null">
+        TB_FOLLOW.FOLLOWER_MEMBER_ID = TB_MEMBER.MEMBER_ID
+        WHERE
         TB_FOLLOW.FOLLOWEE_MEMBER_ID = #{followerMemberId}
       </when>
       <when test="followeeMemberId != null">
+        TB_FOLLOW.FOLLOWEE_MEMBER_ID = TB_MEMBER.MEMBER_ID
+        WHERE
         TB_FOLLOW.FOLLOWER_MEMBER_ID = #{followeeMemberId}
       </when>
     </choose>
