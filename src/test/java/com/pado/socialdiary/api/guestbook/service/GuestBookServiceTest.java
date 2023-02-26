@@ -79,4 +79,24 @@ public class GuestBookServiceTest {
         assertThat(guestBook.getContents()).isEqualTo(expectedValue01);
         assertThat(guestBook.getNickname()).isEqualTo(expectedValue02);
     }
+
+    @Test
+    @Transactional
+    @DisplayName("방명록 삭제")
+    void deleteGuestBook() {
+        //given
+        Member hostMember = memberRepository.findByEmail(expectedEmailValue01).get();
+        Member guestMember = memberRepository.findByEmail(expectedEmailValue02).get();
+
+        String contents = expectedValue01;
+
+        //when
+        guestBookService.createGuestBook(hostMember.getMemberId(), guestMember, contents);
+        GuestBookResponse guestBook = guestBookMapper.findGuestBook(null, hostMember.getMemberId()).get(0);
+
+        guestBookService.deleteGuestBook(guestBook.getGuestBookId());
+
+        //then
+        assertThat(guestBookMapper.findGuestBook(guestBook.getGuestBookId(), null)).isEmpty();
+    }
 }
