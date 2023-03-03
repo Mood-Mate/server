@@ -7,13 +7,13 @@
     <selectKey keyColumn="DIARY_ID" keyProperty="diaryId" resultType="Integer" order="AFTER">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    INSERT INTO TB_DIARY(MEMBER_ID, TITLE, CONTENTS, REG_ID, REG_DT, UPD_ID, UPD_DT)
-    VALUES (#{memberId}, #{title}, #{contents}, #{memberId}, NOW(), #{memberId}, NOW())
+    INSERT INTO TB_DIARY(MEMBER_ID, TITLE, CONTENTS, SECRET, REG_ID, REG_DT, UPD_ID, UPD_DT)
+    VALUES (#{memberId}, #{title}, #{contents}, #{secret}, #{memberId}, NOW(), #{memberId}, NOW())
   </insert>
 
   <insert id="saveHistory" parameterType="com.pado.socialdiary.api.moduel.diary.entity.DiaryHistory" useGeneratedKeys="true">
-    INSERT INTO TB_DIARY_HISTORY(DIARY_ID, MEMBER_ID, TITLE, CONTENTS, REG_ID, REG_DT, UPD_ID, UPD_DT)
-    VALUES (#{diaryId}, #{memberId}, #{title}, #{contents}, #{memberId}, NOW(), #{memberId}, NOW())
+    INSERT INTO TB_DIARY_HISTORY(DIARY_ID, MEMBER_ID, TITLE, CONTENTS, SECRET, REG_ID, REG_DT, UPD_ID, UPD_DT)
+    VALUES (#{diaryId}, #{memberId}, #{title}, #{contents}, #{secret}, #{memberId}, NOW(), #{memberId}, NOW())
   </insert>
 
   <select id="getByDiaryId" resultType="com.pado.socialdiary.api.moduel.diary.entity.Diary">
@@ -26,6 +26,7 @@
       TB_DIARY.MEMBER_ID,
       TB_DIARY.TITLE,
       TB_DIARY.CONTENTS,
+      TB_DIARY.SECRET,
       TB_DIARY.REG_DT,
       TB_DIARY.UPD_DT,
       TB_MEMBER.NICKNAME,
@@ -33,13 +34,19 @@
     FROM TB_DIARY
     JOIN TB_MEMBER
     ON TB_DIARY.MEMBER_ID = TB_MEMBER.MEMBER_ID
-    WHERE TB_DIARY.MEMBER_ID=#{memberId} AND DATE_FORMAT(TB_DIARY.REG_DT, '%Y-%m-%d') = DATE_FORMAT(#{regDt},'%Y-%m-%d')
+    WHERE TB_DIARY.MEMBER_ID=#{someoneId} AND DATE_FORMAT(TB_DIARY.REG_DT, '%Y-%m-%d') = DATE_FORMAT(#{regDt},'%Y-%m-%d')
+    <if test="memberId != someoneId">
+      AND TB_DIARY.SECRET = 0
+    </if>
     ORDER BY TB_DIARY.DIARY_ID DESC
   </select>
 
   <select id="selectDate" resultType="string">
     SELECT DAY(REG_DT) AS DAY FROM TB_DIARY
-    WHERE MEMBER_ID=#{memberId} AND MONTH(REG_DT)=MONTH(#{regDt})
+    WHERE MEMBER_ID=#{someoneId} AND MONTH(REG_DT)=MONTH(#{regDt})
+    <if test="memberId != someoneId">
+      AND SECRET = 0
+    </if>
   </select>
 
   <select id="selectAll" parameterType="hashmap" resultType="com.pado.socialdiary.api.moduel.diary.dto.DiaryResponse">
@@ -48,6 +55,7 @@
       TB_DIARY.MEMBER_ID,
       TB_DIARY.TITLE,
       TB_DIARY.CONTENTS,
+      TB_DIARY.SECRET,
       TB_DIARY.REG_DT,
       TB_DIARY.UPD_DT,
       TB_MEMBER.NICKNAME,
@@ -62,12 +70,13 @@
     <if test="cursorPageable.cursor != null">
     AND TB_DIARY.DIARY_ID &lt; #{cursorPageable.cursor}
     </if>
+    AND TB_DIARY.SECRET = 0
     ORDER BY TB_DIARY.DIARY_ID DESC
     LIMIT #{cursorPageable.pageSize}
   </select>
 
   <update id="update" parameterType="com.pado.socialdiary.api.moduel.diary.entity.Diary">
-    UPDATE TB_DIARY SET MEMBER_ID = #{memberId}, TITLE = #{title}, CONTENTS = #{contents}, UPD_ID = #{memberId}, UPD_DT = NOW() WHERE DIARY_ID = #{diaryId}
+    UPDATE TB_DIARY SET MEMBER_ID = #{memberId}, TITLE = #{title}, CONTENTS = #{contents}, SECRET = #{secret}, UPD_ID = #{memberId}, UPD_DT = NOW() WHERE DIARY_ID = #{diaryId}
   </update>
 
   <delete id="delete">
