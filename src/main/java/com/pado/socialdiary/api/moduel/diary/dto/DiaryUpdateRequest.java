@@ -13,5 +13,5 @@ public class DiaryUpdateRequest {
   private Integer diaryId;
   private String title;
   private String contents;
-
+  private Boolean secret;
 }

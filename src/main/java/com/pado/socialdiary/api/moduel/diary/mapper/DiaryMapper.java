@@ -22,8 +22,8 @@ public interface DiaryMapper {
   Diary getByDiaryId(Integer diaryId);
   void saveHistory(DiaryHistory diaryHistory);
   void deleteHistory(Integer diaryId);
-  List<DiaryResponse> select(@Param("memberId") Integer memberId, @Param("regDt") String regDt);
-  List<String> selectDate(@Param("memberId") Integer memberId, @Param("regDt") String regDt);
+  List<DiaryResponse> select(@Param("memberId") Integer memberId, @Param("someoneId") Integer someoneId, @Param("regDt") String regDt);
+  List<String> selectDate(@Param("memberId") Integer memberId, @Param("someoneId") Integer someoneId, @Param("regDt") String regDt);
   List<DiaryResponse> selectAll(Map<String, Object> map);
 
   List<DiaryCommentResponse> findDiaryCommentsByDiaryIds(List<Integer> diaryIds);

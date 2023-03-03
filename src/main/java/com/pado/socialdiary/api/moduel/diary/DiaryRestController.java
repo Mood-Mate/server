@@ -36,17 +36,19 @@ public class DiaryRestController {
     }
 
     @GetMapping("/someone")
-    public ResponseEntity<List<DiaryResponse>> searchSomeoneDiary(@RequestParam("memberId") Integer memberId,
+    public ResponseEntity<List<DiaryResponse>> searchSomeoneDiary(@AuthenticationPrincipal Member member,
+                                                                  @RequestParam("someone") Integer someoneId,
                                                                   @RequestParam("regDt") String regDt){
 
-        return ResponseEntity.ok(diaryService.findSomeoneDiary(memberId, regDt));
+        return ResponseEntity.ok(diaryService.findSomeoneDiary(member, someoneId, regDt));
     }
 
     @GetMapping("/someone/date")
-    public ResponseEntity<List<String>> searchSomeoneDate(@RequestParam("memberId") Integer memberId,
+    public ResponseEntity<List<String>> searchSomeoneDate(@AuthenticationPrincipal Member member,
+                                                          @RequestParam("someone") Integer someoneId,
                                                           @RequestParam("regDt") String regDt){
 
-        return ResponseEntity.ok(diaryService.findDateOfMonth(memberId, regDt));
+        return ResponseEntity.ok(diaryService.findDateOfMonth(member, someoneId, regDt));
     }
 
     @GetMapping("/followee")

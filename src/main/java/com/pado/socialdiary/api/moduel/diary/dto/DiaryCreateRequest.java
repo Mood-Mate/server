@@ -12,5 +12,5 @@ public class DiaryCreateRequest {
   private Integer memberId;
   private String title;
   private String contents;
-
+  private Boolean secret;
 }

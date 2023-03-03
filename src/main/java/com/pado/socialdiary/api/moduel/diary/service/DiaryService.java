@@ -49,6 +49,7 @@ public class DiaryService {
                 .memberId(member.getMemberId())
                 .title(diaryCreateRequest.getTitle())
                 .contents(diaryCreateRequest.getContents())
+                .secret(diaryCreateRequest.getSecret())
                 .build();
 
         diaryMapper.insert(builtDiary);
@@ -138,13 +139,14 @@ public class DiaryService {
     /**
      * 회원 프로필 다이어리 리스트
      *
-     * @param memberId
+     * @param member
+     * @param someoneId
      * @param regDt
      * @return
      */
-    public List<DiaryResponse> findSomeoneDiary(Integer memberId, String regDt) {
+    public List<DiaryResponse> findSomeoneDiary(Member member, Integer someoneId, String regDt) {
 
-        List<DiaryResponse> findDiary = diaryMapper.select(memberId, regDt);
+        List<DiaryResponse> findDiary = diaryMapper.select(member.getMemberId(), someoneId, regDt);
 
         if (findDiary.size() != 0) {
             Map<Integer, List<DiaryCommentResponse>> findDiaryCommentMap = diaryMapper.findDiaryCommentsByDiaryIds(
@@ -162,9 +164,9 @@ public class DiaryService {
         return findDiary;
     }
 
-    public List<String> findDateOfMonth(Integer memberId, String regDt) {
+    public List<String> findDateOfMonth(Member member, Integer someoneId, String regDt) {
 
-        return diaryMapper.selectDate(memberId, regDt);
+        return diaryMapper.selectDate(member.getMemberId(), someoneId, regDt);
     }
 
     public CursorPageResponse<DiaryResponse> findFolloweeDiary(Member member, CursorPageable cursorPageable) {
