@@ -70,6 +70,7 @@ public class DiaryServiceTest {
 		DiaryCreateRequest diaryCreateRequest = new DiaryCreateRequest();
 		diaryCreateRequest.setTitle(expectedValue01);
 		diaryCreateRequest.setContents(expectedValue01);
+		diaryCreateRequest.setSecret(true);
 
 		MultipartFile multipartFile = null;
 
@@ -79,7 +80,7 @@ public class DiaryServiceTest {
 		diaryService.createDiary(member01, diaryCreateRequest, multipartFile);
 
 		//then
-		DiaryResponse diary = diaryMapper.select(member01.getMemberId(), LocalDateTime.now().toString()).get(0);
+		DiaryResponse diary = diaryMapper.select(member01.getMemberId(), member01.getMemberId(), LocalDateTime.now().toString()).get(0);
 		assertThat(diary.getTitle()).isEqualTo(expectedValue01);
 		assertThat(diary.getContents()).isEqualTo(expectedValue01);
 		assertThat(diary.getPicture()).isNull();
@@ -103,6 +104,7 @@ public class DiaryServiceTest {
 		DiaryCreateRequest diaryCreateRequest = new DiaryCreateRequest();
 		diaryCreateRequest.setTitle(expectedValue01);
 		diaryCreateRequest.setContents(expectedValue01);
+		diaryCreateRequest.setSecret(true);
 
 		Member member01 = memberRepository.findByEmail(expectedEmailValue01).get();
 
@@ -110,7 +112,7 @@ public class DiaryServiceTest {
 		diaryService.createDiary(member01, diaryCreateRequest, picture);
 
 		//then
-		DiaryResponse diary = diaryMapper.select(member01.getMemberId(), LocalDateTime.now().toString()).get(0);
+		DiaryResponse diary = diaryMapper.select(member01.getMemberId(), member01.getMemberId(), LocalDateTime.now().toString()).get(0);
 		assertThat(diary.getTitle()).isEqualTo(expectedValue01);
 		assertThat(diary.getContents()).isEqualTo(expectedValue01);
 		assertThat(attachedRepository.findDiaryPictureIdByDiaryId(diary.getDiaryId())).isNotNull();
@@ -134,22 +136,24 @@ public class DiaryServiceTest {
 		DiaryCreateRequest diaryCreateRequest = new DiaryCreateRequest();
 		diaryCreateRequest.setTitle(expectedValue01);
 		diaryCreateRequest.setContents(expectedValue01);
+		diaryCreateRequest.setSecret(true);
 
 		Member member01 = memberRepository.findByEmail(expectedEmailValue01).get();
 
 		//when
 		diaryService.createDiary(member01, diaryCreateRequest, picture);
-		DiaryResponse diary = diaryMapper.select(member01.getMemberId(), LocalDateTime.now().toString()).get(0);
+		DiaryResponse diary = diaryMapper.select(member01.getMemberId(), member01.getMemberId(), LocalDateTime.now().toString()).get(0);
 
 		DiaryUpdateRequest diaryUpdateRequest = new DiaryUpdateRequest();
 		diaryUpdateRequest.setDiaryId(diary.getDiaryId());
 		diaryUpdateRequest.setTitle(expectedValue01);
 		diaryUpdateRequest.setContents(expectedValue01 +1);
+		diaryUpdateRequest.setSecret(true);
 
 		diaryService.updateDiary(member01, diaryUpdateRequest, null);
 
 		//then
-		DiaryResponse updatedDiary = diaryMapper.select(member01.getMemberId(), LocalDateTime.now().toString()).get(0);
+		DiaryResponse updatedDiary = diaryMapper.select(member01.getMemberId(), member01.getMemberId(), LocalDateTime.now().toString()).get(0);
 		assertThat(updatedDiary.getTitle()).isEqualTo(expectedValue01);
 		assertThat(updatedDiary.getContents()).isEqualTo(expectedValue01 +1);
 		assertThat(attachedRepository.findDiaryPictureIdByDiaryId(updatedDiary.getDiaryId())).isEmpty();
@@ -173,6 +177,7 @@ public class DiaryServiceTest {
 		DiaryCreateRequest diaryCreateRequest = new DiaryCreateRequest();
 		diaryCreateRequest.setTitle(expectedValue01);
 		diaryCreateRequest.setContents(expectedValue01);
+		diaryCreateRequest.setSecret(true);
 
 		String comment = expectedValue01;
 
@@ -180,7 +185,7 @@ public class DiaryServiceTest {
 
 		//when
 		diaryService.createDiary(member01, diaryCreateRequest, picture);
-		DiaryResponse diary = diaryMapper.select(member01.getMemberId(), LocalDateTime.now().toString()).get(0);
+		DiaryResponse diary = diaryMapper.select(member01.getMemberId(), member01.getMemberId(), LocalDateTime.now().toString()).get(0);
 
 		diaryService.createDiaryComment(diary.getDiaryId(), member01, comment);
 		DiaryCommentResponse findComment = diaryMapper.findDiaryCommentsByDiaryId(diary.getDiaryId()).get(0);
@@ -202,6 +207,7 @@ public class DiaryServiceTest {
 		DiaryCreateRequest diaryCreateRequest = new DiaryCreateRequest();
 		diaryCreateRequest.setTitle(expectedValue01);
 		diaryCreateRequest.setContents(expectedValue01);
+		diaryCreateRequest.setSecret(true);
 
 		MultipartFile multipartFile = null;
 
@@ -211,7 +217,7 @@ public class DiaryServiceTest {
 
 		//when
 		diaryService.createDiary(member01, diaryCreateRequest, multipartFile);
-		DiaryResponse diary = diaryMapper.select(member01.getMemberId(), LocalDateTime.now().toString()).get(0);
+		DiaryResponse diary = diaryMapper.select(member01.getMemberId(), member01.getMemberId(), LocalDateTime.now().toString()).get(0);
 
 		diaryService.createDiaryComment(diary.getDiaryId(), member01, comment);
 
@@ -228,6 +234,7 @@ public class DiaryServiceTest {
 		DiaryCreateRequest diaryCreateRequest = new DiaryCreateRequest();
 		diaryCreateRequest.setTitle(expectedValue01);
 		diaryCreateRequest.setContents(expectedValue01);
+		diaryCreateRequest.setSecret(true);
 
 		MultipartFile multipartFile = null;
 
@@ -237,7 +244,7 @@ public class DiaryServiceTest {
 
 		//when
 		diaryService.createDiary(member01, diaryCreateRequest, multipartFile);
-		DiaryResponse diary = diaryMapper.select(member01.getMemberId(), LocalDateTime.now().toString()).get(0);
+		DiaryResponse diary = diaryMapper.select(member01.getMemberId(), member01.getMemberId(), LocalDateTime.now().toString()).get(0);
 
 		diaryService.createDiaryComment(diary.getDiaryId(), member01, comment);
 		DiaryCommentResponse findComment = diaryMapper.findDiaryCommentsByDiaryId(diary.getDiaryId()).get(0);
