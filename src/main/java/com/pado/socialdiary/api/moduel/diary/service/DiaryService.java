@@ -177,12 +177,25 @@ public class DiaryService {
         map.put("followeeList", followeeList);
         map.put("cursorPageable", cursorPageable);
 
-        List<DiaryResponse> diaryList = diaryMapper.selectAll(map);
+        List<DiaryResponse> findDiary = diaryMapper.selectAll(map);
         final Integer pageSize = cursorPageable.getPageSize();
-        final Integer next = diaryList.size() >= pageSize ? diaryList.get(pageSize - 1).getDiaryId() : null;
+        final Integer next = findDiary.size() >= pageSize ? findDiary.get(pageSize - 1).getDiaryId() : null;
+
+        if (findDiary.size() != 0) {
+            Map<Integer, List<DiaryCommentResponse>> findDiaryCommentMap = diaryMapper.findDiaryCommentsByDiaryIds(
+                    findDiary.stream()
+                        .map(diary -> diary.getDiaryId())
+                        .toList()
+                ).stream()
+                .collect(Collectors.groupingBy(diaryComment -> diaryComment.getDiaryId()));
+
+            findDiary.forEach(diary -> {
+                diary.setComments(findDiaryCommentMap.get(diary.getDiaryId()));
+            });
+        }
 
         return CursorPageResponse.<DiaryResponse>builder()
-            .data(diaryList)
+            .data(findDiary)
             .next(next)
             .build();
     }
