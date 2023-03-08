@@ -53,9 +53,9 @@ public class DiaryRestController {
 
     @GetMapping("/followee")
     public ResponseEntity<CursorPageResponse<DiaryResponse>> searchFolloweeDiary(@AuthenticationPrincipal Member member,
-                                                                                 @RequestParam(required = false, value = "next") Integer next,
-                                                                                 CursorPageable cursorPageable){
+                                                                                 @RequestParam(required = false, value = "next") Integer next) {
 
+        CursorPageable cursorPageable = new CursorPageable();
         cursorPageable.setCursor(next);
         return ResponseEntity.ok(diaryService.findFolloweeDiary(member, cursorPageable));
     }
