@@ -19,7 +19,7 @@ public class MemberProfileResponse {
     private String picture;
 
     private Integer followerCount;
-    private Integer followeeCount;
+    private Integer followingCount;
 
     private String introduce;
 

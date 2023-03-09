@@ -12,10 +12,8 @@ import com.pado.socialdiary.api.moduel.member.entity.LoginProvider;
 import com.pado.socialdiary.api.moduel.member.entity.Member;
 import com.pado.socialdiary.api.moduel.member.entity.MemberHistory;
 import com.pado.socialdiary.api.moduel.member.repository.MemberRepository;
-import com.pado.socialdiary.api.utils.attach.AttachUtil;
 import com.pado.socialdiary.api.utils.attach.dto.AttachDto;
 import com.pado.socialdiary.api.utils.attach.entity.Attached;
-import com.pado.socialdiary.api.utils.attach.repository.AttachedMapper;
 import com.pado.socialdiary.api.utils.attach.repository.AttachedRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,10 +24,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.pado.socialdiary.api.constants.YesNoCode.Y;
 
@@ -149,8 +145,8 @@ public class MemberService {
 
     public MemberProfileResponse getProfile(Integer memberId) {
         MemberProfileResponse memberProfile = memberRepository.findMemberProfile(memberId);
-        memberProfile.setFollowerCount(memberRepository.getFolloweeCount(memberId));
-        memberProfile.setFolloweeCount(memberRepository.getFollowerCount(memberId));
+        memberProfile.setFollowerCount(memberRepository.getFollowingCount(memberId));
+        memberProfile.setFollowingCount(memberRepository.getFollowerCount(memberId));
 
         if (memberProfile.getLoginProvider() == LoginProvider.LOCAL) {
             memberProfile.setPicture(ResourcePath.MEMBER_PICTURE.getResource(memberProfile.getPicture()));

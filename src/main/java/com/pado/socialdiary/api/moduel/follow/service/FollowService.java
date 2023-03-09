@@ -22,7 +22,7 @@ public class FollowService {
     return followMapper.findFollow(memberId, null);
   }
 
-  public List<FollowResponse> findFolloweeList(Integer memberId) {
+  public List<FollowResponse> findFollowingList(Integer memberId) {
 
     return followMapper.findFollow(null, memberId);
   }

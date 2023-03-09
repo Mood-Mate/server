@@ -14,6 +14,6 @@ public interface FollowMapper {
   Optional<Integer> existFollowing(FollowRequest followRequest);
   void createFollowing(FollowRequest followRequest);
   void deleteFollowing(FollowRequest followRequest);
-  List<Integer> findFolloweeId(Integer memberId);
-  List<FollowResponse> findFollow(@Param("followerMemberId") Integer followerMemberId,  @Param("followeeMemberId") Integer followeeMemberId);
+  List<Integer> findFollowingId(Integer memberId);
+  List<FollowResponse> findFollow(@Param("followerMemberId") Integer followerMemberId,  @Param("followingMemberId") Integer followingMemberId);
 }

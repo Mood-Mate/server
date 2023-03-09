@@ -89,7 +89,7 @@ public class MemberMybatisRepository implements MemberRepository {
     }
 
     @Override
-    public Integer getFolloweeCount(Integer memberId) {
-        return memberMapper.getFolloweeCount(memberId);
+    public Integer getFollowingCount(Integer memberId) {
+        return memberMapper.getFollowingCount(memberId);
     }
 }

@@ -43,5 +43,5 @@ public interface MemberMapper {
 
     Integer getFollowerCount(Integer memberId);
 
-    Integer getFolloweeCount(Integer memberId);
+    Integer getFollowingCount(Integer memberId);
 }

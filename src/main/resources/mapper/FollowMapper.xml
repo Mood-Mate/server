@@ -4,22 +4,22 @@
 
 <mapper namespace="com.pado.socialdiary.api.moduel.follow.mapper.FollowMapper">
   <insert id="createFollowing" parameterType="com.pado.socialdiary.api.moduel.follow.entity.Follow" useGeneratedKeys="true">
-    INSERT INTO TB_FOLLOW(FOLLOWER_MEMBER_ID, FOLLOWEE_MEMBER_ID, REG_ID, REG_DT, UPD_ID, UPD_DT)
-    VALUES (#{followerMemberId}, #{followeeMemberId}, #{followerMemberId}, NOW(), #{followerMemberId}, NOW())
+    INSERT INTO TB_FOLLOW(FOLLOWER_MEMBER_ID, FOLLOWING_MEMBER_ID, REG_ID, REG_DT, UPD_ID, UPD_DT)
+    VALUES (#{followerMemberId}, #{followingMemberId}, #{followerMemberId}, NOW(), #{followerMemberId}, NOW())
   </insert>
 
   <delete id="deleteFollowing">
     DELETE FROM TB_FOLLOW
-    WHERE FOLLOWER_MEMBER_ID=#{followerMemberId} AND FOLLOWEE_MEMBER_ID=#{followeeMemberId}
+    WHERE FOLLOWER_MEMBER_ID=#{followerMemberId} AND FOLLOWING_MEMBER_ID=#{followingMemberId}
   </delete>
 
   <select id="existFollowing" resultType="Integer">
     SELECT FOLLOW_ID FROM TB_FOLLOW
-    WHERE FOLLOWER_MEMBER_ID=#{followerMemberId} AND FOLLOWEE_MEMBER_ID=#{followeeMemberId} LIMIT 1
+    WHERE FOLLOWER_MEMBER_ID=#{followerMemberId} AND FOLLOWING_MEMBER_ID=#{followingMemberId} LIMIT 1
   </select>
 
-  <select id="findFolloweeId" resultType="Integer">
-    SELECT FOLLOWEE_MEMBER_ID FROM TB_FOLLOW
+  <select id="findFollowingId" resultType="Integer">
+    SELECT FOLLOWING_MEMBER_ID FROM TB_FOLLOW
     WHERE FOLLOWER_MEMBER_ID=#{followerMemberId}
   </select>
 
@@ -27,7 +27,7 @@
     SELECT
       TB_FOLLOW.FOLLOW_ID,
       TB_FOLLOW.FOLLOWER_MEMBER_ID,
-      TB_FOLLOW.FOLLOWEE_MEMBER_ID,
+      TB_FOLLOW.FOLLOWING_MEMBER_ID,
       TB_FOLLOW.REG_DT,
       TB_MEMBER.NICKNAME,
       TB_MEMBER.PICTURE
@@ -38,12 +38,12 @@
       <when test="followerMemberId != null">
         TB_FOLLOW.FOLLOWER_MEMBER_ID = TB_MEMBER.MEMBER_ID
         WHERE
-        TB_FOLLOW.FOLLOWEE_MEMBER_ID = #{followerMemberId}
+        TB_FOLLOW.FOLLOWING_MEMBER_ID = #{followerMemberId}
       </when>
-      <when test="followeeMemberId != null">
-        TB_FOLLOW.FOLLOWEE_MEMBER_ID = TB_MEMBER.MEMBER_ID
+      <when test="followingMemberId != null">
+        TB_FOLLOW.FOLLOWING_MEMBER_ID = TB_MEMBER.MEMBER_ID
         WHERE
-        TB_FOLLOW.FOLLOWER_MEMBER_ID = #{followeeMemberId}
+        TB_FOLLOW.FOLLOWER_MEMBER_ID = #{followingMemberId}
       </when>
     </choose>
   </select>

@@ -30,10 +30,10 @@ public class FollowRestController {
     return ResponseEntity.ok(followService.findFollowerList(memberId));
   }
 
-  @GetMapping("/followee")
-  public ResponseEntity<List<FollowResponse>> followeeList(@RequestParam("memberId") Integer memberId) {
+  @GetMapping("/following")
+  public ResponseEntity<List<FollowResponse>> followingList(@RequestParam("memberId") Integer memberId) {
 
-    return ResponseEntity.ok(followService.findFolloweeList(memberId));
+    return ResponseEntity.ok(followService.findFollowingList(memberId));
   }
 
   @PatchMapping("")

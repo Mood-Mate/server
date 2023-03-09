@@ -10,16 +10,16 @@ public class Follow {
 
   private Integer followId;
   private Integer followerMemberId;
-  private Integer followeeMemberId;
+  private Integer followingMemberId;
   private Integer regId;
   private LocalDateTime regDt;
   private Integer updId;
   private LocalDateTime updDt;
 
   @Builder
-  public Follow(Integer followerMemberId, Integer followeeMemberId) {
+  public Follow(Integer followerMemberId, Integer followingMemberId) {
     this.followerMemberId = followerMemberId;
-    this.followeeMemberId = followeeMemberId;
+    this.followingMemberId = followingMemberId;
     this.regId = followerMemberId;
     this.regDt = LocalDateTime.now();
     this.updId = followerMemberId;
