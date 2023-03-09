@@ -11,16 +11,16 @@ public class FollowResponse {
 
 	private Integer followId;
 	private Integer followerMemberId;
-	private Integer followeeMemberId;
+	private Integer followingMemberId;
 	private LocalDateTime regDt;
 	private String nickname;
 	private String picture;
 
-	public FollowResponse(Integer followId, Integer followerMemberId, Integer followeeMemberId,
+	public FollowResponse(Integer followId, Integer followerMemberId, Integer followingMemberId,
 		LocalDateTime regDt, String nickname, String picture) {
 		this.followId = followId;
 		this.followerMemberId = followerMemberId;
-		this.followeeMemberId = followeeMemberId;
+		this.followingMemberId = followingMemberId;
 		this.regDt = regDt;
 		this.nickname = nickname;
 		this.picture = picture;

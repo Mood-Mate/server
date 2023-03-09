@@ -51,13 +51,13 @@ public class DiaryRestController {
         return ResponseEntity.ok(diaryService.findDateOfMonth(member, someoneId, regDt));
     }
 
-    @GetMapping("/followee")
-    public ResponseEntity<CursorPageResponse<DiaryResponse>> searchFolloweeDiary(@AuthenticationPrincipal Member member,
-                                                                                 @RequestParam(required = false, value = "next") Integer next) {
+    @GetMapping("/following")
+    public ResponseEntity<CursorPageResponse<DiaryResponse>> searchFollowingDiary(@AuthenticationPrincipal Member member,
+                                                                                  @RequestParam(required = false, value = "next") Integer next) {
 
         CursorPageable cursorPageable = new CursorPageable();
         cursorPageable.setCursor(next);
-        return ResponseEntity.ok(diaryService.findFolloweeDiary(member, cursorPageable));
+        return ResponseEntity.ok(diaryService.findFollowingDiary(member, cursorPageable));
     }
 
     @PutMapping("/edit")

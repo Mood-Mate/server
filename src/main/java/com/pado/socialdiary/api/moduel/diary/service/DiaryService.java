@@ -169,12 +169,12 @@ public class DiaryService {
         return diaryMapper.selectDate(member.getMemberId(), someoneId, regDt);
     }
 
-    public CursorPageResponse<DiaryResponse> findFolloweeDiary(Member member, CursorPageable cursorPageable) {
+    public CursorPageResponse<DiaryResponse> findFollowingDiary(Member member, CursorPageable cursorPageable) {
 
-        List<Integer> followeeList = followMapper.findFolloweeId(member.getMemberId());
+        List<Integer> followingList = followMapper.findFollowingId(member.getMemberId());
 
         Map<String, Object> map = new HashMap<>();
-        map.put("followeeList", followeeList);
+        map.put("followingList", followingList);
         map.put("cursorPageable", cursorPageable);
 
         List<DiaryResponse> findDiary = diaryMapper.selectAll(map);

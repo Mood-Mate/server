@@ -8,6 +8,6 @@ import lombok.Setter;
 public class FollowRequest {
 
   private Integer followerMemberId;
-  private Integer followeeMemberId;
+  private Integer followingMemberId;
 
 }

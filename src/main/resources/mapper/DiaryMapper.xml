@@ -64,8 +64,8 @@
     JOIN TB_MEMBER
     ON TB_DIARY.MEMBER_ID = TB_MEMBER.MEMBER_ID
     WHERE TB_DIARY.MEMBER_ID IN
-    <foreach collection="followeeList" item="followee" open="(" close=")" separator=",">
-      #{followee}
+    <foreach collection="followingList" item="following" open="(" close=")" separator=",">
+      #{following}
     </foreach>
     <if test="cursorPageable.cursor != null">
     AND TB_DIARY.DIARY_ID &lt; #{cursorPageable.cursor}

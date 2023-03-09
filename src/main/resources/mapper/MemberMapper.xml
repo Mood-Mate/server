@@ -84,7 +84,7 @@
         SELECT
             FOLLOW_ID,
             FOLLOWER_MEMBER_ID,
-            FOLLOWEE_MEMBER_ID
+            FOLLOWING_MEMBER_ID
         FROM TB_FOLLOW
         WHERE FOLLOWER_MEMBER_ID = #{memberId}
     </select>
@@ -110,7 +110,7 @@
     <select id="getFollowerCount" resultType="integer">
         SELECT COUNT(FOLLOW_ID) FROM TB_FOLLOW WHERE FOLLOWER_MEMBER_ID = #{memberId}
     </select>
-    <select id="getFolloweeCount" resultType="integer">
-        SELECT COUNT(FOLLOW_ID) FROM TB_FOLLOW WHERE FOLLOWEE_MEMBER_ID = #{memberId}
+    <select id="getFollowingCount" resultType="integer">
+        SELECT COUNT(FOLLOW_ID) FROM TB_FOLLOW WHERE FOLLOWING_MEMBER_ID = #{memberId}
     </select>
 </mapper>

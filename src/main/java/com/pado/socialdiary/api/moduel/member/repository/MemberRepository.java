@@ -40,5 +40,5 @@ public interface MemberRepository {
 
     Integer getFollowerCount(Integer memberId);
 
-    Integer getFolloweeCount(Integer memberId);
+    Integer getFollowingCount(Integer memberId);
 }
