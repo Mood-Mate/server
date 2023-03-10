@@ -23,6 +23,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -80,9 +81,21 @@ public class MemberService {
     }
 
     @Transactional
-    public void update(MemberUpdateRequest memberUpdateRequest) {
-        memberRepository.update(memberUpdateRequest);
-        Member getMember = memberRepository.getByMemberId(memberUpdateRequest.getMemberId());
+    public void update(MemberUpdateRequest request) {
+
+        if (StringUtils.hasText(request.getYear()) && StringUtils.hasText(request.getMonth()) && StringUtils.hasText(request.getDayOfMonth())) {
+            LocalDateTime convertedDateOfBirth = dateTimeConvert(Integer.parseInt(request.getYear()), Integer.parseInt(request.getMonth()), Integer.parseInt(request.getDayOfMonth()));
+            request.setConvertedDateOfBirth(convertedDateOfBirth);
+        }
+
+        if (StringUtils.hasText(request.getPassword())) {
+            String encodedPassword = passwordEncoder.encode(request.getPassword());
+            request.setEncodedPassword(encodedPassword);
+        }
+
+        memberRepository.update(request);
+
+        Member getMember = memberRepository.getByMemberId(request.getMemberId());
 
         memberRepository.saveHistory(new MemberHistory(getMember));
     }
@@ -111,12 +124,6 @@ public class MemberService {
 
         memberRepository.update(memberUpdateRequest);
         memberRepository.saveHistory(new MemberHistory(memberRepository.getByMemberId(memberUpdateRequest.getMemberId())));
-    }
-
-    @Transactional
-    public void updateMemberIntroduce(Member member, String introduce) {
-        member.changeIntroduce(introduce);
-        memberRepository.updateIntroduce(member.getMemberId(), introduce);
     }
 
     public List<MemberSearchResponse> searchMember(Member member, String keyword) {

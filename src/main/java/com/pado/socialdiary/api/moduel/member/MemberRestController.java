@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -31,9 +32,7 @@ public class MemberRestController {
 
     @PostMapping
     public ResponseEntity join(@RequestBody @Parameter MemberJoinRequest memberJoinRequest) {
-
         memberService.join(memberJoinRequest);
-
         return ResponseEntity.ok()
                 .build();
     }
@@ -58,20 +57,8 @@ public class MemberRestController {
     @PatchMapping("/picture")
     public ResponseEntity updatePicture(@AuthenticationPrincipal Member member,
                                         @RequestPart MultipartFile multipartFile) throws IOException {
-
         AttachDto.UploadRequest uploadRequest = attachUtil.attachedFile(AttachPath.MEMBER_PICTURE.getValue(), multipartFile);
         memberService.updateMemberPicture(member, uploadRequest);
-
-        return ResponseEntity.ok()
-                .build();
-    }
-
-    @PatchMapping("/introduce")
-    public ResponseEntity updateIntroduce(@AuthenticationPrincipal Member member,
-                                          @RequestBody String introduce) {
-
-        memberService.updateMemberIntroduce(member, introduce);
-
         return ResponseEntity.ok()
                 .build();
     }
@@ -79,9 +66,7 @@ public class MemberRestController {
     @GetMapping("search")
     public ResponseEntity searchMember(@AuthenticationPrincipal Member member,
                                        @RequestParam("keyword") String keyword) {
-
         List<MemberSearchResponse> result = memberService.searchMember(member, keyword);
-
         return ResponseEntity.ok(result);
     }
 }

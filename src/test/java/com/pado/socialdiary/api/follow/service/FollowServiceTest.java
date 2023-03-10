@@ -72,7 +72,7 @@ public class FollowServiceTest {
 		Member followeeMember = memberRepository.findByEmail(expectedEmailValue02).get();
 
 		FollowRequest followRequest = new FollowRequest();
-		followRequest.setFolloweeMemberId(followeeMember.getMemberId());
+		followRequest.setFollowingMemberId(followeeMember.getMemberId());
 
 		//when
 		followService.createOrDeleteFollowing(followerMember, followRequest);
@@ -91,7 +91,7 @@ public class FollowServiceTest {
 		Member followeeMember = memberRepository.findByEmail(expectedEmailValue02).get();
 
 		FollowRequest followRequest = new FollowRequest();
-		followRequest.setFolloweeMemberId(followeeMember.getMemberId());
+		followRequest.setFollowingMemberId(followeeMember.getMemberId());
 
 		//when
 		followService.createOrDeleteFollowing(followerMember, followRequest);

@@ -3,6 +3,7 @@ package com.pado.socialdiary.api.moduel.member.service;
 import com.pado.socialdiary.api.constants.AttachPath;
 import com.pado.socialdiary.api.exception.member.DuplicateEmailException;
 import com.pado.socialdiary.api.moduel.member.dto.MemberJoinRequest;
+import com.pado.socialdiary.api.moduel.member.dto.MemberUpdateRequest;
 import com.pado.socialdiary.api.moduel.member.entity.GenderType;
 import com.pado.socialdiary.api.moduel.member.entity.Member;
 import com.pado.socialdiary.api.moduel.member.repository.MemberRepository;
@@ -16,8 +17,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -32,6 +35,9 @@ class MemberServiceTest {
 
     @Autowired
     MemberService memberService;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @Autowired
     AttachUtil attachUtil;
@@ -110,18 +116,31 @@ class MemberServiceTest {
 
     @Test
     @Transactional
-    @DisplayName("회원 한줄소개 수정 테스트")
-    void updateMemberIntroduceTest() {
-        //given
-        final String PARAM_INTRODUCE = "회원 한줄소개 입둥.";
+    @DisplayName("회원 수정 테스트")
+    void memberUpdateTest() {
         Member findMember = memberRepository.findByEmail(BEFORE_MEMBER_EMAIL).get();
 
-        //when
-        memberService.updateMemberIntroduce(findMember, PARAM_INTRODUCE);
+        MemberUpdateRequest request = new MemberUpdateRequest();
+        request.setMemberId(findMember.getMemberId());
+        request.setPassword("1234");
+        request.setName("updateName");
+        request.setNickname("updateNickname");
+        request.setIntroduce("updateIntroduce");
+        request.setGender(GenderType.MAN.getValue());
+        request.setYear("2022");
+        request.setMonth("06");
+        request.setDayOfMonth("05");
 
-        //then
-        Member changedIntroduceMember = memberRepository.findByEmail(BEFORE_MEMBER_EMAIL).get();
-        assertEquals(PARAM_INTRODUCE, changedIntroduceMember.getIntroduce());
+        memberService.update(request);
+
+        Member updatedMember = memberRepository.findByEmail(BEFORE_MEMBER_EMAIL).get();
+
+        assertEquals(updatedMember.getPassword(), request.getEncodedPassword());
+        assertEquals(updatedMember.getName(), request.getName());
+        assertEquals(updatedMember.getNickname(), request.getNickname());
+        assertEquals(updatedMember.getIntroduce(), request.getIntroduce());
+        assertEquals(updatedMember.getGender().getValue(), request.getGender());
+        assertEquals(updatedMember.getDateOfBirth(), request.getConvertedDateOfBirth());
     }
 
     @Test

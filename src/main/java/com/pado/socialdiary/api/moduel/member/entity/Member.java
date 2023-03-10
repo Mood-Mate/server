@@ -40,10 +40,6 @@ public class Member {
         this.picture = picture;
     }
 
-    public void changeIntroduce(String introduce) {
-        this.introduce = introduce;
-    }
-
     @Override
     public String toString() {
         return "Member{" +

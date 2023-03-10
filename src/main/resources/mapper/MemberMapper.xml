@@ -20,8 +20,8 @@
 
     <update id="update" parameterType="com.pado.socialdiary.api.moduel.member.dto.MemberUpdateRequest">
         UPDATE TB_MEMBER SET
-            <if test='password != null and password != ""'>
-                PASSWORD = #{password},
+            <if test='encodedPassword != null and encodedPassword != ""'>
+                PASSWORD = #{encodedPassword},
             </if>
             <if test='name != null and name != ""'>
                 NAME = #{name},
@@ -31,6 +31,15 @@
             </if>
             <if test='picture != null and picture != ""'>
                 PICTURE = #{picture},
+            </if>
+            <if test='introduce != null and introduce != ""'>
+                INTRODUCE = #{introduce},
+            </if>
+            <if test='gender != null and gender != ""'>
+                GENDER = #{gender},
+            </if>
+            <if test='convertedDateOfBirth != null'>
+                DATE_OF_BIRTH = #{convertedDateOfBirth},
             </if>
                 UPD_ID = #{memberId},
                 UPD_DT = NOW()
