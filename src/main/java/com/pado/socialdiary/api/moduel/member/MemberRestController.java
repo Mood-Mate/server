@@ -14,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -68,5 +67,15 @@ public class MemberRestController {
                                        @RequestParam("keyword") String keyword) {
         List<MemberSearchResponse> result = memberService.searchMember(member, keyword);
         return ResponseEntity.ok(result);
+    }
+
+    @PostMapping("/auth")
+    public ResponseEntity authCheck(@AuthenticationPrincipal Member member) {
+
+        if (member == null) {
+            throw new RuntimeException("Not Fount Principal");
+        }
+
+        return ResponseEntity.ok(member);
     }
 }

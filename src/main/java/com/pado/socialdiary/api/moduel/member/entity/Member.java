@@ -1,5 +1,6 @@
 package com.pado.socialdiary.api.moduel.member.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -11,6 +12,8 @@ public class Member {
 
     private Integer memberId;
     private String email;
+
+    @JsonIgnore
     private String password;
     private String name;
     private String nickname;
@@ -20,11 +23,20 @@ public class Member {
     private String picture;
 
     private MemberRole role = MemberRole.USER;
+
+    @JsonIgnore
     private LoginProvider loginProvider = LoginProvider.LOCAL;
 
+    @JsonIgnore
     private Integer regId;
+
+    @JsonIgnore
     private LocalDateTime regDt;
+
+    @JsonIgnore
     private Integer updId;
+
+    @JsonIgnore
     private LocalDateTime updDt;
 
     @Builder

@@ -6,13 +6,13 @@ import com.pado.socialdiary.api.moduel.member.repository.MemberMapper;
 import com.pado.socialdiary.api.moduel.member.service.MemberService;
 import com.pado.socialdiary.api.utils.attach.AttachUtil;
 import com.pado.socialdiary.api.utils.attach.dto.AttachDto;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -44,15 +44,5 @@ public class CommonTestController {
         AttachDto.UploadRequest uploadRequest = attachUtil.attachedFile(AttachPath.MEMBER_PICTURE.getValue(), multipartFile);
         memberService.updateMemberPicture(memberMapper.getByMemberId(memberId), uploadRequest);
         return "redirect:/upload";
-    }
-
-    @PostMapping("/api/member/auth")
-    public ResponseEntity authCheck(@AuthenticationPrincipal Member member) {
-
-        if (member == null) {
-            throw new RuntimeException("Not Fount Principal");
-        }
-
-        return ResponseEntity.ok(member);
     }
 }
