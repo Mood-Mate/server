@@ -11,4 +11,4 @@ fi
 
 echo "> socialdiary.api 배포"
 cd /var/lib/jenkins/workspace/server/build/libs
-sudo nohup java -jar -Dspring.profiles.active=dev socialdiary.api-0.0.1-SNAPSHOT.jar &
+nohup java -jar -Dspring.profiles.active=dev socialdiary.api-0.0.1-SNAPSHOT.jar &
