@@ -60,7 +60,7 @@ public class DiaryRestController {
         return ResponseEntity.ok(diaryService.findFollowingDiary(member, cursorPageable));
     }
 
-    @PutMapping("/edit")
+    @PatchMapping("/edit")
     public ResponseEntity editDiary(@AuthenticationPrincipal Member member,
                                     @RequestPart DiaryUpdateRequest diaryUpdateRequest,
                                     @RequestPart(value = "picture", required = false) MultipartFile multipartFile) throws IOException {

@@ -146,9 +146,7 @@ public class DiaryServiceTest {
 
 		DiaryUpdateRequest diaryUpdateRequest = new DiaryUpdateRequest();
 		diaryUpdateRequest.setDiaryId(diary.getDiaryId());
-		diaryUpdateRequest.setTitle(expectedValue01);
 		diaryUpdateRequest.setContents(expectedValue01 +1);
-		diaryUpdateRequest.setSecret(true);
 
 		diaryService.updateDiary(member01, diaryUpdateRequest, null);
 

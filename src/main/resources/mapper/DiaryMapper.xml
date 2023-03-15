@@ -76,7 +76,22 @@
   </select>
 
   <update id="update" parameterType="com.pado.socialdiary.api.moduel.diary.entity.Diary">
-    UPDATE TB_DIARY SET MEMBER_ID = #{memberId}, TITLE = #{title}, CONTENTS = #{contents}, SECRET = #{secret}, UPD_ID = #{memberId}, UPD_DT = NOW() WHERE DIARY_ID = #{diaryId}
+    UPDATE TB_DIARY SET
+    <if test="memberId != null and memberId != ''">
+      MEMBER_ID = #{memberId},
+      UPD_ID = #{memberId},
+    </if>
+    <if test="title != null and title != ''">
+      TITLE = #{title},
+    </if>
+    <if test="contents != null and contents != ''">
+      CONTENTS = #{contents},
+    </if>
+    <if test="secret != null and secret != ''">
+      SECRET = #{secret},
+    </if>
+    UPD_DT = NOW()
+    WHERE DIARY_ID = #{diaryId}
   </update>
 
   <delete id="delete">
