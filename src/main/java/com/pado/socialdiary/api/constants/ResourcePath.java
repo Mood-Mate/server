@@ -1,7 +1,8 @@
 package com.pado.socialdiary.api.constants;
 
 public enum ResourcePath {
-    MEMBER_PICTURE("/resource/image/member/picture/");
+    MEMBER_PICTURE("/resource/image/member/picture/"),
+    DIARY_PICTURE("/resource/image/diary/picture/");
 
     private final String path;
 

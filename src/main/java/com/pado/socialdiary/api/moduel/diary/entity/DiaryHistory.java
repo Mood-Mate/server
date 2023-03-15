@@ -17,6 +17,7 @@ public class DiaryHistory {
   private String title;
   private String contents;
   private Boolean secret;
+  private String diaryPicture;
   private Integer regId;
   private LocalDateTime regDt;
   private Integer updId;
@@ -29,6 +30,7 @@ public class DiaryHistory {
     this.title = diary.getTitle();
     this.contents = diary.getContents();
     this.secret = diary.getSecret();
+    this.diaryPicture = diary.getDiaryPicture();
     this.regId = diary.getRegId();
     this.regDt = diary.getRegDt();
     this.updId = diary.getUpdId();

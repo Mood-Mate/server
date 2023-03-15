@@ -12,8 +12,8 @@
   </insert>
 
   <insert id="saveHistory" parameterType="com.pado.socialdiary.api.moduel.diary.entity.DiaryHistory" useGeneratedKeys="true">
-    INSERT INTO TB_DIARY_HISTORY(DIARY_ID, MEMBER_ID, TITLE, CONTENTS, SECRET, REG_ID, REG_DT, UPD_ID, UPD_DT)
-    VALUES (#{diaryId}, #{memberId}, #{title}, #{contents}, #{secret}, #{memberId}, NOW(), #{memberId}, NOW())
+    INSERT INTO TB_DIARY_HISTORY(DIARY_ID, MEMBER_ID, TITLE, CONTENTS, SECRET, DIARY_PICTURE, REG_ID, REG_DT, UPD_ID, UPD_DT)
+    VALUES (#{diaryId}, #{memberId}, #{title}, #{contents}, #{secret}, #{diaryPicture}, #{memberId}, NOW(), #{memberId}, NOW())
   </insert>
 
   <select id="getByDiaryId" resultType="com.pado.socialdiary.api.moduel.diary.entity.Diary">
@@ -27,10 +27,12 @@
       TB_DIARY.TITLE,
       TB_DIARY.CONTENTS,
       TB_DIARY.SECRET,
+      TB_DIARY.DIARY_PICTURE,
       TB_DIARY.REG_DT,
       TB_DIARY.UPD_DT,
       TB_MEMBER.NICKNAME,
-      TB_MEMBER.PICTURE
+      TB_MEMBER.PICTURE,
+      TB_MEMBER.LOGIN_PROVIDER
     FROM TB_DIARY
     JOIN TB_MEMBER
     ON TB_DIARY.MEMBER_ID = TB_MEMBER.MEMBER_ID
@@ -56,10 +58,12 @@
       TB_DIARY.TITLE,
       TB_DIARY.CONTENTS,
       TB_DIARY.SECRET,
+      TB_DIARY.DIARY_PICTURE,
       TB_DIARY.REG_DT,
       TB_DIARY.UPD_DT,
       TB_MEMBER.NICKNAME,
-      TB_MEMBER.PICTURE
+      TB_MEMBER.PICTURE,
+      TB_MEMBER.LOGIN_PROVIDER
     FROM TB_DIARY
     JOIN TB_MEMBER
     ON TB_DIARY.MEMBER_ID = TB_MEMBER.MEMBER_ID
@@ -90,8 +94,15 @@
     <if test="secret != null and secret != ''">
       SECRET = #{secret},
     </if>
+    <if test="diaryPicture != null and secret != ''">
+      DIARY_PICTURE = #{diaryPicture},
+    </if>
     UPD_DT = NOW()
     WHERE DIARY_ID = #{diaryId}
+  </update>
+
+  <update id="deleteDiaryPicture">
+    UPDATE TB_DIARY SET DIARY_PICTURE = null WHERE DIARY_ID = #{diaryId}
   </update>
 
   <delete id="delete">

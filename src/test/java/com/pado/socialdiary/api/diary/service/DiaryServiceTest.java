@@ -17,7 +17,6 @@ import com.pado.socialdiary.api.moduel.member.entity.GenderType;
 import com.pado.socialdiary.api.moduel.member.entity.Member;
 import com.pado.socialdiary.api.moduel.member.repository.MemberRepository;
 import com.pado.socialdiary.api.moduel.member.service.MemberService;
-import com.pado.socialdiary.api.utils.attach.repository.AttachedRepository;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -41,8 +40,6 @@ public class DiaryServiceTest {
 	MemberService memberService;
 	@Autowired
 	MemberRepository memberRepository;
-	@Autowired
-	AttachedRepository attachedRepository;
 
 	private final String expectedValue01 = "test01";
 	private final String expectedEmailValue01 = "email01@email.com";
@@ -115,7 +112,7 @@ public class DiaryServiceTest {
 		DiaryResponse diary = diaryMapper.select(member01.getMemberId(), member01.getMemberId(), LocalDateTime.now().toString()).get(0);
 		assertThat(diary.getTitle()).isEqualTo(expectedValue01);
 		assertThat(diary.getContents()).isEqualTo(expectedValue01);
-		assertThat(attachedRepository.findDiaryPictureIdByDiaryId(diary.getDiaryId())).isNotNull();
+		assertThat(diary.getDiaryPicture()).isNotNull();
 	}
 
 	@Test
@@ -154,7 +151,7 @@ public class DiaryServiceTest {
 		DiaryResponse updatedDiary = diaryMapper.select(member01.getMemberId(), member01.getMemberId(), LocalDateTime.now().toString()).get(0);
 		assertThat(updatedDiary.getTitle()).isEqualTo(expectedValue01);
 		assertThat(updatedDiary.getContents()).isEqualTo(expectedValue01 +1);
-		assertThat(attachedRepository.findDiaryPictureIdByDiaryId(updatedDiary.getDiaryId())).isEmpty();
+		assertThat(diary.getDiaryPicture()).isNotNull();
 	}
 
 	@Test
@@ -193,7 +190,7 @@ public class DiaryServiceTest {
 		//then
 		DiaryComment deletedComment = diaryMapper.findDiaryCommentById(findComment.getDiaryCommentId()).get();
 		assertThat(diaryMapper.getByDiaryId(diary.getDiaryId())).isNull();
-		assertThat(attachedRepository.findDiaryPictureIdByDiaryId(diary.getDiaryId())).isEmpty();
+		assertThat(diary.getDiaryPicture()).isNotNull();
 		assertThat(deletedComment.getDelAt()).isEqualTo(YesNoCode.Y);
 	}
 

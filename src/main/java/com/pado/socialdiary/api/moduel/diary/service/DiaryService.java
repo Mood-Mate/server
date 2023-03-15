@@ -1,5 +1,7 @@
 package com.pado.socialdiary.api.moduel.diary.service;
 
+import com.pado.socialdiary.api.constants.ResourcePath;
+import com.pado.socialdiary.api.moduel.member.entity.LoginProvider;
 import com.pado.socialdiary.api.utils.attach.AttachUtil;
 import com.pado.socialdiary.api.utils.attach.dto.AttachDto;
 import com.pado.socialdiary.api.utils.attach.entity.Attached;
@@ -53,6 +55,7 @@ public class DiaryService {
                 .build();
 
         diaryMapper.insert(builtDiary);
+        Diary getDiary = diaryMapper.getByDiaryId(builtDiary.getDiaryId());
 
         if (multipartFile != null) {
             AttachDto.UploadRequest uploadRequest = attachUtil.attachedFile(
@@ -72,9 +75,13 @@ public class DiaryService {
                     .build();
 
             attachedMapper.createAttached(builtDiaryPicture);
+            getDiary.setDiaryPicture(builtDiaryPicture.getAttachedFilename());
+            DiaryUpdateRequest diaryUpdateRequest = new DiaryUpdateRequest();
+            diaryUpdateRequest.setDiaryId(getDiary.getDiaryId());
+            diaryUpdateRequest.setDiaryPicture(builtDiaryPicture.getAttachedFilename());
+            diaryMapper.update(diaryUpdateRequest);
         }
 
-        Diary getDiary = diaryMapper.getByDiaryId(builtDiary.getDiaryId());
         diaryMapper.saveHistory(new DiaryHistory(getDiary));
     }
 
@@ -83,7 +90,10 @@ public class DiaryService {
             throws IOException {
 
         Optional<Integer> oldPictureId = attachedMapper.findDiaryPictureIdByDiaryId(diaryUpdateRequest.getDiaryId());
-        oldPictureId.ifPresent(attachedMapper::deleteAttached);
+        if (oldPictureId.isPresent()) {
+            attachedMapper.deleteAttached(oldPictureId.get());
+            diaryMapper.deleteDiaryPicture(diaryUpdateRequest.getDiaryId());
+        }
 
         if (multipartFile != null) {
             AttachDto.UploadRequest uploadRequest = attachUtil.attachedFile(
@@ -103,6 +113,7 @@ public class DiaryService {
                     .build();
 
             attachedMapper.createAttached(builtDiaryPicture);
+            diaryUpdateRequest.setDiaryPicture(builtDiaryPicture.getAttachedFilename());
         }
 
         diaryUpdateRequest.setMemberId(member.getMemberId());
@@ -113,9 +124,13 @@ public class DiaryService {
     }
 
     @Transactional
-    public void deleteDiaryPicture(Integer diaryPictureId) {
+    public void deleteDiaryPicture(Integer diaryId) {
 
-        attachedMapper.deleteAttached(diaryPictureId);
+        Optional<Integer> diaryPictureId = attachedMapper.findDiaryPictureIdByDiaryId(diaryId);
+        if (diaryPictureId.isPresent()) {
+            attachedMapper.deleteAttached(diaryPictureId.get());
+            diaryMapper.deleteDiaryPicture(diaryId);
+        }
     }
 
     @Transactional
@@ -158,6 +173,12 @@ public class DiaryService {
 
             findDiary.forEach(diary -> {
                 diary.setComments(findDiaryCommentMap.get(diary.getDiaryId()));
+                if (diary.getLoginProvider() == LoginProvider.LOCAL) {
+                    diary.setPicture(ResourcePath.MEMBER_PICTURE.getResource(diary.getPicture()));
+                }
+                if (diary.getDiaryPicture() != null) {
+                    diary.setDiaryPicture(ResourcePath.DIARY_PICTURE.getResource(diary.getDiaryPicture()));
+                }
             });
         }
 
@@ -191,6 +212,12 @@ public class DiaryService {
 
             findDiary.forEach(diary -> {
                 diary.setComments(findDiaryCommentMap.get(diary.getDiaryId()));
+                if (diary.getLoginProvider() == LoginProvider.LOCAL) {
+                    diary.setPicture(ResourcePath.MEMBER_PICTURE.getResource(diary.getPicture()));
+                }
+                if (diary.getDiaryPicture() != null) {
+                    diary.setDiaryPicture(ResourcePath.DIARY_PICTURE.getResource(diary.getDiaryPicture()));
+                }
             });
         }
 

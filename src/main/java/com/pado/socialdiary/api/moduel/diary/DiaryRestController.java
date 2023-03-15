@@ -71,10 +71,10 @@ public class DiaryRestController {
             .build();
     }
 
-    @DeleteMapping("/picture/{diaryPictureId}")
-    public ResponseEntity deleteDiaryPicture(@PathVariable("diaryPictureId") Integer diaryPictureId){
+    @DeleteMapping("/picture/{diaryId}")
+    public ResponseEntity deleteDiaryPicture(@PathVariable("diaryId") Integer diaryId){
 
-        diaryService.deleteDiaryPicture(diaryPictureId);
+        diaryService.deleteDiaryPicture(diaryId);
 
         return ResponseEntity.ok()
             .build();

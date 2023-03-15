@@ -14,4 +14,5 @@ public class DiaryUpdateRequest {
   private String title;
   private String contents;
   private Boolean secret;
+  private String diaryPicture;
 }

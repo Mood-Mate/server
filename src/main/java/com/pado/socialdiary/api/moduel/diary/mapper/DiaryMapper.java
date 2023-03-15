@@ -19,6 +19,7 @@ public interface DiaryMapper {
   void insert(Diary diary);
   void update(DiaryUpdateRequest diaryUpdateRequest);
   void delete(Integer diaryId);
+  void deleteDiaryPicture(Integer diaryId);
   Diary getByDiaryId(Integer diaryId);
   void saveHistory(DiaryHistory diaryHistory);
   void deleteHistory(Integer diaryId);
