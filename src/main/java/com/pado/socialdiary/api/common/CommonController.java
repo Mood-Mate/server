@@ -29,4 +29,10 @@ public class CommonController {
     public Resource getMemberPicture(@PathVariable String filename) throws MalformedURLException {
         return new UrlResource("file://" + attachUtil.getFullPath(AttachPath.MEMBER_PICTURE.getValue(), filename));
     }
+
+    @ResponseBody
+    @GetMapping("/resource/image/diary/picture/{filename}")
+    public Resource getDiaryPicture(@PathVariable String filename) throws MalformedURLException {
+        return new UrlResource("file://" + attachUtil.getFullPath(AttachPath.DIARY_PICTURE.getValue(), filename));
+    }
 }
