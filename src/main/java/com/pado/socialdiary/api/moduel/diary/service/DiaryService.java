@@ -124,16 +124,6 @@ public class DiaryService {
     }
 
     @Transactional
-    public void deleteDiaryPicture(Integer diaryId) {
-
-        Optional<Integer> diaryPictureId = attachedMapper.findDiaryPictureIdByDiaryId(diaryId);
-        if (diaryPictureId.isPresent()) {
-            attachedMapper.deleteAttached(diaryPictureId.get());
-            diaryMapper.deleteDiaryPicture(diaryId);
-        }
-    }
-
-    @Transactional
     public void deleteDiary(Integer diaryId) {
 
         Optional<Integer> diaryPictureId = attachedMapper.findDiaryPictureIdByDiaryId(diaryId);

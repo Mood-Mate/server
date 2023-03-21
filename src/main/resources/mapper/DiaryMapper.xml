@@ -91,7 +91,7 @@
     <if test="contents != null and contents != ''">
       CONTENTS = #{contents},
     </if>
-    <if test="secret != null and secret != ''">
+    <if test="secret != null">
       SECRET = #{secret},
     </if>
     <if test="diaryPicture != null and secret != ''">

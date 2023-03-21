@@ -71,15 +71,6 @@ public class DiaryRestController {
             .build();
     }
 
-    @DeleteMapping("/picture/{diaryId}")
-    public ResponseEntity deleteDiaryPicture(@PathVariable("diaryId") Integer diaryId){
-
-        diaryService.deleteDiaryPicture(diaryId);
-
-        return ResponseEntity.ok()
-            .build();
-    }
-
     @DeleteMapping("/{diaryId}")
     public ResponseEntity deleteDiary(@PathVariable("diaryId") Integer diaryId){
 
