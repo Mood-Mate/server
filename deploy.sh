@@ -5,7 +5,7 @@ then
   echo "> 종료할것 없음."
 else
   echo "> kill -9 $CURRENT_PID"
-  kill -9 $CURRENT_PID
+  sudo kill -9 $CURRENT_PID
   sleep 5
 fi
 
