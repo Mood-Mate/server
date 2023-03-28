@@ -10,5 +10,6 @@ else
 fi
 
 echo "> socialdiary.api 배포"
-cd /var/lib/jenkins/workspace/server/build/libs
-sudo nohup java -jar -Dspring.profiles.active=dev socialdiary.api-0.0.1-SNAPSHOT.jar &
+cd /var/lib/jenkins/workspace
+sudo cp ./application.properties ./server/build/libs/application.properties
+sudo nohup java -jar ./server/build/libs/socialdiary.api-0.0.1-SNAPSHOT.jar &
