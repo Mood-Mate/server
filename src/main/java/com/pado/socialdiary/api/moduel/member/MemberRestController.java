@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,21 +31,21 @@ public class MemberRestController {
     private final AttachUtil attachUtil;
 
     @PostMapping
-    public ResponseEntity join(@RequestBody @Parameter MemberJoinRequest memberJoinRequest) {
+    public ResponseEntity join(@Validated @RequestBody @Parameter MemberJoinRequest memberJoinRequest) {
         memberService.join(memberJoinRequest);
         return ResponseEntity.ok()
                 .build();
     }
 
     @PatchMapping
-    public ResponseEntity update(@RequestBody MemberUpdateRequest memberUpdateRequest) {
+    public ResponseEntity update(@Validated @RequestBody MemberUpdateRequest memberUpdateRequest) {
         memberService.update(memberUpdateRequest);
         return ResponseEntity.ok()
                 .build();
     }
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody MemberLoginRequest memberLoginRequest) {
+    public ResponseEntity login(@Validated @RequestBody MemberLoginRequest memberLoginRequest) {
         return ResponseEntity.ok(memberService.login(memberLoginRequest));
     }
 
@@ -54,7 +55,7 @@ public class MemberRestController {
     }
 
     @PatchMapping("/picture")
-    public ResponseEntity updatePicture(@AuthenticationPrincipal Member member,
+    public ResponseEntity updatePicture(@Validated @AuthenticationPrincipal Member member,
                                         @RequestPart MultipartFile multipartFile) throws IOException {
         AttachDto.UploadRequest uploadRequest = attachUtil.attachedFile(AttachPath.MEMBER_PICTURE.getValue(), multipartFile);
         memberService.updateMemberPicture(member, uploadRequest);
@@ -63,14 +64,14 @@ public class MemberRestController {
     }
 
     @GetMapping("search")
-    public ResponseEntity searchMember(@AuthenticationPrincipal Member member,
+    public ResponseEntity searchMember(@Validated @AuthenticationPrincipal Member member,
                                        @RequestParam("keyword") String keyword) {
         List<MemberSearchResponse> result = memberService.searchMember(member, keyword);
         return ResponseEntity.ok(result);
     }
 
     @PostMapping("/auth")
-    public ResponseEntity authCheck(@AuthenticationPrincipal Member member) {
+    public ResponseEntity authCheck(@Validated @AuthenticationPrincipal Member member) {
 
         if (member == null) {
             throw new RuntimeException("Not Fount Principal");

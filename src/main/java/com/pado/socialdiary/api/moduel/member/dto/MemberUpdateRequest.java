@@ -1,12 +1,10 @@
 package com.pado.socialdiary.api.moduel.member.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.pado.socialdiary.api.moduel.member.entity.GenderType;
 import io.swagger.v3.oas.annotations.Parameter;
+import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
-import org.apache.ibatis.annotations.Param;
 
 import java.time.LocalDateTime;
 
@@ -19,6 +17,7 @@ public class MemberUpdateRequest {
     private Integer memberId;
 
     @Parameter(name = "비밀번호", example = "1234")
+    @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*[!@#?])[a-zA-Z\\d!@#?]{6,20}$")
     private String password;
 
     @Parameter(name = "이름", example = "이름")

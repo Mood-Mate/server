@@ -1,6 +1,9 @@
 package com.pado.socialdiary.api.moduel.member.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -11,9 +14,11 @@ import java.time.LocalDateTime;
 public class Member {
 
     private Integer memberId;
+    @Email
     private String email;
 
     @JsonIgnore
+    @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*[!@#?])[a-zA-Z\\d!@#?]{6,20}$")
     private String password;
     private String name;
     private String nickname;
