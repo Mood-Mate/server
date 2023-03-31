@@ -51,6 +51,10 @@ public class DiaryRestController {
         return ResponseEntity.ok(diaryService.findDateOfMonth(member, someoneId, regDt));
     }
 
+    /**
+     * 로그인 후 메인
+     * @return
+     */
     @GetMapping("/following")
     public ResponseEntity<CursorPageResponse<DiaryResponse>> searchFollowingDiary(@AuthenticationPrincipal Member member,
                                                                                   @RequestParam(required = false, value = "next") Integer next) {

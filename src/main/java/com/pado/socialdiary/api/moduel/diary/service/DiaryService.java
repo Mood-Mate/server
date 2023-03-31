@@ -1,6 +1,7 @@
 package com.pado.socialdiary.api.moduel.diary.service;
 
 import com.pado.socialdiary.api.constants.ResourcePath;
+import com.pado.socialdiary.api.moduel.emoji.mapper.EmojiMapper;
 import com.pado.socialdiary.api.moduel.member.entity.LoginProvider;
 import com.pado.socialdiary.api.utils.attach.AttachUtil;
 import com.pado.socialdiary.api.utils.attach.dto.AttachDto;
@@ -163,12 +164,14 @@ public class DiaryService {
 
             findDiary.forEach(diary -> {
                 diary.setComments(findDiaryCommentMap.get(diary.getDiaryId()));
+
                 if (diary.getLoginProvider() == LoginProvider.LOCAL) {
                     diary.setPicture(ResourcePath.MEMBER_PICTURE.getResource(diary.getPicture()));
                 }
                 if (diary.getDiaryPicture() != null) {
                     diary.setDiaryPicture(ResourcePath.DIARY_PICTURE.getResource(diary.getDiaryPicture()));
                 }
+
             });
         }
 
