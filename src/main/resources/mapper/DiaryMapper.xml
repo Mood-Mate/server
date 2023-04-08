@@ -72,9 +72,11 @@
     INNER JOIN TB_MEMBER ON TB_DIARY.MEMBER_ID = TB_MEMBER.MEMBER_ID
     LEFT JOIN TB_DIARY_EMOJI ON TB_DIARY.DIARY_ID = TB_DIARY_EMOJI.DIARY_ID
     WHERE TB_DIARY.MEMBER_ID IN
-    <foreach collection="followingList" item="following" open="(" close=")" separator=",">
-      #{following}
-    </foreach>
+          <if test="!followingList.isEmpty()">
+            <foreach collection="followingList" item="following" open="(" close=")" separator=",">
+              #{following}
+            </foreach>
+          </if>
     <if test="cursorPageable.cursor != null">
     AND TB_DIARY.DIARY_ID &lt; #{cursorPageable.cursor}
     </if>
