@@ -32,6 +32,7 @@
             </when>
         </choose>
         ORDER BY TB_GUEST_BOOK.GUEST_BOOK_ID DESC
+        LIMIT 10
     </select>
 
     <delete id="deleteGuestBook">

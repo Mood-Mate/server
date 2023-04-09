@@ -135,7 +135,7 @@
         <foreach collection="diaryIds" item="id" open="(" close=")" separator=",">
           ${id}
         </foreach>
-    ORDER BY REG_DT DESC
+    ORDER BY TB_DIARY_COMMENT.DIARY_COMMENT_ID ASC
   </select>
 
   <select id="findDiaryCommentById" resultType="com.pado.socialdiary.api.moduel.diary.entity.DiaryComment">
@@ -158,7 +158,7 @@
     INNER JOIN TB_MEMBER ON TB_DIARY_COMMENT.MEMBER_ID = TB_MEMBER.MEMBER_ID
     WHERE DEL_AT = 'N'
       AND DIARY_ID = #{diaryId}
-    ORDER BY REG_DT DESC
+    ORDER BY TB_DIARY_COMMENT.DIARY_COMMENT_ID ASC
   </select>
 
   <insert id="saveDiaryComment" useGeneratedKeys="true" keyProperty="diaryCommentId">
