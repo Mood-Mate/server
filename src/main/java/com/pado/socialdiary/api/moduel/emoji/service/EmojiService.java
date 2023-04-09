@@ -1,6 +1,7 @@
 package com.pado.socialdiary.api.moduel.emoji.service;
 
 import com.pado.socialdiary.api.moduel.emoji.dto.SympathyRequest;
+import com.pado.socialdiary.api.moduel.emoji.dto.SympathyResponse;
 import com.pado.socialdiary.api.moduel.emoji.mapper.EmojiMapper;
 import com.pado.socialdiary.api.moduel.member.entity.Member;
 import lombok.RequiredArgsConstructor;
@@ -21,11 +22,18 @@ public class EmojiService {
         request.setMemberId(member.getMemberId());
         Optional<Integer> existSympathy = emojiMapper.existSympathy(request.getMemberId(), request.getDiaryId());
 
-        if(existSympathy.isEmpty()) {
+        if (existSympathy.isEmpty()) {
             emojiMapper.createSympathy(request);
         } else {
+            SympathyResponse findSympathy = emojiMapper.findSympathy(member.getMemberId(), request.getDiaryId());
+
+            if (findSympathy.getEmojiType() != request.getEmojiType()) {
+                emojiMapper.deleteSympathy(request);
+                emojiMapper.createSympathy(request);
+                return;
+            }
+
             emojiMapper.deleteSympathy(request);
         }
-
     }
 }

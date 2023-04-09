@@ -19,4 +19,7 @@ public interface EmojiMapper {
 
     List<SympathyResponse> findSympathyByMemberIdAndDiaryIds(@Param("memberId") Integer memberId,
                                                              @Param("diaryIds") List<Integer> diaryIds);
+
+    SympathyResponse findSympathy(@Param("memberId") Integer memberId,
+                                  @Param("diaryId") Integer diaryId);
 }

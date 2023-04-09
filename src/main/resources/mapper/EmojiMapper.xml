@@ -27,10 +27,20 @@
             TB_DIARY_EMOJI.DIARY_ID,
             TB_DIARY_EMOJI.EMOJI
             FROM TB_DIARY_EMOJI
-        WHERE MEMBER_ID = 78
+        WHERE MEMBER_ID = #{memberId}
         AND DIARY_ID IN
         <foreach collection="diaryIds" item="id" open="(" close=")" separator=",">
             ${id}
         </foreach>
+    </select>
+
+    <select id="findSympathy" resultType="com.pado.socialdiary.api.moduel.emoji.dto.SympathyResponse">
+        SELECT
+            TB_DIARY_EMOJI.MEMBER_ID,
+            TB_DIARY_EMOJI.DIARY_ID,
+            TB_DIARY_EMOJI.EMOJI
+        FROM TB_DIARY_EMOJI
+        WHERE MEMBER_ID = #{memberId}
+        AND DIARY_ID = #{diaryId}
     </select>
 </mapper>
