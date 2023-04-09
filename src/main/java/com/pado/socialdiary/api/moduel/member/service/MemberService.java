@@ -6,6 +6,7 @@ import com.pado.socialdiary.api.constants.AttachPath;
 import com.pado.socialdiary.api.constants.RefTable;
 import com.pado.socialdiary.api.constants.ResourcePath;
 import com.pado.socialdiary.api.exception.member.DuplicateEmailException;
+import com.pado.socialdiary.api.exception.member.PasswordConfirmationException;
 import com.pado.socialdiary.api.moduel.follow.entity.Follow;
 import com.pado.socialdiary.api.moduel.member.dto.*;
 import com.pado.socialdiary.api.moduel.member.entity.LoginProvider;
@@ -43,6 +44,10 @@ public class MemberService {
 
     @Transactional
     public void join(MemberJoinRequest memberJoinRequest) {
+
+        if(!memberJoinRequest.getPassword().equals(memberJoinRequest.getPasswordConfirm())) {
+            throw new PasswordConfirmationException();
+        }
 
         Integer findDuplicateEmailCount = memberRepository.findDuplicateEmailCount(memberJoinRequest.getEmail());
 
@@ -89,6 +94,10 @@ public class MemberService {
         }
 
         if (StringUtils.hasText(request.getPassword())) {
+            if(!request.getPassword().equals(request.getPasswordConfirm())) {
+                throw new PasswordConfirmationException();
+            }
+
             String encodedPassword = passwordEncoder.encode(request.getPassword());
             request.setEncodedPassword(encodedPassword);
         }

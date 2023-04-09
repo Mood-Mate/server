@@ -19,6 +19,10 @@ public class MemberJoinRequest {
     @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*[!@#?])[a-zA-Z\\d!@#?]{6,20}$")
     private String password;
 
+    @Parameter(name = "비밀번호 확인", example = "1234")
+    @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*[!@#?])[a-zA-Z\\d!@#?]{6,20}$")
+    private String passwordConfirm;
+
     @Parameter(name = "이름", example = "이름")
     private String name;
 
