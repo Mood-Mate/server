@@ -110,7 +110,7 @@ public class MemberService {
     }
 
     @Transactional
-    public void updateMemberPicture(Member member, AttachDto.UploadRequest uploadRequest) {
+    public String updateMemberPicture(Member member, AttachDto.UploadRequest uploadRequest) {
         Attached builtMemberPicture = Attached.builder()
                 .refTable(RefTable.TB_MEMBER.getValue())
                 .refId(member.getMemberId())
@@ -133,6 +133,7 @@ public class MemberService {
 
         memberRepository.update(memberUpdateRequest);
         memberRepository.saveHistory(new MemberHistory(memberRepository.getByMemberId(memberUpdateRequest.getMemberId())));
+        return ResourcePath.MEMBER_PICTURE.getResource(memberRepository.getByMemberId(member.getMemberId()).getPicture());
     }
 
     public List<MemberSearchResponse> searchMember(Member member, String keyword) {

@@ -55,12 +55,10 @@ public class MemberRestController {
     }
 
     @PatchMapping("/picture")
-    public ResponseEntity updatePicture(@Validated @AuthenticationPrincipal Member member,
+    public ResponseEntity updatePicture(@AuthenticationPrincipal Member member,
                                         @RequestPart MultipartFile multipartFile) throws IOException {
         AttachDto.UploadRequest uploadRequest = attachUtil.attachedFile(AttachPath.MEMBER_PICTURE.getValue(), multipartFile);
-        memberService.updateMemberPicture(member, uploadRequest);
-        return ResponseEntity.ok()
-                .build();
+        return ResponseEntity.ok(memberService.updateMemberPicture(member, uploadRequest));
     }
 
     @GetMapping("search")
