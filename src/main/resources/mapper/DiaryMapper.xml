@@ -71,16 +71,14 @@
     FROM TB_DIARY
     INNER JOIN TB_MEMBER ON TB_DIARY.MEMBER_ID = TB_MEMBER.MEMBER_ID
     LEFT JOIN TB_DIARY_EMOJI ON TB_DIARY.DIARY_ID = TB_DIARY_EMOJI.DIARY_ID
-    WHERE TB_DIARY.MEMBER_ID IN
-          <if test="!followingList.isEmpty()">
-            <foreach collection="followingList" item="following" open="(" close=")" separator=",">
-              #{following}
-            </foreach>
-          </if>
+    WHERE TB_DIARY.SECRET = 0
+    AND TB_DIARY.MEMBER_ID IN
+        <foreach collection="followingList" item="following" open="(" close=")" separator=",">
+                #{following}
+        </foreach>
     <if test="cursorPageable.cursor != null">
     AND TB_DIARY.DIARY_ID &lt; #{cursorPageable.cursor}
     </if>
-    AND TB_DIARY.SECRET = 0
     ORDER BY TB_DIARY.DIARY_ID DESC
     LIMIT #{cursorPageable.pageSize}
   </select>
@@ -131,10 +129,12 @@
     FROM TB_DIARY_COMMENT
     INNER JOIN TB_MEMBER ON TB_DIARY_COMMENT.MEMBER_ID = TB_MEMBER.MEMBER_ID
       WHERE DEL_AT = 'N'
+        <if test="!diaryIds.isEmpty()">
             AND DIARY_ID IN
         <foreach collection="diaryIds" item="id" open="(" close=")" separator=",">
           ${id}
         </foreach>
+        </if>
     ORDER BY TB_DIARY_COMMENT.DIARY_COMMENT_ID ASC
   </select>
 

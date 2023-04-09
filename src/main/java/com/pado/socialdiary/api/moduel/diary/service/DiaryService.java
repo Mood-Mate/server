@@ -186,6 +186,7 @@ public class DiaryService {
     public CursorPageResponse<DiaryResponse> findFollowingDiary(Member member, CursorPageable cursorPageable) {
 
         List<Integer> followingList = followMapper.findFollowingId(member.getMemberId());
+        followingList.add(member.getMemberId());
 
         Map<String, Object> map = new HashMap<>();
         map.put("followingList", followingList);
