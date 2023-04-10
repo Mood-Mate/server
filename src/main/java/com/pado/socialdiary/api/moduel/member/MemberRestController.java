@@ -56,7 +56,7 @@ public class MemberRestController {
 
     @PatchMapping("/picture")
     public ResponseEntity updatePicture(@AuthenticationPrincipal Member member,
-                                        @RequestPart MultipartFile multipartFile) throws IOException {
+                                        @RequestPart(value = "picture") MultipartFile multipartFile) throws IOException {
         AttachDto.UploadRequest uploadRequest = attachUtil.attachedFile(AttachPath.MEMBER_PICTURE.getValue(), multipartFile);
         return ResponseEntity.ok(memberService.updateMemberPicture(member, uploadRequest));
     }
