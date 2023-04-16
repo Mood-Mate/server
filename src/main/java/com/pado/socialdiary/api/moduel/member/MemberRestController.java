@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -73,5 +74,11 @@ public class MemberRestController {
         }
 
         return ResponseEntity.ok(new MemberDto.Response(member));
+    }
+
+    @PostMapping("/verify-password")
+    public ResponseEntity verifyPassword(@AuthenticationPrincipal Member member,
+                                         @RequestBody Map<String, Object> request) {
+        return ResponseEntity.ok(memberService.verifyPassword(member.getMemberId(), request));
     }
 }

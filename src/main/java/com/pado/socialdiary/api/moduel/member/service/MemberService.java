@@ -26,8 +26,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.sql.SQLOutput;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 import static com.pado.socialdiary.api.constants.YesNoCode.Y;
 
@@ -94,10 +96,6 @@ public class MemberService {
         }
 
         if (StringUtils.hasText(request.getPassword())) {
-            if(!request.getPassword().equals(request.getPasswordConfirm())) {
-                throw new PasswordConfirmationException();
-            }
-
             String encodedPassword = passwordEncoder.encode(request.getPassword());
             request.setEncodedPassword(encodedPassword);
         }
@@ -170,5 +168,10 @@ public class MemberService {
         }
 
         return memberProfile;
+    }
+
+    public boolean verifyPassword(Integer memberId, Map<String, Object> request) {
+        Member findMember = memberRepository.getByMemberId(memberId);
+        return passwordEncoder.matches((String) request.get("password"), findMember.getPassword());
     }
 }
