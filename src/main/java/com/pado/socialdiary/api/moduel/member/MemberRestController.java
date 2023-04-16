@@ -1,10 +1,7 @@
 package com.pado.socialdiary.api.moduel.member;
 
 import com.pado.socialdiary.api.constants.AttachPath;
-import com.pado.socialdiary.api.moduel.member.dto.MemberJoinRequest;
-import com.pado.socialdiary.api.moduel.member.dto.MemberLoginRequest;
-import com.pado.socialdiary.api.moduel.member.dto.MemberSearchResponse;
-import com.pado.socialdiary.api.moduel.member.dto.MemberUpdateRequest;
+import com.pado.socialdiary.api.moduel.member.dto.*;
 import com.pado.socialdiary.api.moduel.member.entity.Member;
 import com.pado.socialdiary.api.moduel.member.service.MemberService;
 import com.pado.socialdiary.api.utils.attach.AttachUtil;
@@ -75,6 +72,6 @@ public class MemberRestController {
             throw new RuntimeException("Not Fount Principal");
         }
 
-        return ResponseEntity.ok(member);
+        return ResponseEntity.ok(new MemberDto.Response(member));
     }
 }

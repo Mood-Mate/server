@@ -56,20 +56,4 @@ public class Member {
         this.gender = gender;
         this.picture = picture;
     }
-
-    @Override
-    public String toString() {
-        return "Member{" +
-                "memberId=" + memberId +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", name='" + name + '\'' +
-                ", nickname='" + nickname + '\'' +
-                ", dateOfBirth=" + dateOfBirth +
-                ", gender=" + gender +
-                ", picture='" + picture + '\'' +
-                ", role=" + role +
-                ", loginProvider=" + loginProvider +
-                '}';
-    }
 }
