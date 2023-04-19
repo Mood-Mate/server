@@ -1,8 +1,10 @@
 package com.pado.socialdiary.api.config.security.oauth;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pado.socialdiary.api.common.dto.AuthorizationDto;
 import com.pado.socialdiary.api.config.security.JwtProvider;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +15,8 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 
 @Slf4j
 @Component
@@ -26,7 +30,11 @@ public class OAuthSuccessHandler implements AuthenticationSuccessHandler {
         OAuth2User principal = (OAuth2User) authentication.getPrincipal();
         AuthorizationDto.TokenResponse tokenResponse = jwtProvider.generateToken(principal);
 
+        ServletOutputStream outputStream = response.getOutputStream();
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.writeValue(outputStream, tokenResponse.getAccessToken());
+        outputStream.flush();
+
         log.info("OAuth2SuccessHandler={}",tokenResponse.getAccessToken());
-        response.setHeader("Authorization", tokenResponse.getAccessToken());
     }
 }
